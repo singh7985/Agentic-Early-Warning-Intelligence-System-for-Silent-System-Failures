@@ -73,42 +73,67 @@ flowchart TD
     Registry --> Deploy["Production Deployment"]
 ```
 
-#### B. Inference Pipeline Flow (AEWIS)
+#### B. Inference Pipeline Flow (AEWIS Full System)
 
 ```mermaid
 flowchart TD
-    Input[Sensor Input] --> Feat[Feature Eng 347 features]
+    S["Sensor Data Input - 21 sensors"] --> FE["Feature Engineering<br>347 features <10ms"]
     
-    subgraph Models
-        Feat --> XGB[XGBoost]
-        Feat --> IF[IF]
-        Feat --> PELT[PELT]
-        Feat --> FAISS[FAISS]
+    subgraph BASE [Baseline Models]
+        FE --> XGB["XGBoost<br>RUL: 13 days"]
+        FE --> IF["Isolation Forest<br>Anomaly: 0.78"]
+        FE --> PELT["PELT<br>Change Points"]
+        Hist["Historical Data"] --> FAISS["FAISS DB"]
     end
     
-    subgraph Agents
-        XGB & IF & PELT & FAISS --> Mon[Monitoring]
-        Mon --> Rea[Reasoning]
-        Rea --> Ret[Retrieval]
-        Ret --> Act[Action]
+    subgraph AGENTS [LangGraph Agents]
+        MA["Monitoring Agent<br>Detect anomaly • Flag change points"]
+        RA["Reasoning Agent<br>Apply rules • Calibrate confidence"]
+        RAG_A["Retrieval Agent<br>Context Retrieval • Query Refinement"]
+        AA["Action Agent<br>Synthesize • Recommend • Escalate"]
     end
     
-    Act --> Resp[API Response 320ms]
+    XGB --> MA
+    IF --> MA
+    PELT --> MA
+    FAISS --> MA
+
+    MA --> RA
+    RA --> RAG_A
+    RAG_A --> AA
+    AA --> API["API Response<br>RUL • Confidence • Explanation • Recommendations"]
 ```
 
 #### C. Deployment Architecture
 
 ```mermaid
 flowchart TD
-    Users --> LB[Load Balancer] --> API[API Instances 1-10]
+    User["User/Client"] --> LB["Load Balancer"]
+    LB --> API["API Cluster<br>Autoscaling 1-10 instances"]
     
-    subgraph Services
-        API --> MLflow[MLflow 5000]
-        API --> PG[Postgres 5432]
-        API --> Prom[Prometheus 9090]
+    subgraph SERVICES [Backend Services]
+        MLflow["MLflow<br>5000"]
+        PG["Postgres<br>5432"]
+        FAISS["FAISS Index"]
+        Prom["Prometheus<br>9090"]
     end
     
-    Services --> Vol[Persistent Volumes]
+    API --> MLflow
+    API --> PG
+    API --> FAISS
+    API --> Prom
+    
+    subgraph STORAGE [Persistent Storage]
+        PV["Persistent Volumes"]
+        Cloud["Cloud Storage<br>S3/GCS"]
+    end
+    
+    MLflow --> PV
+    PG --> PV
+    FAISS --> PV
+    Prom --> PV
+
+    PV --> Cloud
 ```
 
 ### 3. Comprehensive Results Summary

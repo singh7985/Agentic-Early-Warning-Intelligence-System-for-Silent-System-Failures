@@ -208,49 +208,62 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    S[Sensor Data Input - 21 sensors] --> FE[Feature Engineering<br/>347 features <10ms]
+    S["Sensor Data Input - 21 sensors"] --> FE["Feature Engineering<br>347 features <10ms"]
     
     subgraph BASE [Baseline Models]
-        FE --> XGB[XGBoost<br/>RUL: 13 days]
-        FE --> IF[Isolation Forest<br/>Anomaly: 0.78]
-        FE --> PELT[PELT<br/>Change Points]
-        Hist[Historical Data] --> FAISS[FAISS DB]
+        FE --> XGB["XGBoost<br>RUL: 13 days"]
+        FE --> IF["Isolation Forest<br>Anomaly: 0.78"]
+        FE --> PELT["PELT<br>Change Points"]
+        Hist["Historical Data"] --> FAISS["FAISS DB"]
     end
     
     subgraph AGENTS [LangGraph Agents]
-        MA[Monitoring Agent<br/>Detect anomaly • Flag change points]
-        RA[Reasoning Agent<br/>Apply rules • Calibrate confidence]
-        RAG_A[Retrieval Agent<br/>Context Retrieval • Query Refinement]
-        AA[Action Agent<br/>Synthesize • Recommend • Escalate]
+        MA["Monitoring Agent<br>Detect anomaly • Flag change points"]
+        RA["Reasoning Agent<br>Apply rules • Calibrate confidence"]
+        RAG_A["Retrieval Agent<br>Context Retrieval • Query Refinement"]
+        AA["Action Agent<br>Synthesize • Recommend • Escalate"]
     end
     
-    XGB & IF & PELT & FAISS --> MA
-    MA --> RA --> RAG_A --> AA
-    AA --> API[API Response<br/>RUL • Confidence • Explanation • Recommendations]
+    XGB --> MA
+    IF --> MA
+    PELT --> MA
+    FAISS --> MA
+
+    MA --> RA
+    RA --> RAG_A
+    RAG_A --> AA
+    AA --> API["API Response<br>RUL • Confidence • Explanation • Recommendations"]
 ```
 
 ### 3.3 Deployment Architecture
 
 ```mermaid
 flowchart TD
-    User[User/Client] --> LB[Load Balancer]
-    LB --> API[API Cluster<br/>Autoscaling 1-10 instances]
+    User["User/Client"] --> LB["Load Balancer"]
+    LB --> API["API Cluster<br>Autoscaling 1-10 instances"]
     
     subgraph SERVICES [Backend Services]
-        MLflow[MLflow<br/>5000]
-        PG[Postgres<br/>5432]
-        FAISS[FAISS Index]
-        Prom[Prometheus<br/>9090]
+        MLflow["MLflow<br>5000"]
+        PG["Postgres<br>5432"]
+        FAISS["FAISS Index"]
+        Prom["Prometheus<br>9090"]
     end
     
-    API --> MLflow & PG & FAISS & Prom
+    API --> MLflow
+    API --> PG
+    API --> FAISS
+    API --> Prom
     
     subgraph STORAGE [Persistent Storage]
-        PV[Persistent Volumes]
-        Cloud[Cloud Storage<br/>S3/GCS]
+        PV["Persistent Volumes"]
+        Cloud["Cloud Storage<br>S3/GCS"]
     end
     
-    MLflow & PG & FAISS & Prom --> PV
+    MLflow --> PV
+    PG --> PV
+    FAISS --> PV
+    Prom --> PV
+
     PV --> Cloud
 ```
 

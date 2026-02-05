@@ -118,28 +118,40 @@ We compare three system variants to isolate the contribution of each component:
 
 ```mermaid
 flowchart TD
-      A[Input Signals & Logs<br/>Time-series + Maintenance Docs/Reports]
-      B[Feature Engineering & Preprocessing<br/>Rolling stats • EWMA • Fourier • Embeddings]
+      A["Input Signals & Logs<br>Time-series + Maintenance Docs/Reports"]
+      B["Feature Engineering & Preprocessing<br>Rolling stats • EWMA • Fourier • Embeddings"]
 
-      C1[Time-Series Models<br/>RUL • Change-Point • Anomaly]
-      C2[Vector DB FAISS<br/>Logs • Manuals • Reports]
-      C3[Domain Rules<br/>Thresholds • Constraints]
+      C1["Time-Series Models<br>RUL • Change-Point • Anomaly"]
+      C2["Vector DB FAISS<br>Logs • Manuals • Reports"]
+      C3["Domain Rules<br>Thresholds • Constraints"]
 
-      D[LangGraph Multi-Agent Orchestration]
-      D1[Monitoring Agent<br/>Signal analysis • CPD]
-      D2[Reasoning Agent<br/>Interpret anomalies • Rules check]
-      D3[Retrieval Agent RAG<br/>Context retrieval • Similarity]
-      D4[Action Agent<br/>Recommendations • Escalation]
+      D["LangGraph Multi-Agent Orchestration"]
+      D1["Monitoring Agent<br>Signal analysis • CPD"]
+      D2["Reasoning Agent<br>Interpret anomalies • Rules check"]
+      D3["Retrieval Agent RAG<br>Context retrieval • Similarity"]
+      D4["Action Agent<br>Recommendations • Escalation"]
 
-      E[Explainable Alert & Recommendation<br/>RUL + CI • Top-K Cases • Reasoning Trace]
-      F[FastAPI REST API + MLflow Tracking<br/>/predict • /explain • /health • /metrics]
-      G[Monitoring & Alerting Phase 9<br/>Drift • Performance • Confidence]
+      E["Explainable Alert & Recommendation<br>RUL + CI • Top-K Cases • Reasoning Trace"]
+      F["FastAPI REST API + MLflow Tracking<br>/predict • /explain • /health • /metrics"]
+      G["Monitoring & Alerting Phase 9<br>Drift • Performance • Confidence"]
 
-      A --> B --> C1 --> D
-      B --> C2 --> D
-      B --> C3 --> D
+      A --> B
+      B --> C1
+      
+      B --> C2
+      C1 --> D
+      C2 --> D
+      
+      B --> C3
+      C3 --> D
 
-      D --> D1 --> D2 --> D3 --> D4 --> E --> F --> G
+      D --> D1
+      D1 --> D2
+      D2 --> D3
+      D3 --> D4
+      D4 --> E
+      E --> F
+      F --> G
 ```
 
 ---
