@@ -122,18 +122,18 @@ flowchart TD
       B[Feature Engineering & Preprocessing<br/>Rolling stats • EWMA • Fourier • Embeddings]
 
       C1[Time-Series Models<br/>RUL • Change-Point • Anomaly]
-      C2[Vector DB (FAISS)<br/>Logs • Manuals • Reports]
+      C2[Vector DB FAISS<br/>Logs • Manuals • Reports]
       C3[Domain Rules<br/>Thresholds • Constraints]
 
       D[LangGraph Multi-Agent Orchestration]
       D1[Monitoring Agent<br/>Signal analysis • CPD]
       D2[Reasoning Agent<br/>Interpret anomalies • Rules check]
-      D3[Retrieval Agent (RAG)<br/>Context retrieval • Similarity]
+      D3[Retrieval Agent RAG<br/>Context retrieval • Similarity]
       D4[Action Agent<br/>Recommendations • Escalation]
 
       E[Explainable Alert & Recommendation<br/>RUL + CI • Top-K Cases • Reasoning Trace]
       F[FastAPI REST API + MLflow Tracking<br/>/predict • /explain • /health • /metrics]
-      G[Monitoring & Alerting (Phase 9)<br/>Drift • Performance • Confidence]
+      G[Monitoring & Alerting Phase 9<br/>Drift • Performance • Confidence]
 
       A --> B --> C1 --> D
       B --> C2 --> D

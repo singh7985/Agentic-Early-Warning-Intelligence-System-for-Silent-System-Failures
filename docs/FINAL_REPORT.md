@@ -199,7 +199,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    S[Sensor Data Input (21 sensors)] --> FE[Feature Engineering<br/>347 features <10ms]
+    S[Sensor Data Input - 21 sensors] --> FE[Feature Engineering<br/>347 features <10ms]
     
     subgraph BASE [Baseline Models]
         FE --> XGB[XGBoost<br/>RUL: 13 days]
