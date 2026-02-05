@@ -172,14 +172,14 @@ Performance: 320ms latency | 850 tokens | $2.13/1K predictions
 ### 3.1 Training Pipeline Flow
 
 ```mermaid
-flowchart TD
-    D["NASA C-MAPSS Dataset"] --> P["Preprocessing"]
-    P --> FE["Feature Engineering"]
+graph TD
+    D("NASA C-MAPSS Dataset") --> P("Preprocessing")
+    P --> FE("Feature Engineering")
     
     subgraph SPLIT [Data Split]
-        Train["Train 70%"]
-        Val["Val 15%"]
-        Test["Test 15%"]
+        Train("Train 70%")
+        Val("Val 15%")
+        Test("Test 15%")
     end
 
     FE --> Train
@@ -187,21 +187,21 @@ flowchart TD
     FE --> Test
     
     subgraph MODELS [Model Training]
-        XGB["XGBoost<br>Optuna 500"]
-        IF["Isolation Forest"]
-        PELT["PELT Change-Point"]
+        XGB("XGBoost<br/>Optuna 500")
+        IF("Isolation Forest")
+        PELT("PELT Change-Point")
     end
     
     Train --> XGB
     Train --> IF
     Train --> PELT
 
-    XGB --> Artifacts["Model Artifacts"]
+    XGB --> Artifacts("Model Artifacts")
     IF --> Artifacts
     PELT --> Artifacts
 
-    Artifacts --> Registry["MLflow Registry"]
-    Registry --> Deploy["Production Deployment"]
+    Artifacts --> Registry("MLflow Registry")
+    Registry --> Deploy("Production Deployment")
 ```
 
 ### 3.2 Inference Pipeline Flow (AEWIS Full System)
