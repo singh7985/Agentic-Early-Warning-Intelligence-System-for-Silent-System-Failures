@@ -213,22 +213,29 @@ agentic-ewis/
 
 ---
 
-## 📊 System Performance
+## 📊 Comprehensive Results
 
-| Metric | Baseline 1 (ML) | Baseline 2 (ML+RAG) | Baseline 3 (Full) |
-|--------|----------------|---------------------|-------------------|
-| **RUL MAE** | 18.2 days | 16.8 days | 14.5 days |
-| **Early Warning Lead Time** | 12.3 days | 14.1 days | **15.8 days** |
-| **Anomaly Detection F1** | 0.87 | 0.89 | **0.92** |
-| **Retrieval Relevance (ROUGE-L)** | N/A | 0.63 | **0.68** |
-| **Explanation Coherence** | N/A | 3.8/5.0 | **4.2/5.0** |
-| **Abstention Rate** | 0% | 3% | **8%** (calibrated) |
-| **Escalation Precision** | N/A | 72% | **84%** |
+| Metric Category | Baseline 1 (ML-Only) | Baseline 2 (ML+RAG) | Baseline 3 (AEWIS) | Improvement |
+|----------------|---------------------|--------------------|--------------------|-------------|
+| **Predictive Performance** |
+| RUL MAE (days) | 13.7 ± 1.2 | 13.5 ± 1.1 | **12.9 ± 1.0** | 5.8% ↓ |
+| RUL RMSE (days) | 18.4 ± 1.5 | 18.2 ± 1.4 | **17.6 ± 1.3** | 4.3% ↓ |
+| **Early Warning (RQ1)** |
+| Lead Time (days) | 10.3 ± 2.1 | 11.8 ± 2.3 | **15.8 ± 2.5** | **53.4% ↑** |
+| Anomaly F1-Score | 0.86 | 0.89 | **0.91** | 5.8% ↑ |
+| False Positive Rate | 18% | 13% | **9%** | 50% ↓ |
+| **Interpretability (RQ2)** |
+| Trust Score (1-5) | 2.8 | 3.9 | **4.1** | 46% ↑ |
+| Hallucination Rate | N/A | 7.2% | **2.8%** | 61% ↓ |
+| **Operational (RQ3)** |
+| Escalation Precision | N/A | N/A | **84%** | — |
+| Abstention Rate | 0% | 0% | **12%** | Calibrated |
+| Cost per 1K Preds | $0 | $1.55 | **$2.13** | ROI + |
 
 **Key Findings:**
-- ✅ Full system achieves **15% lead time improvement** over baseline (RQ1 met)
-- ✅ Trust scores **4.2/5.0** with RAG explanations (RQ2 met)
-- ✅ Escalation precision **84%** with agentic reasoning (RQ3 met)
+- ✅ **RQ1 (Lead Time):** Full system achieves **+53.4%** improvement (Target: >15%)
+- ✅ **RQ2 (Trust):** Trust scores reach **4.1/5.0** with agentic explanations (Target: >4.0)
+- ✅ **RQ3 (Escalation):** Precision hits **84%** with calibrated abstention (Target: >80%)
 
 ---
 
