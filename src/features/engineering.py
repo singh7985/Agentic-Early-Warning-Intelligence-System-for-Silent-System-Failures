@@ -42,7 +42,7 @@ class TimeSeriesFeatureEngineer:
         window_sizes: Optional[List[int]] = None
     ) -> pd.DataFrame:
         """
-        Add rolling mean, std, min, max features.
+        Add rolling mean, std, min, max features
         
         Args:
             df: Dataframe with sensor columns
@@ -56,26 +56,26 @@ class TimeSeriesFeatureEngineer:
         window_sizes = window_sizes or self.window_sizes
         
         # Group by engine to avoid leakage across engines
-        for window in window_sizes:
-            for col in sensor_cols:
+        for col in sensor_cols:
+            for window in window_sizes: # Fix loop order: sensors first, then windows
+        
                 grouped = df.groupby('engine_id')[col].rolling(
                     window=window,
                     min_periods=1
-                ).agg({
-                    'mean': 'mean',
-                    'std': 'std',
-                    'min': 'min',
-                    'max': 'max',
-                }).reset_index(drop=True)
+                ).agg(['mean', 'std', 'min', 'max']).reset_index(drop=True) # Use agg list for efficiency
                 
-                df[f'{col}_roll{window}_mean'] = grouped['mean'].values
-                df[f'{col}_roll{window}_std'] = grouped['std'].fillna(0).values
-                df[f'{col}_roll{window}_min'] = grouped['min'].values
-                df[f'{col}_roll{window}_max'] = grouped['max'].values
+                # Check column names after agg
+                # If agg returns a DataFrame with MultiIndex columns, flatten them
+                # But rolling(...).agg(...) usually returns DataFrame with columns matching agg function names
+                
+                df[f'{col}_roll{window}_mean'] = grouped['mean']
+                df[f'{col}_roll{window}_std'] = grouped['std'].fillna(0)
+                df[f'{col}_roll{window}_min'] = grouped['min']
+                df[f'{col}_roll{window}_max'] = grouped['max']
         
         logger.info(f"Added rolling statistics for windows: {window_sizes}")
         return df
-    
+
     def add_ewma_features(
         self,
         df: pd.DataFrame,
@@ -135,8 +135,8 @@ class TimeSeriesFeatureEngineer:
         logger.info(f"Added difference features for lags: {lags}")
         return df
     
-    @staticmethod
     def add_fourier_features(
+        self,
         df: pd.DataFrame,
         time_col: str = 'cycle',
         num_fourier_features: int = 5,
@@ -158,6 +158,11 @@ class TimeSeriesFeatureEngineer:
         
         if period is None:
             period = df[time_col].max()
+            
+        # Ensure time_col exists
+        if time_col not in df.columns:
+            logger.warning(f"Time column '{time_col}' not found. Skipping Fourier features.")
+            return df
         
         for i in range(1, num_fourier_features + 1):
             df[f'fourier_sin_{i}'] = np.sin(2 * np.pi * i * df[time_col] / period)

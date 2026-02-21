@@ -278,20 +278,27 @@ class HealthIndicatorCalculator:
         df_phases["health_index"] = health_index
 
         # Calculate percentile thresholds per engine
-        thresholds = df_phases.groupby("engine_id")["health_index"].quantile(
-            [p / 100.0 for p in percentiles]
-        ).unstack()
+        quantiles = [p / 100.0 for p in percentiles]
+        thresholds = df_phases.groupby("engine_id")["health_index"].quantile(quantiles).unstack()
+        
+        # Rename columns to 0, 1, 2... for easy integer access
+        thresholds.columns = range(len(quantiles))
 
         # Assign phases
         phases = []
+        # Pre-fetch thresholds to dictionary for faster lookup than loc inside loop
+        threshold_dict = thresholds.to_dict('index')
+        
         for idx, row in df_phases.iterrows():
             engine_id = row["engine_id"]
             hi = row["health_index"]
 
-            if engine_id in thresholds.index:
-                if hi <= thresholds.loc[engine_id, 0]:
+            if engine_id in threshold_dict:
+                engine_thresholds = threshold_dict[engine_id]
+                # Use integer keys 0, 1 etc matching the renamed columns
+                if hi <= engine_thresholds[0]:
                     phase = "Healthy"
-                elif hi <= thresholds.loc[engine_id, 1]:
+                elif hi <= engine_thresholds[1]:
                     phase = "Degrading"
                 else:
                     phase = "Failed"

@@ -123,17 +123,39 @@ class FeatureEngineeringPipeline:
         # Step 3: Apply time-series feature engineering
         logger.info("Step 3: Engineering time-series features")
         df_engineered = self.time_series_engineer.add_rolling_statistics(
-            df_health, sensor_cols, windows=[5, 10, 20]
+            df_health, sensor_cols, window_sizes=[5, 10, 20]
         )
         df_engineered = self.time_series_engineer.add_ewma_features(df_engineered, sensor_cols)
         df_engineered = self.time_series_engineer.add_difference_features(df_engineered, sensor_cols)
-        df_engineered = self.time_series_engineer.add_fourier_features(df_engineered, sensor_cols)
+        # Fix: add_fourier_features expects time_col, not sensor_cols
+        # Also it returns a dataframe, pass it correctly
+        df_engineered = self.time_series_engineer.add_fourier_features(df_engineered, time_col='cycle')
 
         # Extract engineered features as 2D array
-        engineered_cols = [col for col in df_engineered.columns if col not in ["engine_id", "cycle", "RUL", "rul"]]
+        # Exclude metadata columns to just get features
+        metadata_cols = ["engine_id", "cycle", "RUL", "rul", "op_setting_1", "op_setting_2", "op_setting_3"]
+        engineered_cols = [col for col in df_engineered.columns if col not in metadata_cols]
+        
+        # Ensure only numeric columns are selected
+        engineered_cols = [col for col in engineered_cols if pd.api.types.is_numeric_dtype(df_engineered[col])]
+
+        # Create the feature matrix
         X_engineered = df_engineered[engineered_cols].values
 
         logger.info(f"Engineered features: {X_engineered.shape[1]} features")
+
+        # Handle NaNs
+        # Rolling features and differencing introduce NaNs at the beginning of each engine's data
+        # We need to handle them before feature selection/scaling
+        # Option 1: Fill with 0 (simplest)
+        # Option 2: Drop rows (might lose data if windows are large)
+        # Option 3: Backfill/Forwardfill
+        
+        # Here we'll use fillna(0) for robustness, but dropping is also valid if we have enough data
+        # df_engineered = df_engineered.dropna(subset=engineered_cols) # Would require re-aligning y
+        
+        # Let's fill with 0 to be safe and keep all rows aligned with y
+        X_engineered = np.nan_to_num(X_engineered, nan=0.0)
 
         # Step 4: Feature selection
         if feature_selection_method:
@@ -187,21 +209,28 @@ class FeatureEngineeringPipeline:
 
         # Time-series feature engineering
         df_engineered = self.time_series_engineer.add_rolling_statistics(
-            df_health, self.sensor_cols, windows=[5, 10, 20]
+            df_health, self.sensor_cols, window_sizes=[5, 10, 20]
         )
         df_engineered = self.time_series_engineer.add_ewma_features(df_engineered, self.sensor_cols)
         df_engineered = self.time_series_engineer.add_difference_features(df_engineered, self.sensor_cols)
-        df_engineered = self.time_series_engineer.add_fourier_features(df_engineered, self.sensor_cols)
+        df_engineered = self.time_series_engineer.add_fourier_features(df_engineered, time_col='cycle')
 
         # Extract features
+        # Also fill NaNs here for consistency with fit
         X = df_engineered[self.selected_features].values
+        X = np.nan_to_num(X, nan=0.0)
 
         # Scale if fitted
         if self.scaler:
             X = self.scaler.transform(X)
 
         # Get target
-        y = df.get("RUL", df.get("rul", np.zeros(len(df)))).values
+        if "RUL" in df.columns:
+            y = df["RUL"].values
+        elif "rul" in df.columns:
+            y = df["rul"].values
+        else:
+            y = np.zeros(len(df))
 
         logger.info(f"Transform complete: X={X.shape}")
         return X, y
@@ -365,7 +394,7 @@ class FeatureEngineeringPipeline:
         elif method == "correlation":
             return self.feature_selector.select_by_correlation(X, y, k=k)
         elif method == "tree":
-            X_sel, feat = self.feature_selector.select_by_tree_importance(X, y, k=k)
+            X_sel, feat, _ = self.feature_selector.select_by_tree_importance(X, y, k=k)
             return X_sel, feat
         elif method == "pca":
             X_sel, _ = self.feature_selector.select_by_pca(X, n_components=k)

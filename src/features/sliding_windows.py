@@ -72,7 +72,8 @@ class SlidingWindowGenerator:
             engine_data = df[df[engine_col] == engine_id].reset_index(drop=True)
 
             # Generate windows for this engine
-            for start_idx in range(0, len(engine_data) - self.min_window_samples, self.step_size):
+            # Fix: Added +1 to ensure the last possible window is included
+            for start_idx in range(0, len(engine_data) - self.min_window_samples + 1, self.step_size):
                 end_idx = min(start_idx + self.window_size, len(engine_data))
                 window_data = engine_data.iloc[start_idx:end_idx][sensor_cols].values
 
