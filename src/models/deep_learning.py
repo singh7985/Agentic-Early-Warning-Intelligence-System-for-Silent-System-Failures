@@ -444,16 +444,18 @@ class DeepLearningTrainer:
         rmse = np.sqrt(mean_squared_error(y_true, y_pred))
         mae = mean_absolute_error(y_true, y_pred)
         r2 = r2_score(y_true, y_pred)
-        mape = np.mean(np.abs((y_true - y_pred) / (y_true + 1e-8))) * 100
+        
+        d = y_pred - y_true
+        nasa_score = np.sum(np.where(d < 0, np.exp(-d / 13) - 1, np.exp(d / 10) - 1))
         
         metrics = {
             'rmse': rmse,
             'mae': mae,
             'r2': r2,
-            'mape': mape,
+            'nasa_score': nasa_score,
         }
         
-        logger.info(f"Evaluation: RMSE={rmse:.2f}, MAE={mae:.2f}, R²={r2:.4f}, MAPE={mape:.2f}%")
+        logger.info(f"Evaluation: RMSE={rmse:.2f}, MAE={mae:.2f}, R²={r2:.4f}, NASA Score={nasa_score:.2f}")
         return metrics
 
     def save_model(self, filepath: str) -> None:

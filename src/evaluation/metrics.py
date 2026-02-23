@@ -24,7 +24,7 @@ class RULMetrics:
     """RUL prediction metrics"""
     mae: float  # Mean Absolute Error
     rmse: float  # Root Mean Square Error
-    mape: float  # Mean Absolute Percentage Error
+    nasa_score: float  # NASA Scoring Function
     r_squared: float  # Coefficient of determination
     pearson_r: float  # Pearson correlation
     spearman_r: float  # Spearman correlation
@@ -169,7 +169,7 @@ class MetricsCalculator:
         if not self.predictions:
             logger.warning("No predictions available for RUL metrics")
             return RULMetrics(
-                mae=0, rmse=0, mape=0, r_squared=0,
+                mae=0, rmse=0, nasa_score=0, r_squared=0,
                 pearson_r=0, spearman_r=0, median_error=0
             )
 
@@ -186,8 +186,9 @@ class MetricsCalculator:
         # RMSE
         rmse = float(np.sqrt(np.mean(errors ** 2)))
 
-        # MAPE (avoid division by zero)
-        mape = float(np.mean(relative_errors[actual > 0]))
+        # NASA Score
+        d = predicted - actual
+        nasa_score = float(np.sum(np.where(d < 0, np.exp(-d / 13) - 1, np.exp(d / 10) - 1)))
 
         # R-squared
         ss_res = np.sum((actual - predicted) ** 2)
@@ -212,7 +213,7 @@ class MetricsCalculator:
         return RULMetrics(
             mae=mae,
             rmse=rmse,
-            mape=mape,
+            nasa_score=nasa_score,
             r_squared=r_squared,
             pearson_r=pearson_r,
             spearman_r=spearman_r,

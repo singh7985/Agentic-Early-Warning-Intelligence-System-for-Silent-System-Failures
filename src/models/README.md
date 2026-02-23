@@ -313,7 +313,7 @@ class ModelAPI:
     
     def evaluate(self, X, y):
         """Calculate metrics"""
-        return {'rmse': float, 'mae': float, 'r2': float, 'mape': float}
+        return {'rmse': float, 'mae': float, 'r2': float, 'nasa_score': float}
     
     def save_model(self, path):
         """Save model to disk"""
@@ -326,9 +326,13 @@ class ModelAPI:
 
 ## 🎯 Best Practices
 
-1. **Always use train/val/test split**
+1. **Always use group-aware train/val/test split**
    ```python
-   X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
+   from sklearn.model_selection import GroupShuffleSplit
+   gss = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+   train_idx, val_idx = next(gss.split(X, y, groups=groups))
+   X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
+   y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
    ```
 
 2. **Enable early stopping**

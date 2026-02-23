@@ -37,7 +37,7 @@ class ModelMetrics:
     mae: float
     rmse: float
     r_squared: float
-    mape: float
+    nasa_score: float
     f1_score: float
     precision: float
     recall: float
@@ -108,7 +108,7 @@ class MLflowTracker:
             'mae': metrics.mae,
             'rmse': metrics.rmse,
             'r_squared': metrics.r_squared,
-            'mape': metrics.mape,
+            'nasa_score': metrics.nasa_score,
             'f1_score': metrics.f1_score,
             'precision': metrics.precision,
             'recall': metrics.recall,

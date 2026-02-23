@@ -58,8 +58,12 @@ class RULEvaluator:
         mae = mean_absolute_error(y_true, y_pred)
         r2 = r2_score(y_true, y_pred)
         
-        # MAPE (Mean Absolute Percentage Error)
-        mape = np.mean(np.abs((y_true - y_pred) / (y_true + 1e-8))) * 100
+        # NASA Scoring Function (Asymmetric penalty)
+        # d = y_pred - y_true
+        # if d < 0 (early prediction): penalty = exp(-d/13) - 1
+        # if d >= 0 (late prediction): penalty = exp(d/10) - 1
+        d = y_pred - y_true
+        nasa_score = np.sum(np.where(d < 0, np.exp(-d / 13) - 1, np.exp(d / 10) - 1))
         
         # Residuals
         residuals = y_true - y_pred
@@ -79,7 +83,7 @@ class RULEvaluator:
             f'{prefix}rmse': rmse,
             f'{prefix}mae': mae,
             f'{prefix}r2': r2,
-            f'{prefix}mape': mape,
+            f'{prefix}nasa_score': nasa_score,
             f'{prefix}max_error': max_error,
             f'{prefix}median_error': median_error,
             f'{prefix}std_error': std_error,
@@ -93,7 +97,7 @@ class RULEvaluator:
         logger.info(f"  RMSE: {rmse:.2f}")
         logger.info(f"  MAE: {mae:.2f}")
         logger.info(f"  R²: {r2:.4f}")
-        logger.info(f"  MAPE: {mape:.2f}%")
+        logger.info(f"  NASA Score: {nasa_score:.2f}")
         
         return metrics
 
@@ -192,7 +196,7 @@ class RULEvaluator:
         RMSE:           {metrics['rmse']:.2f}
         MAE:            {metrics['mae']:.2f}
         R² Score:       {metrics['r2']:.4f}
-        MAPE:           {metrics['mape']:.2f}%
+        NASA Score:     {metrics['nasa_score']:.2f}
         
         Max Error:      {metrics['max_error']:.2f}
         Median Error:   {metrics['median_error']:.2f}

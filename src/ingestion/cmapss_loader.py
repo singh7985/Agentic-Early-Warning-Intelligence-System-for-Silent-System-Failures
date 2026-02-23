@@ -165,15 +165,13 @@ class CMAPSSDataLoader:
         Returns:
             Tuple of (train_df, val_df)
         """
-        np.random.seed(random_state)
+        from sklearn.model_selection import GroupShuffleSplit
         
-        unique_engines = df['engine_id'].unique()
-        num_test_engines = max(1, int(len(unique_engines) * test_engines_ratio))
+        gss = GroupShuffleSplit(n_splits=1, test_size=test_engines_ratio, random_state=random_state)
+        train_idx, val_idx = next(gss.split(df, groups=df['engine_id']))
         
-        test_engines = np.random.choice(unique_engines, size=num_test_engines, replace=False)
-        
-        train_df = df[~df['engine_id'].isin(test_engines)].copy()
-        val_df = df[df['engine_id'].isin(test_engines)].copy()
+        train_df = df.iloc[train_idx].copy()
+        val_df = df.iloc[val_idx].copy()
         
         logger.info(
             f"Split: Train engines={train_df['engine_id'].nunique()}, "
