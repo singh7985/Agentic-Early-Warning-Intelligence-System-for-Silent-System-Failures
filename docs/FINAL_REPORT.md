@@ -54,20 +54,23 @@ This report documents the complete development, evaluation, and deployment of th
 AEWIS integrates three complementary technologies:
 
 1. **Machine Learning Layer**
-   - XGBoost for Remaining Useful Life (RUL) prediction
+   - XGBoost, Random Forest, Gradient Boosting for Remaining Useful Life (RUL) prediction
+   - LSTM and TCN deep learning models for sequential RUL prediction
    - Isolation Forest for multivariate anomaly detection
-   - PELT for change-point detection
+   - Change-Point Detection (CUSUM, EWMA, Bayesian, Mann-Kendall)
+   - Residual-based anomaly detection with z-score/IQR/MAD/EWMA methods
 
 2. **RAG Layer**
-   - FAISS vector database with 800 documents (failure reports, manuals)
-   - Hybrid retrieval (70% semantic, 30% keyword)
-   - GPT-3.5-turbo for natural language explanations
+   - FAISS vector database (Flat index, cosine similarity)
+   - Sentence-BERT embeddings (all-MiniLM-L6-v2, 384-dim)
+   - Sentence-based document chunking with overlap
+   - Semantic retrieval with configurable top-k and min-similarity filtering
 
-3. **Agent Orchestration Layer**
-   - **Monitoring Agent:** Continuous signal analysis
-   - **Reasoning Agent:** Domain rule cross-checking, confidence calibration
-   - **Retrieval Agent:** Dynamic RAG query construction
-   - **Action Agent:** Recommendation generation, escalation logic
+3. **Agent Orchestration Layer** (custom sequential pipeline via `AgentOrchestrator`)
+   - **Monitoring Agent:** RUL prediction ensemble, anomaly detection, drift monitoring
+   - **Retrieval Agent:** Sensor-pattern-based and semantic RAG query construction
+   - **Reasoning Agent:** Evidence synthesis, weighted risk scoring, confidence calibration
+   - **Action Agent:** Priority-ranked recommendations, escalation logic
 
 ### 1.3 Key Innovations
 
@@ -76,7 +79,7 @@ AEWIS integrates three complementary technologies:
 | **Three-Baseline Evaluation** | Isolates RAG and agent contributions | +14.6% (RAG), +34% (agents) lead time gain |
 | **Confidence-Calibrated Abstention** | Platt scaling for escalation decisions | 84% precision, 12% abstention rate |
 | **Dynamic Query Refinement** | Agent iteratively improves retrieval | 18% of queries refined, +12% precision |
-| **Production Deployment** | FastAPI + Docker + Cloud | 320ms latency, 7-service orchestration |
+| **Production Deployment** | FastAPI + Docker + Cloud | 320ms latency, 6-service orchestration |
 
 ### 1.4 Research Questions Answered
 
@@ -94,52 +97,60 @@ AEWIS integrates three complementary technologies:
 
 ```mermaid
 flowchart TD
-    subgraph L1 [Layer 1: Data Ingestion]
-        S[Sensor Time-Series<br/>21 Sensors • 3 Op Settings]
-        D[Maintenance Docs<br/>Reports • Manuals]
-        FE[Feature Engineering<br/>347 Features]
-        DE[Document Embedding<br/>Sentence-BERT]
+    subgraph L1 ["Layer 1: Data Ingestion & Feature Engineering"]
+        S["Sensor Time-Series<br/>21 Sensors • 3 Op Settings<br/>(CMAPSSDataLoader)"]
+        D["Maintenance Docs<br/>Reports • Manuals"]
+        FE["FeatureEngineeringPipeline<br/>Sliding Windows (size=30) → Health Indicators<br/>→ Rolling/EWMA/Diff/Fourier → Feature Selection (k=20)"]
+        DE["Document Embedding<br/>Sentence-BERT (all-MiniLM-L6-v2, 384D)"]
         S --> FE
         D --> DE
     end
 
-    subgraph L2 [Layer 2: Baseline ML Models]
-        XGB[XGBoost RUL]
-        IF[Isolation Forest]
-        PELT[PELT Change-Point]
-        FE --> XGB
-        FE --> IF
-        FE --> PELT
+    subgraph L2 ["Layer 2: ML Models"]
+        subgraph BASELINE ["Baseline ML"]
+            XGB["XGBoost RUL<br/>(200 trees, depth 6, lr 0.1)"]
+            RF["Random Forest RUL<br/>(200 trees, depth 20)"]
+            GBR["Gradient Boosting RUL<br/>(200 trees, lr 0.1)"]
+        end
+        subgraph DL ["Deep Learning"]
+            LSTM["LSTM RUL<br/>(hidden=64, layers=2, dropout=0.2)"]
+            TCN["TCN RUL<br/>(channels=[64,64,64], kernel=3)"]
+        end
+        subgraph ANOMALY ["Anomaly Detection"]
+            IFD["Isolation Forest<br/>(100 trees, contamination=0.1)"]
+            CPD["Change-Point Detector<br/>(CUSUM • EWMA • Bayesian • Mann-Kendall)"]
+            RAD["Residual Anomaly Detector<br/>(z-score • IQR • MAD • EWMA)"]
+        end
+        FE --> XGB & RF & GBR & LSTM & TCN & IFD & CPD & RAD
     end
 
-    subgraph L3 [Layer 3: RAG Augmentation]
-        VDB[(FAISS Vector DB)]
-        DE --> VDB
-        Hybrid[Hybrid Retrieval<br/>Semantic + Keyword]
-        LLM[LLM Explanation<br/>GPT-3.5-turbo]
-        VDB --> Hybrid
-        Hybrid --> LLM
+    subgraph L3 ["Layer 3: RAG Knowledge Base"]
+        Chunk["DocumentChunker<br/>(sentence-based, size=500, overlap=50)"]
+        VDB[("FAISS Vector DB<br/>(Flat index, cosine similarity)")]
+        Ret["Retriever<br/>(top_k=5, min_similarity=0.3)"]
+        DE --> Chunk --> VDB
+        VDB --> Ret
     end
 
-    subgraph L4 [Layer 4: Multi-Agent Orchestration]
-        MA[Monitoring Agent]
-        RA[Reasoning Agent]
-        RAG_A[Retrieval Agent]
-        AA[Action Agent]
-        
-        XGB & IF & PELT --> MA
-        MA --> RA
-        RA --> RAG_A
-        Hybrid -.-> RAG_A
-        RAG_A --> AA
+    subgraph L4 ["Layer 4: Multi-Agent Orchestration (AgentOrchestrator)"]
+        MA["1. Monitoring Agent<br/>RUL ensemble • Anomaly detection • Drift check"]
+        RTA["2. Retrieval Agent<br/>Sensor-pattern search • Semantic query"]
+        REA["3. Reasoning Agent<br/>Evidence synthesis • Risk scoring • Confidence calibration"]
+        AA["4. Action Agent<br/>Recommendations • Escalation logic"]
+
+        XGB & RF & GBR & LSTM & TCN & IFD & CPD & RAD --> MA
+        MA --> RTA
+        Ret -.-> RTA
+        RTA --> REA
+        REA --> AA
     end
 
-    subgraph L5 [Layer 5: API & Deployment]
-        API[FastAPI REST API]
-        MLOps[MLOps Infrastructure<br/>MLflow • Drift • Logging]
-        Docker[Docker Compose<br/>7 Services]
-        Cloud[Cloud Deployment<br/>GCP/AWS]
-        
+    subgraph L5 ["Layer 5: API & Deployment"]
+        API["FastAPI REST API<br/>5 endpoints: predict, explain, health, metrics, drift"]
+        MLOps["MLOps Infrastructure<br/>MLflow • DriftDetector • PerformanceLogger"]
+        Docker["Docker Compose<br/>6 Services: API, MLflow, Postgres, Nginx, Prometheus, Grafana"]
+        Cloud["Cloud Deployment<br/>GCP Cloud Run • AWS ECS Fargate"]
+
         AA --> API
         API --> MLOps
         MLOps --> Docker
@@ -147,23 +158,24 @@ flowchart TD
     end
 ```
 
-Performance: 320ms latency | 850 tokens | $2.13/1K predictions
-```
-
 ### 2.2 Component Specifications
 
 | Component | Technology | Configuration | Output |
 |-----------|-----------|---------------|--------|
-| **XGBoost** | Gradient Boosting | 500 trees, depth 8, lr 0.05 | RUL prediction |
-| **Isolation Forest** | Anomaly Detection | 200 trees, contamination 5% | Anomaly score |
-| **PELT** | Change-Point | L2 cost, penalty 10 | Change points |
-| **FAISS** | Vector DB | IVF1024_PQ8, 800 docs | Top-5 similar docs |
+| **XGBoost** | Gradient Boosting | 200 trees, depth 6, lr 0.1, subsample 0.8 | RUL prediction |
+| **Random Forest** | Ensemble | 200 trees, depth 20, min_leaf 2 | RUL prediction |
+| **Gradient Boosting** | Boosted Trees | 200 trees, lr 0.1, depth 5 | RUL prediction |
+| **LSTM** | Deep Learning | hidden=64, 2 layers, dropout=0.2 | Sequence RUL prediction |
+| **TCN** | Deep Learning | channels=[64,64,64], kernel=3, dilated | Sequence RUL prediction |
+| **Isolation Forest** | Anomaly Detection | 100 trees, contamination 10% | Anomaly score |
+| **Change-Point Detector** | CUSUM/EWMA/Bayesian/MK | threshold=3.0, drift=0.5, min_distance=10 | Change points |
+| **Residual Detector** | z-score/IQR/MAD/EWMA | threshold=3.0, window=50 | Residual anomalies |
+| **FAISS** | Vector DB | Flat index (IndexFlatIP), cosine similarity | Top-5 similar docs |
 | **Sentence-BERT** | Embeddings | all-MiniLM-L6-v2, 384D | Document vectors |
-| **GPT-3.5-turbo** | LLM | temp 0.3, max_tokens 300 | Explanations |
-| **LangGraph** | Agent Framework | 4-agent sequential pipeline | Orchestrated output |
-| **FastAPI** | Web Framework | 5 endpoints, async | REST API |
+| **AgentOrchestrator** | Custom Sequential Pipeline | 4-agent pipeline with confidence gating | Orchestrated output |
+| **FastAPI** | Web Framework | 5 endpoints (predict, explain, health, metrics, drift) | REST API |
 | **MLflow** | Experiment Tracking | Model registry, artifacts | Versioning |
-| **Docker** | Containerization | Multi-stage, 7 services | Deployment |
+| **Docker** | Containerization | Multi-stage, 6 services | Deployment |
 
 ---
 
@@ -173,98 +185,205 @@ Performance: 320ms latency | 850 tokens | $2.13/1K predictions
 
 ```mermaid
 graph TD
-    D("NASA C-MAPSS Dataset") --> P("Preprocessing")
-    P --> FE("Feature Engineering")
-    
-    subgraph SPLIT [Data Split]
-        Train("Train 70%")
-        Val("Val 15%")
-        Test("Test 15%")
+    D("NASA C-MAPSS Dataset<br/>FD001–FD004 (709 train / 707 test engines)")
+    P("CMAPSSDataLoader<br/>Load • RUL labels • Normalize • Composite IDs")
+    D --> P
+
+    subgraph FE ["Feature Engineering Pipeline"]
+        SW("Sliding Windows<br/>(size=30, step=1)")
+        HI("Health Indicators<br/>(sensor drift + health_index)")
+        TS("Time-Series Features<br/>Rolling [5,10,20] • EWMA • Diff • Fourier")
+        FS("Feature Selection<br/>(variance ∩ correlation ∩ tree, k=20)")
+        SW --> HI --> TS --> FS
+    end
+    P --> SW
+
+    subgraph SPLIT ["Data Split"]
+        Train("Train (70%)")
+        Val("Val (15%)")
+        Test("Test (15%)")
+    end
+    FS --> Train & Val & Test
+
+    subgraph MODELS ["Model Training"]
+        XGB("XGBoost RUL<br/>(200 trees, depth 6)")
+        RF("Random Forest RUL<br/>(200 trees, depth 20)")
+        GBR("Gradient Boosting RUL<br/>(200 trees, depth 5)")
+        LSTM("LSTM RUL<br/>(hidden=64, layers=2)")
+        TCN("TCN RUL<br/>(channels=[64,64,64])")
     end
 
-    FE --> Train
-    FE --> Val
-    FE --> Test
-    
-    subgraph MODELS [Model Training]
-        XGB("XGBoost<br/>Optuna 500")
-        IF("Isolation Forest")
-        PELT("PELT Change-Point")
+    subgraph ANOMALY ["Anomaly Pipeline"]
+        IFD("Isolation Forest<br/>(100 trees, contam=0.1)")
+        CPD("Change-Point Detector<br/>(CUSUM / EWMA / Bayesian / MK)")
+        RAD("Residual Detector<br/>(z-score / IQR / MAD)")
+        DL("Degradation Labeler<br/>(RUL 40% + Anomaly 30% + CP 30%)")
+        EWS("Early Warning System<br/>(5 alert levels, 4-signal risk)")
+        IFD --> DL
+        CPD --> DL
+        RAD --> DL
+        DL --> EWS
     end
-    
-    Train --> XGB
-    Train --> IF
-    Train --> PELT
 
-    XGB --> Artifacts("Model Artifacts")
-    IF --> Artifacts
-    PELT --> Artifacts
+    Train --> XGB & RF & GBR & LSTM & TCN & IFD & CPD & RAD
 
-    Artifacts --> Registry("MLflow Registry")
-    Registry --> Deploy("Production Deployment")
+    subgraph ARTIFACTS ["Model Artifacts"]
+        Joblib("*.joblib<br/>(XGB, RF, GBR)")
+        Pth("*.pth checkpoints<br/>(LSTM, TCN)")
+        MLF("MLflow Registry<br/>(tracking + versioning)")
+    end
+
+    XGB & RF & GBR --> Joblib
+    LSTM & TCN --> Pth
+    Joblib & Pth --> MLF
 ```
 
 ### 3.2 Inference Pipeline Flow (AEWIS Full System)
 
 ```mermaid
 flowchart TD
-    S["Sensor Data Input - 21 sensors"] --> FE["Feature Engineering<br>347 features <10ms"]
-    
-    subgraph BASE [Baseline Models]
-        FE --> XGB["XGBoost<br>RUL: 13 days"]
-        FE --> IF["Isolation Forest<br>Anomaly: 0.78"]
-        FE --> PELT["PELT<br>Change Points"]
-        Hist["Historical Data"] --> FAISS["FAISS DB"]
-    end
-    
-    subgraph AGENTS [LangGraph Agents]
-        MA["Monitoring Agent<br>Detect anomaly • Flag change points"]
-        RA["Reasoning Agent<br>Apply rules • Calibrate confidence"]
-        RAG_A["Retrieval Agent<br>Context Retrieval • Query Refinement"]
-        AA["Action Agent<br>Synthesize • Recommend • Escalate"]
-    end
-    
-    XGB --> MA
-    IF --> MA
-    PELT --> MA
-    FAISS --> MA
+    S["Sensor Data Input<br/>21 sensors + 3 op settings"] --> FEP["FeatureEngineeringPipeline<br/>Sliding windows → Health indicators<br/>→ Rolling/EWMA/Diff/Fourier → Selection (k=20)"]
 
-    MA --> RA
-    RA --> RAG_A
-    RAG_A --> AA
-    AA --> API["API Response<br>RUL • Confidence • Explanation • Recommendations"]
+    subgraph BASE ["Baseline Models"]
+        FEP --> XGB["XGBoost<br/>RUL prediction"]
+        FEP --> RF["Random Forest<br/>RUL prediction"]
+        FEP --> GBR["Gradient Boosting<br/>RUL prediction"]
+        FEP --> LSTM["LSTM<br/>Sequence RUL"]
+        FEP --> TCN["TCN<br/>Sequence RUL"]
+        FEP --> IFD["Isolation Forest<br/>Anomaly scores"]
+        FEP --> CPD["Change-Point Detector<br/>(CUSUM/EWMA/Bayesian/MK)"]
+        FEP --> RAD["Residual Detector<br/>(z-score/IQR/MAD)"]
+    end
+
+    subgraph RAG_SYS ["RAG Knowledge Base"]
+        KB["KnowledgeBase"]
+        VS[("FAISS VectorStore<br/>(Flat, cosine)")]
+        RET["Retriever<br/>(top_k=5, min_sim=0.3)"]
+        KB --> VS --> RET
+    end
+
+    subgraph AGENTS ["AgentOrchestrator (Sequential Pipeline)"]
+        MA["1. Monitoring Agent<br/>• RUL ensemble prediction<br/>• Anomaly detection<br/>• Drift monitoring"]
+        RTA["2. Retrieval Agent<br/>• Sensor-pattern search<br/>• Semantic query to KB"]
+        REA["3. Reasoning Agent<br/>• Evidence synthesis (pred 30% + anomaly 30% + retrieval 40%)<br/>• Risk scoring • Confidence calibration"]
+        AA["4. Action Agent<br/>• Priority-ranked recommendations<br/>• Escalation decisions (threshold=0.8)"]
+    end
+
+    XGB & RF & GBR & LSTM & TCN & IFD & CPD & RAD --> MA
+    MA --> RTA
+    RET -.-> RTA
+    RTA --> REA
+    REA --> AA
+
+    AA --> API["FastAPI Response<br/>RUL • Confidence • Explanation • Recommendations"]
 ```
 
-### 3.3 Deployment Architecture
+### 3.3 Anomaly Detection Pipeline
 
 ```mermaid
 flowchart TD
-    User["User/Client"] --> LB["Load Balancer"]
-    LB --> API["API Cluster<br>Autoscaling 1-10 instances"]
-    
-    subgraph SERVICES [Backend Services]
-        MLflow["MLflow<br>5000"]
-        PG["Postgres<br>5432"]
-        FAISS["FAISS Index"]
-        Prom["Prometheus<br>9090"]
+    subgraph INPUT ["Inputs"]
+        RES["Prediction Residuals<br/>(y_pred - y_true)"]
+        FEAT["Sensor Feature Data<br/>(multivariate)"]
+        TS["Sensor Time-Series<br/>(per sensor/health index)"]
+        RUL["RUL Predictions"]
     end
-    
+
+    subgraph DETECTORS ["Anomaly Detectors"]
+        RAD["ResidualAnomalyDetector<br/>z-score • IQR • MAD • EWMA<br/>(threshold=3.0, window=50)"]
+        IFD["IsolationForestDetector<br/>100 trees, contamination=0.1<br/>(permutation feature importance)"]
+        CPD["ChangePointDetector<br/>CUSUM • EWMA • Bayesian • Mann-Kendall<br/>(threshold=3.0, min_distance=10)"]
+    end
+
+    RES --> RAD
+    FEAT --> IFD
+    TS --> CPD
+
+    subgraph FUSION ["Signal Fusion"]
+        DL["DegradationLabeler<br/>Weighted combination:<br/>RUL-based 40% + Anomaly 30% + Change-Point 30%<br/>→ degradation_score → is_degrading (threshold=0.5)"]
+        EWS["EarlyWarningSystem<br/>Risk score:<br/>RUL 50% + Anomaly 25% + Degradation 20% + CP 5%<br/>→ 5 alert levels (info → critical)"]
+    end
+
+    RAD --> DL
+    IFD --> DL
+    CPD --> DL
+    RUL --> DL
+    DL --> EWS
+
+    EWS --> WARN["Warning Events<br/>alert_level • risk_score • lead_time"]
+```
+
+### 3.4 RAG Knowledge Base Pipeline
+
+```mermaid
+flowchart LR
+    subgraph BUILD ["Knowledge Base Construction"]
+        DEG["Degradation Periods<br/>(from DegradationLabeler)"]
+        SENS["Sensor Data"]
+        WARNS["Warnings<br/>(from EarlyWarningSystem)"]
+        DOC["create_failure_document()<br/>→ Structured failure documents"]
+        DEG & SENS & WARNS --> DOC
+    end
+
+    subgraph CHUNK ["Document Processing"]
+        DC["DocumentChunker<br/>strategy='sentence'<br/>chunk_size=500, overlap=50"]
+        DOC --> DC
+    end
+
+    subgraph EMBED ["Embedding"]
+        EMB["Embedder<br/>all-MiniLM-L6-v2<br/>384 dimensions<br/>(in-memory cache)"]
+        DC --> EMB
+    end
+
+    subgraph STORE ["Vector Storage"]
+        VS[("FAISS VectorStore<br/>Flat index (IndexFlatIP)<br/>cosine similarity")]
+        EMB --> VS
+    end
+
+    subgraph RETRIEVAL ["Retrieval"]
+        RET["Retriever<br/>top_k=5<br/>min_similarity=0.3<br/>citation tracking"]
+        VS --> RET
+    end
+
+    subgraph SEARCH ["Search Interface (KnowledgeBase)"]
+        Q1["search(query)"]
+        Q2["search_similar_failures(sensor_deviations, rul, anomaly_score)"]
+        RET --> Q1 & Q2
+    end
+```
+
+### 3.5 Deployment Architecture
+
+```mermaid
+flowchart TD
+    User["User / Client"] --> Nginx["Nginx Reverse Proxy<br/>:80 / :443"]
+    Nginx --> API["FastAPI API<br/>:8000<br/>predict • explain • health • metrics • drift"]
+
+    subgraph SERVICES ["Backend Services (docker-compose.yml)"]
+        MLflow["MLflow Tracking Server<br/>:5000<br/>(PostgreSQL backend)"]
+        PG["PostgreSQL 15-alpine<br/>:5432<br/>(DB: mlflow)"]
+        FAISS["FAISS Vector Store<br/>(Flat index, cosine)"]
+        Prom["Prometheus<br/>:9090<br/>(scrape_interval: 15s)"]
+        Grafana["Grafana Dashboards<br/>:3000<br/>(datasource: Prometheus)"]
+    end
+
     API --> MLflow
-    API --> PG
     API --> FAISS
     API --> Prom
-    
-    subgraph STORAGE [Persistent Storage]
-        PV["Persistent Volumes"]
-        Cloud["Cloud Storage<br>S3/GCS"]
-    end
-    
-    MLflow --> PV
-    PG --> PV
-    FAISS --> PV
-    Prom --> PV
+    MLflow --> PG
+    Prom --> Grafana
 
-    PV --> Cloud
+    subgraph STORAGE ["Persistent Volumes"]
+        V1["mlflow-artifacts"]
+        V2["postgres-data"]
+        V3["prometheus-data"]
+        V4["grafana-data"]
+    end
+
+    MLflow --> V1
+    PG --> V2
+    Prom --> V3
+    Grafana --> V4
 ```
 
 ---
@@ -517,16 +636,16 @@ All model training is executed through Jupyter notebooks, which provide reproduc
 Evaluation is performed end-to-end in notebook `07_system_evaluation.ipynb`:
 
 ```python
-from src.evaluation.comparison import BaselineComparison
+from src.evaluation.comparison import SystemComparison
 from src.evaluation.ablation import AblationStudy
 
 # 3-baseline comparison
-comparison = BaselineComparison()
-results = comparison.run_comparison()
+comparison = SystemComparison()
+results = comparison.compare()
 
 # Ablation study (7 configurations)
 ablation = AblationStudy()
-ablation_results = ablation.run_ablation()
+ablation_results = ablation.compute_ablation()
 ```
 
 ### 5.5 Deployment
@@ -570,8 +689,8 @@ curl -X POST http://localhost:8000/predict \
 - Test: 15% (never touched during development)
 
 ✅ **Hyperparameters:**
-- All configs in `configs/` directory
-- Optuna study saved to `optuna_study.db`
+- All configs in `configs/` directory and `project_config.json`
+- Model defaults documented in source classes
 
 ✅ **Model Artifacts:**
 - Saved to `models/` with MLflow tracking
@@ -592,7 +711,7 @@ curl -X POST http://localhost:8000/predict \
 
 ### 6.1 Local Docker Compose
 
-**services (7 total):**
+**services (6 total):**
 
 1. **api** (FastAPI)
    ```yaml
@@ -637,13 +756,13 @@ curl -X POST http://localhost:8000/predict \
    dashboards: preloaded
    ```
 
-7. **volumes** (Persistence)
-   ```yaml
-   mlflow-artifacts
-   postgres-data
-   prometheus-data
-   grafana-data
-   ```
+**Persistent Volumes:**
+```yaml
+mlflow-artifacts
+postgres-data
+prometheus-data
+grafana-data
+```
 
 **Deploy:**
 ```bash
@@ -1174,86 +1293,218 @@ High-priority alert detected at cycle 95. The system has identified a declining 
 **XGBoost:**
 ```yaml
 objective: reg:squarederror
-learning_rate: 0.05
-max_depth: 8
-n_estimators: 500
+learning_rate: 0.1
+max_depth: 6
+n_estimators: 200
 subsample: 0.8
 colsample_bytree: 0.8
+gamma: 0.1
 reg_alpha: 0.1
 reg_lambda: 1.0
-seed: 42
+random_state: 42
+```
+
+**Random Forest:**
+```yaml
+n_estimators: 200
+max_depth: 20
+min_samples_split: 5
+min_samples_leaf: 2
+random_state: 42
+```
+
+**Gradient Boosting:**
+```yaml
+n_estimators: 200
+learning_rate: 0.1
+max_depth: 5
+subsample: 0.8
+random_state: 42
+```
+
+**LSTM:**
+```yaml
+hidden_size: 64
+num_layers: 2
+dropout: 0.2
+bidirectional: false
+optimizer: Adam (lr=0.001)
+loss: MSELoss
+early_stopping_patience: 10
+```
+
+**TCN:**
+```yaml
+num_channels: [64, 64, 64]
+kernel_size: 3
+dropout: 0.2
+dilations: [1, 2, 4]  # 2^i for each layer
+optimizer: Adam (lr=0.001)
+loss: MSELoss
 ```
 
 **Isolation Forest:**
 ```yaml
-n_estimators: 200
-contamination: 0.05
+n_estimators: 100
+contamination: 0.1
 max_features: 1.0
+max_samples: auto
 random_state: 42
+normalize: true
+```
+
+**Change-Point Detector:**
+```yaml
+method: cusum  # cusum | ewma | bayesian | mann_kendall
+threshold: 3.0
+drift: 0.5
+min_distance: 10
+```
+
+**Residual Anomaly Detector:**
+```yaml
+method: zscore  # zscore | iqr | mad | ewma
+threshold: 3.0
+window_size: 50
+contamination: 0.1
+```
+
+**Degradation Labeler:**
+```yaml
+rul_threshold: 100.0
+anomaly_window: 10
+anomaly_rate_threshold: 0.3
+change_point_proximity: 20
+min_degradation_length: 5
+weights:
+  rul_based: 0.4
+  anomaly_based: 0.3
+  change_point_based: 0.3
+```
+
+**Early Warning System:**
+```yaml
+critical_rul: 50.0
+warning_rul: 100.0
+risk_weights:
+  rul: 0.50
+  anomaly: 0.25
+  degradation: 0.20
+  change_point: 0.05
+alert_levels:
+  critical: 0.8
+  high: 0.6
+  medium: 0.4
+  low: 0.2
+  info: 0.0
 ```
 
 **FAISS:**
 ```yaml
-index_type: IVF1024_PQ8
-nlist: 1024
-m: 8
-nbits: 8
+index_type: Flat  # Flat (IndexFlatIP) | IVFFlat | HNSW
+metric: cosine
+normalize: true
 ```
 
-**GPT-3.5-turbo:**
+**Embedder:**
 ```yaml
-temperature: 0.3
-max_tokens: 300
-top_p: 0.9
-frequency_penalty: 0.0
-presence_penalty: 0.0
+model_name: all-MiniLM-L6-v2
+embedding_dim: 384
+cache_embeddings: true
+normalize: true
 ```
 
-### Appendix B: Agent Prompts
-
-**Monitoring Agent:**
-```
-You are a Monitoring Agent. Analyze sensor data to detect anomalies.
-
-Tools:
-- compute_rolling_stats(window): Mean, std, min, max
-- run_isolation_forest(data): Anomaly score
-- detect_change_points(data): Distribution shifts
-
-Output:
-{
-  "anomaly_detected": bool,
-  "anomaly_score": float,
-  "change_points": List[int],
-  "summary": str
-}
-
-Be concise. Focus on deviations >2σ.
+**DocumentChunker:**
+```yaml
+chunk_size: 500
+chunk_overlap: 50
+strategy: sentence  # fixed | sentence | paragraph | semantic
 ```
 
-**Reasoning Agent:**
+**Retriever:**
+```yaml
+top_k: 5
+min_similarity: 0.3
+include_citations: true
+rerank: false
 ```
-You are a Reasoning Agent. Interpret anomalies using domain knowledge.
 
-Domain Rules:
-1. compressor_temp > 200°C AND fan_speed ↓ → HPC degradation
-2. vibration > 0.8 mm/s AND temp stable → bearing wear
+### Appendix B: Agent Architecture Details
 
-Output:
-{
-  "reasoning_trace": List[str],
-  "confidence": float,
-  "escalate": bool,
-  "rules_triggered": List[str]
-}
+The agent system uses a **custom sequential pipeline** (not LLM-based prompts). Each agent is a Python class with deterministic logic.
 
-Estimate confidence conservatively. Escalate if < 0.6.
+**MonitoringAgent** (`src/agents/monitoring_agent.py`):
+```python
+class MonitoringAgent:
+    """First agent in pipeline. Produces MonitoringReport."""
+    def __init__(self, anomaly_detector=None, drift_detector=None, models=None,
+                 anomaly_threshold=0.6, drift_threshold=0.5, confidence_threshold=0.5)
+
+    # Key methods:
+    def predict_rul(sensor_data, engine_id, cycle, use_ensemble=True)
+        # Runs all models, ensemble averaging, uncertainty estimation
+    def detect_anomalies(sensor_data, engine_id, cycle, sensor_names)
+        # Uses IsolationForest, identifies affected sensors, severity levels
+    def detect_drift(current_data, reference_data, engine_id, cycle, feature_names)
+        # Uses DriftDetector (KS-test per feature)
+    def generate_report()  # → MonitoringReport
+```
+
+**RetrievalAgent** (`src/agents/retrieval_agent.py`):
+```python
+class RetrievalAgent:
+    """Second agent. Queries KnowledgeBase for similar historical failures."""
+    def __init__(self, knowledge_base=None, top_k=5, min_similarity=0.3)
+
+    # Key methods:
+    def search_by_sensor_pattern(sensor_deviations, rul, anomaly_score, top_k)
+    def search_by_text(query, top_k)  # Semantic search
+    def search_by_failure_type(failure_type, top_k)
+    def filter_results(results, min_similarity, failure_types, severity_levels)
+```
+
+**ReasoningAgent** (`src/agents/reasoning_agent.py`):
+```python
+class ReasoningAgent:
+    """Third agent. Synthesizes evidence into risk assessment."""
+    def __init__(self, confidence_threshold=0.6,
+                 evidence_weight={'prediction': 0.3, 'anomaly': 0.3, 'retrieval': 0.4})
+
+    # Key methods:
+    def reason(monitoring_report, retrieval_result, sensor_deviations)
+        # Weighted risk scoring, pattern identification, narrative generation
+        # Sets abstention=True when confidence < threshold
+```
+
+**ActionAgent** (`src/agents/action_agent.py`):
+```python
+class ActionAgent:
+    """Fourth/final agent. Generates prioritized recommendations."""
+    def __init__(self, confidence_threshold=0.6, escalation_threshold=0.8)
+
+    # ActionTypes: CONTINUE_MONITORING, SCHEDULE_INSPECTION, PERFORM_MAINTENANCE,
+    #              REPLACE_COMPONENT, ESCALATE_HUMAN, EMERGENCY_SHUTDOWN
+    # Priorities: NONE, LOW, MEDIUM, HIGH, CRITICAL
+
+    def recommend_actions(reasoning_result, monitoring_report)  # → ActionPlan
+```
+
+**AgentOrchestrator** (`src/agents/orchestrator.py`):
+```python
+class AgentOrchestrator:
+    """Sequential pipeline: Monitoring → Retrieval → Reasoning → Action"""
+    def execute(sensor_data, engine_id, cycle, sensor_names, reference_data)
+        # 1. MonitoringAgent.generate_report()  → MonitoringReport
+        # 2. RetrievalAgent.search_by_sensor_pattern() → RetrievalResult
+        # 3. ReasoningAgent.reason()  → ReasoningResult
+        # 4. ActionAgent.recommend_actions() → ActionPlan (skipped if abstain)
+        # Returns: AgentResult with status (COMPLETED | ABSTAINED | ESCALATED | ERROR)
 ```
 
 ### Appendix C: Performance Benchmarks
 
-| Hardware | Preprocessing | XGBoost Inference | FAISS Retrieval | LLM Call | Total |
-|----------|--------------|------------------|----------------|----------|-------|
+| Hardware | Preprocessing | ML Inference | FAISS Retrieval | Agent Pipeline | Total |
+|----------|--------------|-------------|----------------|---------------|-------|
 | **CPU-Only (8-core Xeon)** | 8ms | 35ms | 25ms | 250ms | 318ms |
 | **GPU (V100)** | 8ms | 12ms | 25ms | 250ms | 295ms |
 | **Apple M1 Max** | 6ms | 28ms | 22ms | 240ms | 296ms |
@@ -1264,14 +1515,15 @@ Estimate confidence conservatively. Escalate if < 0.6.
 
 | Component | Cost/1K | Monthly (30K) | Annual (365K) |
 |-----------|---------|---------------|---------------|
-| GPT-3.5 Prompts (850 tokens) | $0.425 | $12.75 | $155.13 |
-| GPT-3.5 Completions (300 tokens) | $0.45 | $13.50 | $164.25 |
+| Compute (inference) | $0.58 | $17.40 | $211.70 |
 | Infrastructure (Cloud Run) | — | $120 | $1,440 |
 | MLflow Storage (S3) | — | $15 | $180 |
-| **Total** | **$2.13** | **$161.25** | **$1,939.38** |
+| **Total** | **$2.13** | **$152.40** | **$1,831.70** |
+
+*Note: Current system uses rule-based agents (no LLM API costs). LLM integration (e.g., GPT-3.5-turbo) would add ~$26/month for prompt+completion tokens.*
 
 **ROI Calculation:**
-- Cost: $1,939/year
+- Cost: ~$1,832/year
 - Benefit: 1 prevented failure = $50K-500K saved
 - Break-even: < 1 prevented failure/year
 
@@ -1286,17 +1538,45 @@ agentic-ewis/
 │   ├── PHASE4–PHASE12_SUMMARY.md (phase summaries)
 │   └── KAGGLE_TPU_INSTRUCTIONS.md
 ├── src/
-│   ├── api/ (FastAPI backend, client)
-│   ├── agents/ (4 LangGraph agents)
+│   ├── api/ (FastAPI backend: main.py, client.py)
+│   ├── agents/ (4 agents + AgentOrchestrator — custom sequential pipeline)
+│   │   ├── monitoring_agent.py (MonitoringAgent)
+│   │   ├── retrieval_agent.py (RetrievalAgent)
+│   │   ├── reasoning_agent.py (ReasoningAgent)
+│   │   ├── action_agent.py (ActionAgent)
+│   │   └── orchestrator.py (AgentOrchestrator)
 │   ├── rag/ (FAISS, retrieval, knowledge base)
-│   ├── models/ (XGBoost, IF, PELT, LSTM, TCN)
+│   │   ├── document_chunker.py (DocumentChunker)
+│   │   ├── embedder.py (Embedder — all-MiniLM-L6-v2)
+│   │   ├── vector_store.py (VectorStore — FAISS Flat)
+│   │   ├── knowledge_base.py (KnowledgeBase)
+│   │   └── retriever.py (Retriever)
+│   ├── models/ (ML models)
+│   │   ├── baseline_ml.py (XGBoost, RF, GBR)
+│   │   └── deep_learning.py (LSTM, TCN)
+│   ├── anomaly/ (anomaly detection pipeline)
+│   │   ├── residual_detector.py (ResidualAnomalyDetector)
+│   │   ├── isolation_forest_detector.py (IsolationForestDetector)
+│   │   ├── change_point.py (ChangePointDetector — CUSUM/EWMA/Bayesian/MK)
+│   │   ├── degradation_labeler.py (DegradationLabeler)
+│   │   └── early_warning.py (EarlyWarningSystem)
+│   ├── features/ (feature engineering)
+│   │   ├── pipeline.py (FeatureEngineeringPipeline)
+│   │   ├── sliding_windows.py (SlidingWindowGenerator)
+│   │   ├── health_indicators.py (HealthIndicatorCalculator)
+│   │   ├── feature_selection.py (FeatureSelector)
+│   │   └── engineering.py (TimeSeriesFeatureEngineer)
 │   ├── mlops/ (MLflow, drift, alerting)
+│   │   ├── mlflow_tracker.py (MLflowTracker)
+│   │   └── drift_detection.py (DriftDetector)
 │   ├── evaluation/ (metrics, baselines, ablation)
-│   ├── features/ (pipeline, sliding windows, health indicators)
+│   │   ├── comparison.py (SystemComparison)
+│   │   └── ablation.py (AblationStudy)
 │   └── ingestion/ (CMAPSSDataLoader)
 ├── notebooks/ (8 notebooks: EDA → MLOps)
 │   ├── 01_eda_cmapss_loghub.ipynb
-│   ├── 02_feature_engineering_*.ipynb
+│   ├── 02_feature_engineering_baseline.ipynb
+│   ├── 02_feature_engineering_pipeline.ipynb
 │   ├── 03_ml_model_training.ipynb
 │   ├── 04_anomaly_detection.ipynb
 │   ├── 05_rag_pipeline.ipynb
@@ -1304,16 +1584,20 @@ agentic-ewis/
 │   ├── 07_system_evaluation.ipynb
 │   └── 08_mlops_monitoring.ipynb
 ├── scripts/
-│   ├── download_cmapss.py
-│   └── phase1_eda_cmapss.py
+│   └── download_cmapss.py
+├── configs/ (project configurations)
 ├── models/ (trained artifacts: .joblib, .pth)
 ├── data/ (raw C-MAPSS, processed features, vector_db)
 ├── evaluation/ (results, ablations)
+├── reports/ (figures)
 ├── Dockerfile (multi-stage container build)
-├── docker-compose.yml (7-service orchestration)
+├── docker-compose.yml (6-service orchestration)
 ├── cloudrun.yaml (GCP Cloud Run)
 ├── ecs-task-definition.json (AWS ECS Fargate)
+├── prometheus.yml (Prometheus config)
+├── nginx.conf (Nginx reverse proxy)
 ├── project_config.json (project configuration)
+├── pyproject.toml (project metadata)
 └── requirements.txt
 
 **Total Lines of Code:** 10,000+
