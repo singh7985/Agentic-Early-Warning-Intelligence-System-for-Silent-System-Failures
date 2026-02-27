@@ -70,7 +70,6 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
-*.ipynb
 
 # IPython
 profile_default/
@@ -139,3 +138,17 @@ mlruns/
 .env.local
 secrets.yaml
 credentials.json
+
+# Large data files (exceed GitHub 100MB limit)
+*.npy
+notebooks/data/
+notebooks/models/
+notebooks/mlruns/
+notebooks/logs/
+notebooks/reports/
+data/interim/
+*.pkl
+*.pth
+*.h5
+*.faiss
+*.parquet

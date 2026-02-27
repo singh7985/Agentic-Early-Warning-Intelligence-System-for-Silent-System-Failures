@@ -118,6 +118,8 @@ class FeatureEngineeringPipeline:
 
         # Step 2: Calculate health indicators
         logger.info("Step 2: Calculating health indicators")
+        # Fit health calculator to store reference baseline for transform()
+        self.health_calculator.fit(df, sensor_cols)
         df_health = self._add_health_indicators(df, sensor_cols)
 
         # Step 3: Apply time-series feature engineering
@@ -366,19 +368,21 @@ class FeatureEngineeringPipeline:
     # ==================== Private Methods ====================
 
     def _add_health_indicators(self, df: pd.DataFrame, sensor_cols: List[str]) -> pd.DataFrame:
-        """Add health indicators to dataframe."""
+        """Add health indicators to dataframe using the stored reference baseline (no re-fitting)."""
+        # Use transform() which relies on self.reference_baseline_ set during fit().
+        # Never call .fit() here — that would recompute baselines from the current data
+        # and give different results after joblib serialization/deserialization.
+        if hasattr(self.health_calculator, 'transform'):
+            return self.health_calculator.transform(df, sensor_cols)
+
+        # Legacy fallback for older HealthIndicatorCalculator without transform()
         df_health = df.copy()
-
-        # Add sensor drift
         df_health = self.health_calculator.calculate_sensor_drift(df_health, sensor_cols)
-
-        # Add combined health index
         drift_cols = [f"{s}_drift" for s in sensor_cols]
         health_index = self.health_calculator.calculate_combined_health_index(
             df_health, drift_cols, method="mean"
         )
         df_health["health_index"] = health_index
-
         return df_health
 
     def _select_features(

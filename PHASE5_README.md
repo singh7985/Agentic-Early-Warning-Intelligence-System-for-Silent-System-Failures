@@ -210,22 +210,19 @@ detector_loaded = Detector.load('models/detector.pkl')
 
 ### Data Flow
 
-```
-Residuals/Features → ResidualDetector/IsolationForest
-                           ↓
-                      Anomalies
-                           ↓
-RUL Values → ChangePointDetector
-                           ↓
-                    Change Points
-                           ↓
-All Signals → DegradationLabeler
-                           ↓
-               Degradation Labels
-                           ↓
-All Signals → EarlyWarningSystem
-                           ↓
-            Warnings & Lead-Time
+```mermaid
+flowchart TD
+    A["Residuals / Features"] --> B["ResidualDetector<br/>IsolationForest"]
+    B --> C["Anomalies"]
+    D["RUL Values"] --> E["ChangePointDetector<br/>CUSUM, EWMA, Bayesian, Mann-Kendall"]
+    E --> F["Change Points"]
+    C --> G["DegradationLabeler<br/>multi-signal fusion"]
+    F --> G
+    G --> H["Degradation Labels<br/>303 periods across FD001–FD004"]
+    H --> I["EarlyWarningSystem<br/>risk scoring + 5 alert levels"]
+    C --> I
+    F --> I
+    I --> J["Warnings & Lead-Time<br/>60–100 cycles before failure"]
 ```
 
 ---
@@ -586,17 +583,15 @@ src/anomaly/
 
 ## Next Steps
 
-### PHASE 6: RAG Pipeline Integration
+### Subsequent Phases (All Complete)
 
-1. **Vector Database**: Store failure knowledge base
-2. **LLM Integration**: Generate natural language explanations
-3. **Query System**: "Why did engine X trigger warning?"
-4. **Dashboard**: Real-time monitoring with insights
-
-### Timeline
-
-- **PHASE 6**: Days 22-26
-- **Final Integration**: Days 27-30
+- ✅ **PHASE 6 — RAG Pipeline**: FAISS vector store, sentence-transformer embeddings, citation tracking
+- ✅ **PHASE 7 — Agentic Architecture**: 4-agent system (Monitoring, Retrieval, Reasoning, Action)
+- ✅ **PHASE 8 — Evaluation**: 3-baseline comparison, ablation study
+- ✅ **PHASE 9 — MLOps**: MLflow tracking, drift detection, alerting
+- ✅ **PHASE 10 — API**: FastAPI + Docker Compose deployment
+- ✅ **PHASE 11 — Research Paper**: 8,500 words, 46 references
+- ✅ **PHASE 12 — Final Delivery**: All documentation consolidated
 
 ---
 
@@ -608,10 +603,10 @@ src/anomaly/
 - First warning lead-time: 73 cycles (>60)
 - Execution time: ~28 sec (complete pipeline)
 
-**Status: Production-ready for PHASE 6 integration**
+**Status: Production-ready — integrated with PHASE 6+ pipeline**
 
 ---
 
-**Version:** 1.0  
-**Last Updated:** February 4, 2026  
-**Status:** Complete ✅
+**Version:** 1.1  
+**Last Updated:** February 27, 2026  
+**Status:** Complete ✅ — All subsequent phases also complete

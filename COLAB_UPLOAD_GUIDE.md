@@ -80,7 +80,7 @@ Once verified, run the remaining cells in order:
 
 ### "Data files not found"
 - Check that your `data/processed/` folder has the CSV files locally
-- If missing, run the preprocessing notebook first (02_feature_engineering.ipynb)
+- If missing, run the preprocessing notebook first (02_feature_engineering_pipeline.ipynb)
 - Re-create the ZIP after preprocessing
 
 ### Upload is taking too long

@@ -515,20 +515,30 @@ system.export_warnings(warnings_df, 'warnings.html', format='html')
 ```python
 import numpy as np
 import pandas as pd
-from src.data_ingestion.cmapss_loader import CMAPSSDataset
-from src.features.feature_engineering import EngineeringPipeline
+from src.ingestion.cmapss_loader import CMAPSSDataLoader
+from src.features.pipeline import FeatureEngineeringPipeline
 from src.models.baseline_ml import XGBoostRULPredictor
 
-# Load data
-dataset = CMAPSSDataset('FD001')
-df_train, df_test = dataset.load_data()
+# Load data (all 4 C-MAPSS subsets with composite engine IDs)
+loader = CMAPSSDataLoader(data_dir='data/raw/CMAPSS')
+SUBSETS = ['FD001', 'FD002', 'FD003', 'FD004']
+SENSOR_COLS = [f'sensor_{i}' for i in range(1, 22)]
+train_frames, test_frames = [], []
+for subset in SUBSETS:
+    tr, te, rul_te = loader.load_dataset(subset)
+    tr['engine_id'] = subset + '_' + tr['engine_id'].astype(int).astype(str)
+    te['engine_id'] = subset + '_' + te['engine_id'].astype(int).astype(str)
+    train_frames.append(tr)
+    test_frames.append(te)
+df_train = pd.concat(train_frames, ignore_index=True)
+df_test  = pd.concat(test_frames,  ignore_index=True)
 
 # Feature engineering
-pipeline = EngineeringPipeline()
-X_train = pipeline.fit_transform(df_train)
-X_test = pipeline.transform(df_test)
-y_train = df_train['RUL'].values
-y_test = df_test['RUL'].values
+pipeline = FeatureEngineeringPipeline(window_size=30)
+X_train, y_train = pipeline.fit_transform(
+    df_train, sensor_cols=SENSOR_COLS, target_col='RUL'
+)
+X_test, y_test = pipeline.transform(df_test)
 
 # Train model
 model = XGBoostRULPredictor()

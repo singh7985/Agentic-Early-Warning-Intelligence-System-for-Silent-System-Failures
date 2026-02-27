@@ -71,11 +71,17 @@ class SlidingWindowGenerator:
         for engine_id in sorted(df[engine_col].unique()):
             engine_data = df[df[engine_col] == engine_id].reset_index(drop=True)
 
+            # Pre-extract numpy arrays once per engine (avoid repeated .iloc)
+            sensor_arr = engine_data[sensor_cols].values
+            rul_col = "RUL" if "RUL" in engine_data.columns else ("rul" if "rul" in engine_data.columns else None)
+            rul_arr = engine_data[rul_col].values if rul_col else np.full(len(engine_data), -1.0)
+            n_rows = len(engine_data)
+
             # Generate windows for this engine
             # Fix: Added +1 to ensure the last possible window is included
-            for start_idx in range(0, len(engine_data) - self.min_window_samples + 1, self.step_size):
-                end_idx = min(start_idx + self.window_size, len(engine_data))
-                window_data = engine_data.iloc[start_idx:end_idx][sensor_cols].values
+            for start_idx in range(0, n_rows - self.min_window_samples + 1, self.step_size):
+                end_idx = min(start_idx + self.window_size, n_rows)
+                window_data = sensor_arr[start_idx:end_idx]
 
                 # Pad window if too small (only if we can reach it)
                 if window_data.shape[0] < self.window_size:
@@ -84,9 +90,8 @@ class SlidingWindowGenerator:
                     )
                     window_data = np.vstack([padding, window_data])
 
-                # Get RUL label from last cycle in window
-                last_cycle_idx = end_idx - 1
-                rul = engine_data.iloc[last_cycle_idx].get("RUL", engine_data.iloc[last_cycle_idx].get("rul", -1))
+                # Get RUL label from last cycle in window (fast numpy indexing)
+                rul = float(rul_arr[end_idx - 1])
 
                 windows_list.append(window_data)
                 engine_ids_list.append(engine_id)

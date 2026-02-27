@@ -503,11 +503,15 @@ class KnowledgeBase:
         end_cycle: int
     ) -> Optional[Dict]:
         """Extract sensor statistics for a period."""
+        # Resolve column names (support both CMAPSSDataLoader and legacy formats)
+        id_col = 'engine_id' if 'engine_id' in sensor_data.columns else 'unit_number'
+        cycle_col = 'cycle' if 'cycle' in sensor_data.columns else 'time_cycles'
+
         # Filter data for this engine and period
         mask = (
-            (sensor_data['unit_number'] == engine_id) &
-            (sensor_data['time_cycles'] >= start_cycle) &
-            (sensor_data['time_cycles'] <= end_cycle)
+            (sensor_data[id_col] == engine_id) &
+            (sensor_data[cycle_col] >= start_cycle) &
+            (sensor_data[cycle_col] <= end_cycle)
         )
         period_data = sensor_data[mask]
         

@@ -160,28 +160,21 @@ RUL distribution:   1-362 cycles (exponential)
 
 ### Architecture Diagram
 
-```
-Raw Time-Series
-    │
-    ├─ Sliding Windows (30-cycle sequences)
-    │   └─ 3D tensor: (N, 30, 21)
-    │
-    ├─ Health Indicators (sensor drift, degradation)
-    │   └─ Add 23 new features
-    │
-    ├─ Time-Series Features (rolling, EWMA, Fourier, trend)
-    │   └─ Add ~420 features
-    │
-    ├─ Feature Selection (combined method)
-    │   ├─ Remove low-variance
-    │   ├─ Select top by correlation
-    │   ├─ Select top by tree importance
-    │   └─ Return intersection: 20 features
-    │
-    └─ Feature Scaling (StandardScaler)
-        └─ Mean=0, Std=1 (fitted on training)
-
-OUTPUT: Clean, processed feature vectors ready for ML models
+```mermaid
+flowchart TD
+    A["Raw Time-Series"] --> B["Sliding Windows\n30-cycle sequences"]
+    B --> B1["3D tensor: (N, 30, 21)"]
+    A --> C["Health Indicators\nsensor drift, degradation"]
+    C --> C1["Add 23 new features"]
+    A --> D["Time-Series Features\nrolling, EWMA, Fourier, trend"]
+    D --> D1["Add ~420 features"]
+    B1 & C1 & D1 --> E["Feature Selection\ncombined method"]
+    E --> E1["Remove low-variance"]
+    E --> E2["Select top by correlation"]
+    E --> E3["Select top by tree importance"]
+    E1 & E2 & E3 --> F["Intersection: 20 features"]
+    F --> G["Feature Scaling\nStandardScaler\nMean=0, Std=1"]
+    G --> H["Clean, processed feature vectors\nready for ML models"]
 ```
 
 ---
@@ -416,15 +409,15 @@ Speed improvement:      ~7.5x faster
 
 ---
 
-## 🚀 Ready for PHASE 4
+## 🚀 Subsequent Phases (All Complete)
 
-With PHASE 3 complete, we can now:
+With PHASE 3 as the foundation, all subsequent phases have been completed:
 
-1. **Train Baseline 1 Models** (XGBoost, Random Forest, SVM)
-2. **Evaluate on test set** (R², MAE, RMSE, lead time)
-3. **Build Baseline 2** (ML + RAG with vector database)
-4. **Build Baseline 3** (ML + RAG + Multi-agent system)
-5. **Comparative analysis** across all three baselines
+1. ✅ **PHASE 4 — ML Training:** XGBoost, Random Forest, GBR, LSTM, TCN across all 4 subsets
+2. ✅ **PHASE 5 — Anomaly Detection:** Residual + Isolation Forest + fusion early warning
+3. ✅ **PHASE 6 — RAG Pipeline:** FAISS vector store, knowledge base, retrieval
+4. ✅ **PHASE 7 — Agentic Architecture:** 4-agent orchestration, confidence thresholding
+5. ✅ **PHASE 8 — Evaluation:** 3-baseline comparison, ablation study
 
 ---
 
@@ -502,12 +495,13 @@ PHASE3_SUMMARY.md (THIS FILE)
 **PHASE 0:** ✅ Complete — Project framing & research questions  
 **PHASE 1:** ✅ Complete — Environment setup & repository  
 **PHASE 2:** ✅ Complete — Data ingestion & preprocessing  
-**PHASE 3:** ✅ **COMPLETE** — Feature engineering pipeline  
-**PHASE 4:** ⏳ Next — Baseline 1 model training (XGBoost, Random Forest)  
-**PHASE 5:** ⏳ Planned — Baseline 2 (ML + RAG)  
-**PHASE 6:** ⏳ Planned — Baseline 3 (Agentic AI)  
-**PHASE 7:** ⏳ Planned — Evaluation & comparison  
-**PHASE 8:** ⏳ Planned — Deployment & final documentation
+**PHASE 3:** ✅ Complete — Feature engineering pipeline  
+**PHASE 4:** ✅ Complete — ML model training (XGBoost, RF, LSTM, TCN)  
+**PHASE 5:** ✅ Complete — Anomaly detection & early warning  
+**PHASE 6:** ✅ Complete — RAG pipeline integration  
+**PHASE 7:** ✅ Complete — Agentic architecture  
+**PHASE 8:** ✅ Complete — Evaluation & analysis  
+**PHASE 9–12:** ✅ Complete — MLOps, API, Research paper, Final delivery
 
 ---
 

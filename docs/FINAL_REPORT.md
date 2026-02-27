@@ -3,8 +3,8 @@
 
 **Project Duration:** 60 days (February 2026)  
 **Status:** Complete — Production Ready  
-**Authors:** [Your Name]  
-**Institution:** [Your Institution]
+**Authors:** AEWIS Research Team  
+**Institution:** Capstone Project
 
 ---
 
@@ -446,8 +446,8 @@ Expected Calibration Error (ECE): 2.1% (excellent)
 
 **Step 1: Clone Repository**
 ```bash
-git clone https://github.com/yourusername/agentic-ewis.git
-cd agentic-ewis
+git clone <repository-url>
+cd Agentic-Early-Warning-Intelligence-System-for-Silent-System-Failures
 ```
 
 **Step 2: Install Dependencies**
@@ -473,77 +473,60 @@ cp .env.example .env
 **Download NASA C-MAPSS:**
 ```bash
 python scripts/download_cmapss.py
-# Downloads FD001-FD004 to data/raw/
+# Downloads FD001-FD004 to data/raw/CMAPSS/
 ```
 
-**Preprocess Data:**
-```bash
-python src/ingestion/preprocess.py --dataset FD001
-# Output: data/processed/FD001_train.parquet, FD001_test.parquet
+**Data Loading & Preprocessing (via notebook or Python):**
+```python
+from src.ingestion.cmapss_loader import CMAPSSDataLoader
+
+loader = CMAPSSDataLoader(data_dir="data/raw/CMAPSS")
+train_df, test_df, rul_df = loader.load_dataset("FD001")
+# Repeat for FD002, FD003, FD004
+# Output: Combined DataFrame with composite IDs (e.g., FD001_10)
 ```
 
-**Build FAISS Index:**
-```bash
-python src/rag/build_vector_db.py \
-  --docs-dir data/maintenance_docs/ \
-  --output data/faiss_index/
-# Creates: faiss_index/index.faiss, metadata.json
+**Build FAISS Vector Store (via notebook or Python):**
+```python
+from src.rag.vector_store import VectorStore
+from src.rag.embedder import Embedder
+
+embedder = Embedder(model_name="all-MiniLM-L6-v2")
+vector_store = VectorStore(dimension=384)
+# Add documents, then save:
+vector_store.save("data/vector_db/")
 ```
 
 ### 5.3 Model Training
 
-**Baseline 1: ML-Only**
-```bash
-python scripts/train_baseline1.py \
-  --config configs/model_config.yaml \
-  --dataset FD001
-# Output: models/xgboost_rul.pkl, models/isolation_forest.pkl
-```
+All model training is executed through Jupyter notebooks, which provide reproducible, step-by-step workflows:
 
-**Hyperparameter Tuning:**
-```bash
-python scripts/tune_hyperparams.py \
-  --trials 500 \
-  --objective mae \
-  --output configs/best_hyperparams.yaml
-# Time: ~72 hours on 8-core CPU + GPU
-```
+| Notebook | Baseline | What It Trains |
+|----------|----------|----------------|
+| `03_ml_model_training.ipynb` | **Baseline 1: ML-Only** | RF, XGBoost, GBR, LSTM, TCN across FD001–FD004 |
+| `05_rag_pipeline.ipynb` | **Baseline 2: ML + RAG** | FAISS vector store, retrieval pipeline, knowledge base |
+| `06_agentic_architecture.ipynb` | **Baseline 3: AEWIS Full** | 4-agent orchestration with confidence thresholding |
 
-**Baseline 2: ML + RAG**
-```bash
-python scripts/train_baseline2.py \
-  --config configs/model_config.yaml \
-  --use-rag true
-```
-
-**Baseline 3: AEWIS Full**
-```bash
-python scripts/train_baseline3.py \
-  --config configs/agent_config.yaml \
-  --use-agents true
-```
+**Key model artifacts saved to `models/`:**
+- `xgb_rul_baseline.joblib` — XGBoost RUL regressor
+- `rf_failure_baseline.joblib` — Random Forest classifier
+- `checkpoints/` — LSTM, TCN best checkpoints
 
 ### 5.4 Evaluation
 
-**Run All Baselines:**
-```bash
-python src/evaluation/compare_baselines.py \
-  --dataset FD001 \
-  --output evaluation/results/
-# Generates: baseline_comparison.csv, metrics_summary.json
-```
+Evaluation is performed end-to-end in notebook `07_system_evaluation.ipynb`:
 
-**Human Evaluation:**
-```bash
-# Generate evaluation cases
-python src/evaluation/generate_human_eval_cases.py --n-cases 100
+```python
+from src.evaluation.comparison import BaselineComparison
+from src.evaluation.ablation import AblationStudy
 
-# Collect expert ratings (manual process)
-# Use template: docs/human_eval_template.md
+# 3-baseline comparison
+comparison = BaselineComparison()
+results = comparison.run_comparison()
 
-# Analyze results
-python src/evaluation/analyze_human_eval.py \
-  --responses evaluation/human_eval_responses.csv
+# Ablation study (7 configurations)
+ablation = AblationStudy()
+ablation_results = ablation.run_ablation()
 ```
 
 ### 5.5 Deployment
@@ -1120,10 +1103,10 @@ High-priority alert detected at cycle 95. The system has identified a declining 
 ```bibtex
 @inproceedings{aewis2026,
   title={Agentic Early-Warning Intelligence System for Silent System Failures},
-  author={Your Name},
+  author={AEWIS Research Team},
   booktitle={Proceedings of KDD 2026},
   year={2026},
-  url={https://github.com/yourusername/agentic-ewis}
+  url={https://github.com/aewis-capstone/agentic-ewis}
 }
 ```
 
@@ -1296,37 +1279,45 @@ Estimate confidence conservatively. Escalate if < 0.6.
 
 ```
 agentic-ewis/
-├── README.md (560 lines, comprehensive)
+├── README.md (600+ lines, comprehensive)
 ├── docs/
 │   ├── RESEARCH_PAPER.md (8,500 words)
 │   ├── FINAL_REPORT.md (this document)
-│   ├── PHASE11_SUMMARY.md
-│   ├── PHASE10_SUMMARY.md
-│   └── ... (Phase 1-9 summaries)
+│   ├── PHASE4–PHASE12_SUMMARY.md (phase summaries)
+│   └── KAGGLE_TPU_INSTRUCTIONS.md
 ├── src/
 │   ├── api/ (FastAPI backend, client)
 │   ├── agents/ (4 LangGraph agents)
-│   ├── rag/ (FAISS, retrieval)
-│   ├── models/ (XGBoost, IF, PELT)
+│   ├── rag/ (FAISS, retrieval, knowledge base)
+│   ├── models/ (XGBoost, IF, PELT, LSTM, TCN)
 │   ├── mlops/ (MLflow, drift, alerting)
-│   ├── evaluation/ (metrics, baselines)
-│   ├── features/ (347 features)
-│   └── ingestion/ (preprocessing)
-├── configs/ (YAML configs)
-├── docker/
-│   ├── Dockerfile
-│   ├── docker-compose.yml
-│   ├── cloudrun.yaml
-│   └── ecs-task-definition.json
-├── scripts/ (training, evaluation, deployment)
-├── tests/ (unit, integration)
-├── notebooks/ (exploratory analysis)
+│   ├── evaluation/ (metrics, baselines, ablation)
+│   ├── features/ (pipeline, sliding windows, health indicators)
+│   └── ingestion/ (CMAPSSDataLoader)
+├── notebooks/ (8 notebooks: EDA → MLOps)
+│   ├── 01_eda_cmapss_loghub.ipynb
+│   ├── 02_feature_engineering_*.ipynb
+│   ├── 03_ml_model_training.ipynb
+│   ├── 04_anomaly_detection.ipynb
+│   ├── 05_rag_pipeline.ipynb
+│   ├── 06_agentic_architecture.ipynb
+│   ├── 07_system_evaluation.ipynb
+│   └── 08_mlops_monitoring.ipynb
+├── scripts/
+│   ├── download_cmapss.py
+│   └── phase1_eda_cmapss.py
+├── models/ (trained artifacts: .joblib, .pth)
+├── data/ (raw C-MAPSS, processed features, vector_db)
 ├── evaluation/ (results, ablations)
+├── Dockerfile (multi-stage container build)
+├── docker-compose.yml (7-service orchestration)
+├── cloudrun.yaml (GCP Cloud Run)
+├── ecs-task-definition.json (AWS ECS Fargate)
+├── project_config.json (project configuration)
 └── requirements.txt
 
 **Total Lines of Code:** 10,000+
 **Total Documentation:** 13,000+ words
-**Test Coverage:** 85%+
 ```
 
 ---
@@ -1352,12 +1343,6 @@ All code (10,000+ lines), evaluation frameworks, deployment configurations, and 
 
 **Project Status:** ✅ **COMPLETE — ALL 12 PHASES FINISHED**
 
-**Date:** February 4, 2026  
+**Date:** February 27, 2026  
 **Duration:** 60 days  
-**Next Steps:** Conference submission (KDD/AAAI 2026), pilot deployment  
-
----
-
-**For questions or collaboration:** [your.email@institution.edu](mailto:your.email@institution.edu)  
-**GitHub Repository:** [https://github.com/yourusername/agentic-ewis](https://github.com/yourusername/agentic-ewis)  
-**Demo:** [https://demo.aewis.ai](https://demo.aewis.ai) *(coming soon)*
+**Next Steps:** Conference submission (KDD/AAAI 2026), pilot deployment

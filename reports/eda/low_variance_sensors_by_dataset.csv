@@ -1,0 +1,5 @@
+dataset,low_var_sensors_count,low_var_sensors
+FD001,6,"sensor_1,sensor_10,sensor_18,sensor_19,sensor_16,sensor_5"
+FD002,0,
+FD003,5,"sensor_1,sensor_18,sensor_19,sensor_16,sensor_5"
+FD004,0,

@@ -101,7 +101,7 @@ class FeatureSelector:
         return pd.DataFrame(X_selected, columns=selected_features), selected_features
 
     def select_by_tree_importance(
-        self, X: pd.DataFrame, target: pd.Series, k: int = 20
+        self, X: pd.DataFrame, target: pd.Series, k: int = 20, sample_frac: float = 0.3
     ) -> Tuple[pd.DataFrame, List[str], pd.Series]:
         """
         Select features by importance from Random Forest model.
@@ -114,6 +114,8 @@ class FeatureSelector:
             Target variable (RUL)
         k : int, default=20
             Number of features to select
+        sample_frac : float, default=0.3
+            Fraction of rows to sub-sample when len(X) > 50 000, for speed.
 
         Returns
         -------
@@ -124,9 +126,24 @@ class FeatureSelector:
         importances : pd.Series
             Feature importance values
         """
-        # Train quick Random Forest model
-        rf = RandomForestRegressor(n_estimators=100, max_depth=10, n_jobs=-1, random_state=self.random_state)
-        rf.fit(X, target)
+        # Sub-sample for speed on large datasets (e.g. 650k rows × 630 features)
+        if len(X) > 20000:
+            n_sample = min(20000, int(len(X) * sample_frac))
+            idx = np.random.RandomState(42).choice(len(X), n_sample, replace=False)
+            X_fit = X.iloc[idx]
+            y_fit = target.iloc[idx]
+            logger.info(f"Tree importance: sub-sampled {len(X)} -> {len(X_fit)} rows")
+        else:
+            X_fit, y_fit = X, target
+
+        # Reduced RF parameters to avoid multi-hour runtimes on CPU
+        rf = RandomForestRegressor(
+            n_estimators=10,   # minimal for importance ranking
+            max_depth=6,       # shallow trees are faster
+            n_jobs=1,          # single-threaded to avoid joblib deadlock in Jupyter
+            random_state=self.random_state,
+        )
+        rf.fit(X_fit, y_fit)
 
         # Get importances
         importances = pd.Series(rf.feature_importances_, index=X.columns).sort_values(ascending=False)

@@ -196,43 +196,25 @@ stats = detector.get_statistics()
 
 ### Data Flow
 
-```
-Raw Sensor Data
-    ↓
-Feature Engineering (PHASE 3)
-    ↓
-ML Model Predictions (PHASE 4)
-    ↓
-╔════════════════════════════════════╗
-║  PHASE 5: Anomaly Detection        ║
-╠════════════════════════════════════╣
-║                                    ║
-║  1. Residual Detection             ║
-║     └─ residuals = y_true - y_pred ║
-║     └─ anomalies_residual          ║
-║                                    ║
-║  2. Isolation Forest               ║
-║     └─ multivariate features       ║
-║     └─ anomalies_iso               ║
-║                                    ║
-║  3. Change-Point Detection         ║
-║     └─ RUL or sensor trends        ║
-║     └─ change_points               ║
-║                                    ║
-║  4. Degradation Labeling           ║
-║     └─ fusion of signals above     ║
-║     └─ degradation labels/scores   ║
-║                                    ║
-║  5. Early Warning System           ║
-║     └─ risk scoring                ║
-║     └─ alert generation            ║
-║     └─ lead-time calculation       ║
-║                                    ║
-╚════════════════════════════════════╝
-    ↓
-Warnings & Alerts
-    ↓
-Maintenance Actions / Dashboard
+```mermaid
+flowchart TD
+    A["Raw Sensor Data<br/>21 sensors × FD001–FD004"] --> B["Feature Engineering<br/>FeatureEngineeringPipeline"]
+    B --> C["ML Model Predictions<br/>XGBoost / LSTM / TCN"]
+    
+    C --> D["Residual Detection<br/>z-score, IQR, MAD, EWMA"]
+    B --> E["Isolation Forest<br/>multivariate features"]
+    C --> F["Change-Point Detection<br/>CUSUM, EWMA, Bayesian, Mann-Kendall"]
+    
+    D --> G["DegradationLabeler<br/>multi-signal fusion<br/>40% RUL + 30% anomaly + 30% CP"]
+    E --> G
+    F --> G
+    
+    G --> H["EarlyWarningSystem<br/>risk scoring + 5 alert levels"]
+    D --> H
+    F --> H
+    
+    H --> I["Warnings & Lead-Time<br/>60–100 cycles before failure"]
+    I --> J["Maintenance Actions / RAG Pipeline"]
 ```
 
 ---
@@ -575,20 +557,26 @@ assert len(change_points) == len(set(change_points))  # No duplicates
 ### With Previous Phases
 
 ```python
-# PHASE 1: Data loading
-from src.data_ingestion.cmapss_loader import CMAPSSDataset
-dataset = CMAPSSDataset('FD001')
-df_train, df_test = dataset.load_data()
+# PHASE 1: Data loading (all 4 C-MAPSS subsets)
+from src.ingestion.cmapss_loader import CMAPSSDataLoader
+loader = CMAPSSDataLoader(data_dir='data/raw/CMAPSS')
+SUBSETS = ['FD001', 'FD002', 'FD003', 'FD004']
+for subset in SUBSETS:
+    df_train, df_test, rul_test = loader.load_dataset(subset)
+    # Add composite engine IDs: 'FD001_1', 'FD002_3', etc.
+    df_train['engine_id'] = subset + '_' + df_train['engine_id'].astype(int).astype(str)
+    df_test['engine_id']  = subset + '_' + df_test['engine_id'].astype(int).astype(str)
 
 # PHASE 2: Logging (automatic)
 import logging
 logger = logging.getLogger(__name__)
 
 # PHASE 3: Feature engineering
-from src.features.feature_engineering import EngineeringPipeline
-pipeline = EngineeringPipeline()
-X_train = pipeline.fit_transform(df_train)
-X_test = pipeline.transform(df_test)
+from src.features.pipeline import FeatureEngineeringPipeline
+SENSOR_COLS = [f'sensor_{i}' for i in range(1, 22)]
+pipeline = FeatureEngineeringPipeline(window_size=30)
+X_train, y_train = pipeline.fit_transform(df_train, sensor_cols=SENSOR_COLS, target_col='RUL')
+X_test, y_test = pipeline.transform(df_test)
 
 # PHASE 4: ML models
 from src.models.baseline_ml import XGBoostRULPredictor

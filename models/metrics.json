@@ -1,0 +1,8 @@
+{
+    "selected_model": "xgboost",
+    "rmse": 19.443728120718564,
+    "candidates": {
+        "xgboost": 19.443728120718564,
+        "lstm": 47.19034035325715
+    }
+}

@@ -521,5 +521,5 @@ from src.logging_config import setup_logging
 
 ---
 
-**Quick Reference Version:** 1.0  
-**Last Updated:** 2024
+**Quick Reference Version:** 1.1  
+**Last Updated:** February 27, 2026

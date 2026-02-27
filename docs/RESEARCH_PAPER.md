@@ -1,8 +1,8 @@
 # Agentic Early-Warning Intelligence System for Silent System Failures: Integrating Machine Learning, Retrieval-Augmented Generation, and Multi-Agent Reasoning
 
-**Authors:** [Your Name], [Affiliation]  
+**Authors:** AEWIS Research Team  
 **Date:** February 2026  
-**Conference:** [Target Venue - e.g., KDD 2026, AAAI 2026, ICML 2026]
+**Conference:** KDD 2026 / AAAI 2026 / ICML 2026
 
 ---
 

@@ -29,6 +29,42 @@ class HealthIndicatorCalculator:
         """
         self.reference_threshold = reference_threshold
 
+    def fit(self, df: pd.DataFrame, sensor_cols: List[str], window_size: int = 10):
+        """
+        Fit the reference baseline (mean and std) for each sensor using the first
+        window_size cycles per engine. Stores result in self.reference_baseline_.
+        """
+        self.reference_baseline_ = {}
+        for sensor in sensor_cols:
+            means = df.groupby("engine_id")[sensor].apply(
+                lambda x: x.iloc[:window_size].mean() if len(x) >= window_size else x.mean()
+            )
+            stds = df.groupby("engine_id")[sensor].apply(
+                lambda x: x.iloc[:window_size].std() if len(x) >= window_size else x.std()
+            )
+            self.reference_baseline_[sensor] = {
+                'mean': means,
+                'std': stds.replace(0, 1.0)
+            }
+        return self
+
+    def transform(self, df: pd.DataFrame, sensor_cols: List[str], window_size: int = 10) -> pd.DataFrame:
+        """
+        Use the stored reference_baseline_ to compute drift features and health index.
+        Does NOT recompute the baseline; uses what was stored in fit().
+        """
+        if not hasattr(self, 'reference_baseline_'):
+            raise RuntimeError("HealthIndicatorCalculator must be fit before transform.")
+        df_drift = df.copy()
+        for sensor in sensor_cols:
+            mean_map = df_drift['engine_id'].map(self.reference_baseline_[sensor]['mean'])
+            std_map = df_drift['engine_id'].map(self.reference_baseline_[sensor]['std']).replace(0, 1.0)
+            df_drift[f"{sensor}_drift"] = np.abs((df_drift[sensor] - mean_map) / (std_map + 1e-8))
+        drift_cols = [f"{s}_drift" for s in sensor_cols]
+        health_index = self.calculate_combined_health_index(df_drift, drift_cols, method="mean")
+        df_drift["health_index"] = health_index
+        return df_drift
+
     def calculate_sensor_drift(
         self, df: pd.DataFrame, sensor_cols: List[str], window_size: int = 10
     ) -> pd.DataFrame:

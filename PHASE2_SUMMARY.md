@@ -237,11 +237,12 @@ All data infrastructure is now in place for:
 | PHASE 0 | Day 1–2 | Project framing | ✅ Complete |
 | PHASE 1 | Day 2–3 | Environment setup | ✅ Complete |
 | **PHASE 2** | **Day 4–7** | **Data ingestion** | ✅ **Complete** |
-| PHASE 3 | Day 7–9 | Baseline 1 (ML) | ⏳ Next |
-| PHASE 4 | Day 10–12 | Baseline 2 (ML+RAG) | ⏳ Planned |
-| PHASE 5 | Day 13–16 | Baseline 3 (Agentic) | ⏳ Planned |
-| PHASE 6 | Day 17–20 | Evaluation & analysis | ⏳ Planned |
-| PHASE 7 | Day 21–22 | Deployment | ⏳ Planned |
+| PHASE 3 | Day 7–9 | Feature engineering | ✅ Complete |
+| PHASE 4 | Day 10–12 | ML model training | ✅ Complete |
+| PHASE 5 | Day 13–16 | Anomaly detection | ✅ Complete |
+| PHASE 6 | Day 17–20 | RAG pipeline | ✅ Complete |
+| PHASE 7 | Day 21–22 | Agentic architecture | ✅ Complete |
+| PHASE 8–12 | Day 23–30 | Eval, MLOps, API, Paper | ✅ Complete |
 
 ---
 

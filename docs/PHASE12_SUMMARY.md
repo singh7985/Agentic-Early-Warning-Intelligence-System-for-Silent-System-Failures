@@ -470,7 +470,7 @@ print(f"Confidence: {response['confidence']:.0%}")
 # Upload to ArXiv
 arxiv submit \
   --title "Agentic Early-Warning Intelligence System" \
-  --authors "Your Name" \
+  --authors "AEWIS Research Team" \
   --categories cs.LG cs.AI cs.SE \
   --file docs/RESEARCH_PAPER.pdf
 ```

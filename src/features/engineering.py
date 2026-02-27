@@ -55,23 +55,30 @@ class TimeSeriesFeatureEngineer:
         df = df.copy()
         window_sizes = window_sizes or self.window_sizes
         
-        # Group by engine to avoid leakage across engines
-        for col in sensor_cols:
-            for window in window_sizes: # Fix loop order: sensors first, then windows
+        # Create composite key (subset + engine_id) to prevent cross-subset
+        # contamination — FD001 engine 1 ≠ FD002 engine 1
+        if 'subset' in df.columns:
+            df['_key'] = df['subset'].astype(str) + '_' + df['engine_id'].astype(str)
+            group_col = '_key'
+        else:
+            group_col = 'engine_id'
         
-                grouped = df.groupby('engine_id')[col].rolling(
+        for col in sensor_cols:
+            for window in window_sizes:
+        
+                grouped = df.groupby(group_col)[col].rolling(
                     window=window,
                     min_periods=1
-                ).agg(['mean', 'std', 'min', 'max']).reset_index(drop=True) # Use agg list for efficiency
-                
-                # Check column names after agg
-                # If agg returns a DataFrame with MultiIndex columns, flatten them
-                # But rolling(...).agg(...) usually returns DataFrame with columns matching agg function names
+                ).agg(['mean', 'std', 'min', 'max']).reset_index(drop=True)
                 
                 df[f'{col}_roll{window}_mean'] = grouped['mean']
                 df[f'{col}_roll{window}_std'] = grouped['std'].fillna(0)
                 df[f'{col}_roll{window}_min'] = grouped['min']
                 df[f'{col}_roll{window}_max'] = grouped['max']
+        
+        # Clean up temporary key column
+        if '_key' in df.columns:
+            df.drop(columns=['_key'], inplace=True)
         
         logger.info(f"Added rolling statistics for windows: {window_sizes}")
         return df
@@ -96,13 +103,22 @@ class TimeSeriesFeatureEngineer:
         df = df.copy()
         ewma_spans = ewma_spans or self.ewma_spans
         
-        # Group by engine to avoid leakage
+        # Composite key to prevent cross-subset contamination
+        if 'subset' in df.columns:
+            df['_key'] = df['subset'].astype(str) + '_' + df['engine_id'].astype(str)
+            group_col = '_key'
+        else:
+            group_col = 'engine_id'
+        
         for col in sensor_cols:
             for span in ewma_spans:
-                df[f'{col}_ewma{span}'] = df.groupby('engine_id')[col].ewm(
+                df[f'{col}_ewma{span}'] = df.groupby(group_col)[col].ewm(
                     span=span,
                     adjust=False
                 ).mean().reset_index(drop=True)
+        
+        if '_key' in df.columns:
+            df.drop(columns=['_key'], inplace=True)
         
         logger.info(f"Added EWMA features for spans: {ewma_spans}")
         return df
@@ -127,10 +143,19 @@ class TimeSeriesFeatureEngineer:
         df = df.copy()
         lags = lags or [1, 5, 10]
         
-        # Group by engine
+        # Composite key to prevent cross-subset contamination
+        if 'subset' in df.columns:
+            df['_key'] = df['subset'].astype(str) + '_' + df['engine_id'].astype(str)
+            group_col = '_key'
+        else:
+            group_col = 'engine_id'
+        
         for col in sensor_cols:
             for lag in lags:
-                df[f'{col}_diff{lag}'] = df.groupby('engine_id')[col].diff(periods=lag)
+                df[f'{col}_diff{lag}'] = df.groupby(group_col)[col].diff(periods=lag)
+        
+        if '_key' in df.columns:
+            df.drop(columns=['_key'], inplace=True)
         
         logger.info(f"Added difference features for lags: {lags}")
         return df
@@ -190,19 +215,28 @@ class TimeSeriesFeatureEngineer:
         """
         df = df.copy()
         
+        # Composite key to prevent cross-subset contamination
+        if 'subset' in df.columns:
+            df['_key'] = df['subset'].astype(str) + '_' + df['engine_id'].astype(str)
+            group_col = '_key'
+        else:
+            group_col = 'engine_id'
+        
         for col in sensor_cols:
             def calc_trend(series):
                 if len(series) < 2:
                     return np.nan
-                # Calculate slope using simple linear regression
                 x = np.arange(len(series))
                 z = np.polyfit(x, series, 1)
-                return z[0]  # Return slope
+                return z[0]
             
-            df[f'{col}_trend'] = df.groupby('engine_id')[col].rolling(
+            df[f'{col}_trend'] = df.groupby(group_col)[col].rolling(
                 window=window_size,
                 min_periods=2
             ).apply(calc_trend, raw=True).reset_index(drop=True)
+        
+        if '_key' in df.columns:
+            df.drop(columns=['_key'], inplace=True)
         
         logger.info(f"Added trend features (window size: {window_size})")
         return df
@@ -226,16 +260,26 @@ class TimeSeriesFeatureEngineer:
         """
         df = df.copy()
         
+        # Composite key to prevent cross-subset contamination
+        if 'subset' in df.columns:
+            df['_key'] = df['subset'].astype(str) + '_' + df['engine_id'].astype(str)
+            group_col = '_key'
+        else:
+            group_col = 'engine_id'
+        
         for col in sensor_cols:
-            df[f'{col}_skew'] = df.groupby('engine_id')[col].rolling(
+            df[f'{col}_skew'] = df.groupby(group_col)[col].rolling(
                 window=window_size,
                 min_periods=2
             ).skew().reset_index(drop=True)
             
-            df[f'{col}_kurt'] = df.groupby('engine_id')[col].rolling(
+            df[f'{col}_kurt'] = df.groupby(group_col)[col].rolling(
                 window=window_size,
                 min_periods=2
             ).kurt().reset_index(drop=True)
+        
+        if '_key' in df.columns:
+            df.drop(columns=['_key'], inplace=True)
         
         logger.info(f"Added statistical features (skewness, kurtosis)")
         return df

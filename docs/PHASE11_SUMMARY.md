@@ -463,7 +463,7 @@ zip supplementary.zip \
 ```bash
 # Upload to ArXiv (cs.LG, cs.AI, cs.SE categories)
 arxiv submit --title "Agentic Early-Warning Intelligence System" \
-  --authors "Your Name" \
+  --authors "AEWIS Research Team" \
   --abstract "$(cat docs/RESEARCH_PAPER.md | sed -n '/## Abstract/,/## 1/p')" \
   --file docs/RESEARCH_PAPER.pdf \
   --categories cs.LG cs.AI cs.SE
@@ -490,11 +490,11 @@ arxiv submit --title "Agentic Early-Warning Intelligence System" \
 ```bibtex
 @inproceedings{aewis2026,
   title={Agentic Early-Warning Intelligence System for Silent System Failures: Integrating Machine Learning, Retrieval-Augmented Generation, and Multi-Agent Reasoning},
-  author={Your Name},
+  author={AEWIS Research Team},
   booktitle={Proceedings of the 32nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
   year={2026},
   organization={ACM},
-  url={https://github.com/yourusername/agentic-ewis},
+  url={https://github.com/aewis-capstone/agentic-ewis},
   note={Code and data available at GitHub repository}
 }
 ```
