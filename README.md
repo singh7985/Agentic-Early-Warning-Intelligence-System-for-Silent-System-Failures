@@ -44,7 +44,7 @@ We compare three system variants to isolate the contribution of each component:
 - Same time-series models as Baseline 1
 - Vector DB (FAISS) with embedded logs, maintenance docs, failure reports
 - Document chunking, sentence-transformer embeddings, similarity search
-- LangChain retrieval chain for contextual explanations
+- KnowledgeBase retriever with citation tracking for contextual explanations
 - **RAG enabled, No agents**
 
 ### **Baseline 3: ML + RAG + Agentic Reasoning (Full System)**
@@ -131,58 +131,83 @@ We compare three system variants to isolate the contribution of each component:
 ```mermaid
 flowchart TD
     subgraph INPUT["📥 Data Ingestion"]
-        A1["NASA C-MAPSS<br>FD001–FD004<br>21 sensors × ~700 engines"]
-        A2["System Logs<br>HDFS • BGL<br>Incident narratives"]
+        A1["NASA C-MAPSS<br/>FD001–FD004<br/>21 sensors × 709 train engines"]
+        A2["System Logs<br/>HDFS • BGL<br/>(LogParser infrastructure)"]
     end
 
     subgraph FE["⚙️ Feature Engineering"]
-        B1["Rolling Stats<br>mean • std • trend"]
-        B2["Health Indicators<br>sensor drift • EWMA"]
-        B3["Sliding Windows<br>SEQ_LEN=30"]
-        B4["Text Embeddings<br>sentence-transformers"]
+        B1["Rolling Stats<br/>mean • std • min • max<br/>windows: [5, 10, 20]"]
+        B2["Health Indicators<br/>sensor drift • EWMA<br/>health_index"]
+        B3["Sliding Windows<br/>window_size=30, step=1"]
+        B4["Text Embeddings<br/>all-MiniLM-L6-v2 (384D)"]
+        B5["Feature Selection<br/>variance ∩ correlation ∩ tree<br/>k=20"]
     end
 
     subgraph ML["🤖 ML Training Pipeline"]
-        C1["Baselines<br>RF • XGBoost • GBR"]
-        C2["Deep Learning<br>LSTM • TCN"]
-        C3["RUL Prediction<br>+ NASA Score"]
+        C1["Baselines<br/>RF • XGBoost • GBR"]
+        C2["Deep Learning<br/>LSTM (h=64, L=2) • TCN"]
+        C3["RUL Prediction<br/>+ NASA Score"]
     end
 
     subgraph AD["🔍 Anomaly Detection"]
-        D1["Residual Detector<br>LSTM prediction errors<br>threshold: val 95th pct"]
-        D2["Isolation Forest<br>multivariate sensor space<br>threshold: train 5th pct"]
-        D3["Fusion & Early Warning<br>persistence filter<br>5-level Warning_Status"]
+        D1["Residual Detector<br/>LSTM prediction errors<br/>threshold: val 95th pct"]
+        D2["Isolation Forest<br/>multivariate sensor space<br/>threshold: train 5th pct"]
+        D5["Change-Point Detector<br/>CUSUM • EWMA • Bayesian • MK"]
+        D3["DegradationLabeler<br/>RUL 40% + Anomaly 30% + CP 30%"]
+        D4["EarlyWarningSystem<br/>5-level alerts: info → critical<br/>+ persistence filter"]
     end
 
     subgraph RAG["📚 RAG Pipeline"]
-        E1["Document Chunker<br>multi-strategy"]
-        E2["FAISS Vector Store<br>similarity search"]
-        E3["Retriever<br>re-ranking • citations"]
+        E1["DocumentChunker<br/>sentence-based (500 chars, overlap 50)"]
+        E2["FAISS VectorStore<br/>Flat index • cosine similarity"]
+        E3["Retriever<br/>top_k=5 • min_sim=0.3 • citations"]
     end
 
-    subgraph AGENTS["🧠 Multi-Agent Orchestration"]
-        F1["Monitoring Agent<br>signal analysis • drift"]
-        F2["Retrieval Agent<br>context retrieval"]
-        F3["Reasoning Agent<br>evidence synthesis"]
-        F4["Action Agent<br>recommendations • escalation"]
+    subgraph AGENTS["🧠 Multi-Agent Orchestration<br/>(AgentOrchestrator — sequential pipeline)"]
+        F1["Monitoring Agent<br/>RUL ensemble • anomaly • drift"]
+        F2["Retrieval Agent<br/>sensor-pattern search • semantic query"]
+        F3["Reasoning Agent<br/>evidence synthesis • risk scoring"]
+        F4["Action Agent<br/>recommendations • escalation"]
     end
 
     subgraph DEPLOY["🚀 Deployment"]
-        G1["FastAPI REST API<br>/predict • /explain<br>/health • /metrics"]
-        G2["MLflow Tracking<br>experiments • registry"]
-        G3["Monitoring Stack<br>Prometheus • Grafana<br>drift detection"]
+        G1["FastAPI REST API<br/>/predict • /explain • /health<br/>/metrics • /drift"]
+        G2["MLflow Tracking<br/>experiments • registry"]
+        G3["Monitoring Stack<br/>Prometheus • Grafana<br/>DriftDetector (KS-test)"]
     end
 
-    INPUT --> FE
-    B3 --> ML
-    B4 --> RAG
-    FE --> AD
-    C2 --> D1
+    A1 --> FE
+    A2 -.->|planned| B4
+    B1 & B2 & B3 --> B5
+    B4 --> E1
+    B5 --> ML
+    C1 & C2 --> C3
+    C2 -->|residuals| D1
+    B5 -->|features| D2
+    B5 -->|time-series| D5
+    D1 & D2 & D5 --> D3
+    C3 -->|RUL values| D3
+    D3 --> D4
+    D4 -->|degradation data| E1
     ML --> AGENTS
     AD --> AGENTS
     RAG --> AGENTS
+    E1 --> E2 --> E3
     F1 --> F2 --> F3 --> F4
     AGENTS --> DEPLOY
+```
+
+### System Architecture (Compact — for paper abstract)
+
+```mermaid
+flowchart LR
+    A["🔧 Sensor Data<br/>C-MAPSS FD001–FD004<br/>21 sensors"] --> B["⚙️ Feature Eng.<br/>Sliding Windows<br/>Health Indicators<br/>Selection (k=20)"]
+    B --> C["🤖 ML Models<br/>RF • XGB • GBR<br/>LSTM • TCN"]
+    B --> D["🔍 Anomaly Det.<br/>Residual • IF<br/>Change-Point"]
+    C & D --> E["📊 Degradation<br/>Labeler +<br/>Early Warning"]
+    E --> F["📚 RAG<br/>FAISS (384D)<br/>Retriever"]
+    C & D & F --> G["🧠 4-Agent<br/>Orchestrator<br/>Mon→Ret→Rea→Act"]
+    G --> H["🚀 FastAPI<br/>+ MLOps"]
 ```
 
 ---
@@ -216,8 +241,8 @@ agentic-ewis/
 │   │   └── sliding_windows.py         #   Fixed-size window generation
 │   │
 │   ├── models/                        # ML models
-│   │   ├── baseline_ml.py             #   XGBoost, RF, SVR, GBR
-│   │   ├── deep_learning.py           #   LSTM, TCN, BiLSTM architectures
+│   │   ├── baseline_ml.py             #   XGBoost, RF, GBR regressors
+│   │   ├── deep_learning.py           #   LSTM, TCN architectures
 │   │   ├── evaluation.py              #   Metrics & visualization
 │   │   ├── mlflow_utils.py            #   MLflow integration
 │   │   └── model_selector.py          #   Model comparison & selection
@@ -241,7 +266,7 @@ agentic-ewis/
 │   │   ├── retrieval_agent.py         #   VectorDB historical context queries
 │   │   ├── reasoning_agent.py         #   Risk explanation, evidence synthesis
 │   │   ├── action_agent.py            #   Interventions, escalations
-│   │   └── orchestrator.py            #   LangGraph workflow coordinator
+│   │   └── orchestrator.py            #   AgentOrchestrator sequential pipeline
 │   │
 │   ├── evaluation/                    # Evaluation framework (~1,800 lines)
 │   │   ├── metrics.py                 #   RUL, warning, groundedness metrics
@@ -582,7 +607,6 @@ mypy src/
 
 - **Research Paper:** [docs/RESEARCH_PAPER.md](docs/RESEARCH_PAPER.md) — Complete academic paper (8,500 words, 46 references)
 - **NASA C-MAPSS Dataset:** https://www.kaggle.com/datasets/behrad3d/nasa-cmaps
-- **LangGraph Documentation:** https://github.com/langchain-ai/langgraph
 - **FAISS:** https://github.com/facebookresearch/faiss
 - **MLflow:** https://mlflow.org/
 - **Evidently AI:** https://www.evidentlyai.com/
@@ -599,7 +623,7 @@ This project is licensed under the MIT License — see the LICENSE file for deta
 ## 🙏 Acknowledgments
 
 - NASA for the C-MAPSS dataset
-- LangChain & LangGraph teams
+- Sentence-Transformers and FAISS communities
 - MLflow and Evidently communities
 - PyTorch team for deep learning framework
 
