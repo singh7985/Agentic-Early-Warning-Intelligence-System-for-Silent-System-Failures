@@ -130,84 +130,73 @@ We compare three system variants to isolate the contribution of each component:
 
 ```mermaid
 flowchart TD
-    subgraph INPUT["📥 Data Ingestion"]
-        A1["NASA C-MAPSS<br/>FD001–FD004<br/>21 sensors × 709 train engines"]
-        A2["System Logs<br/>HDFS • BGL<br/>(LogParser infrastructure)"]
+    subgraph INPUT["Data Ingestion"]
+        A1["NASA C-MAPSS FD001-FD004\n21 sensors, 709 engines"]
+        A2["System Logs\nHDFS, BGL"]
     end
 
-    subgraph FE["⚙️ Feature Engineering"]
-        B1["Rolling Stats<br/>mean • std • min • max<br/>windows: [5, 10, 20]"]
-        B2["Health Indicators<br/>sensor drift • EWMA<br/>health_index"]
-        B3["Sliding Windows<br/>window_size=30, step=1"]
-        B4["Text Embeddings<br/>all-MiniLM-L6-v2 (384D)"]
-        B5["Feature Selection<br/>variance ∩ correlation ∩ tree<br/>k=20"]
+    subgraph FE["Feature Engineering"]
+        B1["Rolling Statistics\nHealth Indicators\nSliding Windows"]
+        B2["Feature Selection\nVariance, Correlation, Tree\nk = 20"]
+        B3["Text Embeddings\nSentence-BERT, 384-dim"]
     end
 
-    subgraph ML["🤖 ML Training Pipeline"]
-        C1["Baselines<br/>RF • XGBoost • GBR"]
-        C2["Deep Learning<br/>LSTM (h=64, L=2) • TCN"]
-        C3["RUL Prediction<br/>+ NASA Score"]
+    subgraph ML["Predictive Models"]
+        C1["Random Forest\nXGBoost, GBR"]
+        C2["LSTM, TCN\nSequence Models"]
+        C3["RUL Prediction"]
     end
 
-    subgraph AD["🔍 Anomaly Detection"]
-        D1["Residual Detector<br/>LSTM prediction errors<br/>threshold: val 95th pct"]
-        D2["Isolation Forest<br/>multivariate sensor space<br/>threshold: train 5th pct"]
-        D5["Change-Point Detector<br/>CUSUM • EWMA • Bayesian • MK"]
-        D3["DegradationLabeler<br/>RUL 40% + Anomaly 30% + CP 30%"]
-        D4["EarlyWarningSystem<br/>5-level alerts: info → critical<br/>+ persistence filter"]
+    subgraph AD["Anomaly Detection"]
+        D1["Residual Analysis\nIsolation Forest\nChange-Point Detection"]
+        D2["Degradation Labeling\nMulti-signal Fusion"]
+        D3["Early Warning\n5-level Alert System"]
     end
 
-    subgraph RAG["📚 RAG Pipeline"]
-        E1["DocumentChunker<br/>sentence-based (500 chars, overlap 50)"]
-        E2["FAISS VectorStore<br/>Flat index • cosine similarity"]
-        E3["Retriever<br/>top_k=5 • min_sim=0.3 • citations"]
+    subgraph RAG["RAG Knowledge Base"]
+        E1["Document Chunking\nFAISS Vector Store\nSemantic Retrieval"]
     end
 
-    subgraph AGENTS["🧠 Multi-Agent Orchestration<br/>(AgentOrchestrator — sequential pipeline)"]
-        F1["Monitoring Agent<br/>RUL ensemble • anomaly • drift"]
-        F2["Retrieval Agent<br/>sensor-pattern search • semantic query"]
-        F3["Reasoning Agent<br/>evidence synthesis • risk scoring"]
-        F4["Action Agent<br/>recommendations • escalation"]
+    subgraph AGENTS["Multi-Agent Orchestration"]
+        F1["Monitoring\nAgent"] --> F2["Retrieval\nAgent"]
+        F2 --> F3["Reasoning\nAgent"]
+        F3 --> F4["Action\nAgent"]
     end
 
-    subgraph DEPLOY["🚀 Deployment"]
-        G1["FastAPI REST API<br/>/predict • /explain • /health<br/>/metrics • /drift"]
-        G2["MLflow Tracking<br/>experiments • registry"]
-        G3["Monitoring Stack<br/>Prometheus • Grafana<br/>DriftDetector (KS-test)"]
+    subgraph DEPLOY["Deployment"]
+        G1["FastAPI\nREST API"]
+        G2["MLflow\nTracking"]
+        G3["Prometheus\nGrafana"]
     end
 
     A1 --> FE
-    A2 -.->|planned| B4
-    B1 & B2 & B3 --> B5
-    B4 --> E1
-    B5 --> ML
+    A2 -.-> B3
+    B1 --> B2
+    B3 --> E1
+    B2 --> ML
+    B2 --> AD
     C1 & C2 --> C3
-    C2 -->|residuals| D1
-    B5 -->|features| D2
-    B5 -->|time-series| D5
-    D1 & D2 & D5 --> D3
-    C3 -->|RUL values| D3
-    D3 --> D4
-    D4 -->|degradation data| E1
+    C2 --> D1
+    D1 --> D2 --> D3
+    C3 --> D2
+    D3 --> E1
     ML --> AGENTS
     AD --> AGENTS
     RAG --> AGENTS
-    E1 --> E2 --> E3
-    F1 --> F2 --> F3 --> F4
     AGENTS --> DEPLOY
 ```
 
-### System Architecture (Compact — for paper abstract)
+### Compact System Architecture
 
 ```mermaid
 flowchart LR
-    A["🔧 Sensor Data<br/>C-MAPSS FD001–FD004<br/>21 sensors"] --> B["⚙️ Feature Eng.<br/>Sliding Windows<br/>Health Indicators<br/>Selection (k=20)"]
-    B --> C["🤖 ML Models<br/>RF • XGB • GBR<br/>LSTM • TCN"]
-    B --> D["🔍 Anomaly Det.<br/>Residual • IF<br/>Change-Point"]
-    C & D --> E["📊 Degradation<br/>Labeler +<br/>Early Warning"]
-    E --> F["📚 RAG<br/>FAISS (384D)<br/>Retriever"]
-    C & D & F --> G["🧠 4-Agent<br/>Orchestrator<br/>Mon→Ret→Rea→Act"]
-    G --> H["🚀 FastAPI<br/>+ MLOps"]
+    A["Sensor Data\nC-MAPSS\n21 sensors"] --> B["Feature\nEngineering"]
+    B --> C["ML Models\nRF, XGB, GBR\nLSTM, TCN"]
+    B --> D["Anomaly\nDetection"]
+    C & D --> E["Degradation\nLabeling &\nEarly Warning"]
+    E --> F["RAG\nKnowledge\nBase"]
+    C & D & F --> G["4-Agent\nOrchestrator"]
+    G --> H["FastAPI\n+ MLOps"]
 ```
 
 ---
