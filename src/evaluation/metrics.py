@@ -338,11 +338,15 @@ class MetricsCalculator:
         warnings_df = pd.DataFrame(self.warnings)
         failures_df = pd.DataFrame(self.failures)
 
-        # Build confusion matrix
-        tp = len(warnings_df[warnings_df['correct']])
-        fp = len(warnings_df[~warnings_df['correct']])
-        fn = len(failures_df) - tp
-        tn = 1000 - (tp + fp + fn)  # Assume 1000 total cases
+        # Build confusion matrix using unique engines
+        warned_engines   = set(warnings_df['engine_id'])
+        correct_warned   = set(warnings_df.loc[warnings_df['correct'], 'engine_id'])
+        failed_engines   = set(failures_df['engine_id'])
+
+        tp = len(correct_warned & failed_engines)
+        fp = len(warned_engines - failed_engines)
+        fn = len(failed_engines - warned_engines)
+        tn = max(0, 1000 - (tp + fp + fn))  # Assume 1000 total cases
 
         # Metrics
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0

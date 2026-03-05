@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEWIS MLOps Monitoring Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --card-hover: #334155;
+            --accent: #3b82f6;
+            --accent2: #10b981;
+            --accent3: #f59e0b;
+            --danger: #ef4444;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --border: #334155;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 1.5rem; font-weight: 700; }
+        .header h1 span { color: var(--accent); }
+        .header .status {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.85rem; color: var(--accent2);
+        }
+        .header .status .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent2); animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .refresh-btn {
+            background: var(--accent); color: #fff; border: none;
+            padding: 8px 16px; border-radius: 6px; cursor: pointer;
+            font-size: 0.85rem; transition: background 0.2s;
+        }
+        .refresh-btn:hover { background: #2563eb; }
+
+        /* ── KPI Cards ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px; padding: 24px 32px;
+        }
+        .kpi-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(59,130,246,0.15);
+        }
+        .kpi-card .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .kpi-card .value { font-size: 1.8rem; font-weight: 700; margin-top: 4px; }
+        .kpi-card .sub   { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+        .kpi-card.green .value { color: var(--accent2); }
+        .kpi-card.blue  .value { color: var(--accent); }
+        .kpi-card.amber .value { color: var(--accent3); }
+        .kpi-card.red   .value { color: var(--danger); }
+
+        /* ── Tabs ── */
+        .tabs {
+            display: flex; gap: 0; padding: 0 32px;
+            border-bottom: 2px solid var(--border);
+        }
+        .tab {
+            padding: 12px 24px; cursor: pointer;
+            font-size: 0.9rem; color: var(--muted);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .tab:hover { color: var(--text); }
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ── Tab Content ── */
+        .tab-content { display: none; padding: 24px 32px; }
+        .tab-content.active { display: block; }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            gap: 20px;
+        }
+        .chart-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .chart-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+        .chart-card canvas { width: 100% !important; }
+
+        /* ── Alert Table ── */
+        .alert-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .alert-table th {
+            text-align: left;
+            padding: 10px 12px;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0;
+            background: var(--card);
+        }
+        .alert-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .alert-table tr:hover { background: var(--card-hover); }
+        .badge {
+            display: inline-block; padding: 2px 8px;
+            border-radius: 4px; font-size: 0.75rem; font-weight: 600;
+        }
+        .badge.critical { background: #7f1d1d; color: #fca5a5; }
+        .badge.warning  { background: #78350f; color: #fcd34d; }
+        .badge.info     { background: #1e3a5f; color: #93c5fd; }
+
+        /* ── Drift Table ── */
+        .drift-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .drift-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .drift-card h4 { margin-bottom: 8px; }
+        .drift-bar {
+            height: 8px; border-radius: 4px;
+            background: var(--border); margin: 8px 0;
+            overflow: hidden;
+        }
+        .drift-bar-fill {
+            height: 100%; border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+        .drift-meta { font-size: 0.8rem; color: var(--muted); }
+
+        /* ── Experiment Table ── */
+        .exp-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .exp-table th, .exp-table td {
+            padding: 12px 16px; text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .exp-table th { color: var(--muted); font-weight: 600; }
+        .exp-table tr:hover { background: var(--card-hover); }
+        .best { color: var(--accent2); font-weight: 700; }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 16px;
+            color: var(--muted); font-size: 0.75rem;
+            border-top: 1px solid var(--border);
+            margin-top: 32px;
+        }
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15,23,42,0.85);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; font-size: 1.2rem;
+        }
+        .spinner {
+            width: 36px; height: 36px; border: 3px solid var(--border);
+            border-top-color: var(--accent); border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin-right: 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <!-- Loading overlay -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        Loading dashboard data...
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1><span>AEWIS</span> MLOps Monitoring Dashboard</h1>
+        <div style="display:flex; align-items:center; gap:20px;">
+            <div class="status"><div class="dot"></div> Live</div>
+            <button class="refresh-btn" onclick="refreshAll()">&#x21bb; Refresh</button>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid" id="kpi-grid">
+        <div class="kpi-card blue">
+            <div class="label">Predictions</div>
+            <div class="value" id="kpi-predictions">—</div>
+            <div class="sub">Total monitored</div>
+        </div>
+        <div class="kpi-card green">
+            <div class="label">Avg Confidence</div>
+            <div class="value" id="kpi-confidence">—</div>
+            <div class="sub">Model confidence</div>
+        </div>
+        <div class="kpi-card blue">
+            <div class="label">Avg Latency</div>
+            <div class="value" id="kpi-latency">—</div>
+            <div class="sub">All components</div>
+        </div>
+        <div class="kpi-card amber">
+            <div class="label">Total Tokens</div>
+            <div class="value" id="kpi-tokens">—</div>
+            <div class="sub" id="kpi-cost">—</div>
+        </div>
+        <div class="kpi-card red">
+            <div class="label">Errors</div>
+            <div class="value" id="kpi-errors">—</div>
+            <div class="sub" id="kpi-error-rate">—</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" data-tab="latency">Latency</div>
+        <div class="tab" data-tab="tokens">Token Usage</div>
+        <div class="tab" data-tab="predictions">Predictions</div>
+        <div class="tab" data-tab="drift">Drift Detection</div>
+        <div class="tab" data-tab="alerts">Alerts</div>
+        <div class="tab" data-tab="experiments">Experiments</div>
+    </div>
+
+    <!-- Tab: Latency -->
+    <div class="tab-content active" id="tab-latency">
+        <div class="chart-grid">
+            <div class="chart-card">
+                <h3>Latency by Component (Avg vs P95)</h3>
+                <canvas id="chart-latency-bar"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Latency Time-Series</h3>
+                <canvas id="chart-latency-ts"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab: Tokens -->
+    <div class="tab-content" id="tab-tokens">
+        <div class="chart-grid">
+            <div class="chart-card">
+                <h3>Token Distribution (Prompt vs Completion)</h3>
+                <canvas id="chart-token-scatter"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Token Usage per Query</h3>
+                <canvas id="chart-token-bar"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab: Predictions -->
+    <div class="tab-content" id="tab-predictions">
+        <div class="chart-grid">
+            <div class="chart-card">
+                <h3>Predicted vs Actual RUL</h3>
+                <canvas id="chart-pred-scatter"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Confidence per Engine</h3>
+                <canvas id="chart-pred-conf"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab: Drift -->
+    <div class="tab-content" id="tab-drift">
+        <div class="chart-grid">
+            <div class="chart-card">
+                <h3>Drift Score by Batch</h3>
+                <canvas id="chart-drift-bar"></canvas>
+            </div>
+            <div class="chart-card" style="padding:0;">
+                <div style="padding:20px;">
+                    <h3>Drift Detail Cards</h3>
+                </div>
+                <div class="drift-grid" id="drift-cards" style="padding:0 20px 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab: Alerts -->
+    <div class="tab-content" id="tab-alerts">
+        <div class="chart-grid">
+            <div class="chart-card">
+                <h3>Alert Type Distribution</h3>
+                <canvas id="chart-alert-pie"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Confidence Degradation Timeline</h3>
+                <canvas id="chart-conf-line"></canvas>
+            </div>
+        </div>
+        <div class="chart-card" style="margin-top:20px; max-height:400px; overflow-y:auto;">
+            <h3>Alert Log</h3>
+            <table class="alert-table">
+                <thead><tr>
+                    <th>Severity</th><th>Type</th><th>Message</th><th>Time</th>
+                </tr></thead>
+                <tbody id="alert-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tab: Experiments -->
+    <div class="tab-content" id="tab-experiments">
+        <div class="chart-grid">
+            <div class="chart-card">
+                <h3>System Comparison — Error Metrics</h3>
+                <canvas id="chart-exp-bar"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>System Comparison Table</h3>
+                <table class="exp-table" id="exp-table">
+                    <thead><tr>
+                        <th>System</th><th>MAE</th><th>RMSE</th>
+                        <th>R²</th><th>F1</th><th>Lead Time</th>
+                    </tr></thead>
+                    <tbody id="exp-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        AEWIS — Agentic Early-Warning Intelligence System &bull;
+        Django MLOps Dashboard &bull; Data refreshed <span id="last-refresh">—</span>
+    </div>
+
+<script>
+// ── Utility ──────────────────────────────────────────────────────
+const API = {
+    overview:    '/api/overview/',
+    latency:     '/api/latency/',
+    tokens:      '/api/tokens/',
+    predictions: '/api/predictions/',
+    drift:       '/api/drift/',
+    alerts:      '/api/alerts/',
+    experiments: '/api/experiments/',
+};
+
+async function fetchJSON(url) {
+    const res = await fetch(url);
+    return res.json();
+}
+
+const chartInstances = {};
+function destroyChart(id) {
+    if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
+}
+
+const COLORS = {
+    blue: '#3b82f6', green: '#10b981', amber: '#f59e0b',
+    red: '#ef4444', purple: '#8b5cf6', cyan: '#06b6d4',
+    blueAlpha: 'rgba(59,130,246,0.3)', greenAlpha: 'rgba(16,185,129,0.3)',
+    amberAlpha: 'rgba(245,158,11,0.3)', redAlpha: 'rgba(239,68,68,0.3)',
+};
+
+const chartDefaults = {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: { legend: { labels: { color: '#94a3b8' } } },
+    scales: {
+        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+    },
+};
+
+// ── Tab switching ────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+});
+
+// ── KPIs ─────────────────────────────────────────────────────────
+async function loadOverview() {
+    const d = await fetchJSON(API.overview);
+    document.getElementById('kpi-predictions').textContent = d.total_predictions.toLocaleString();
+    document.getElementById('kpi-confidence').textContent = d.avg_confidence;
+    document.getElementById('kpi-latency').textContent = d.avg_latency_ms + ' ms';
+    document.getElementById('kpi-tokens').textContent = d.total_tokens.toLocaleString();
+    document.getElementById('kpi-cost').textContent = 'Est. $' + d.estimated_cost_usd;
+    document.getElementById('kpi-errors').textContent = d.total_errors;
+    document.getElementById('kpi-error-rate').textContent = d.error_rate + '% rate';
+}
+
+// ── Latency Charts ───────────────────────────────────────────────
+async function loadLatency() {
+    const d = await fetchJSON(API.latency);
+
+    // Bar chart
+    destroyChart('latency-bar');
+    const comps = Object.keys(d.by_component);
+    chartInstances['latency-bar'] = new Chart(
+        document.getElementById('chart-latency-bar'), {
+            type: 'bar',
+            data: {
+                labels: comps.map(c => c.replace(/_/g, ' ')),
+                datasets: [
+                    { label: 'Avg (ms)', data: comps.map(c => d.by_component[c].avg), backgroundColor: COLORS.blue },
+                    { label: 'P95 (ms)', data: comps.map(c => d.by_component[c].p95), backgroundColor: COLORS.amber },
+                    { label: 'P99 (ms)', data: comps.map(c => d.by_component[c].p99), backgroundColor: COLORS.red },
+                ]
+            },
+            options: { ...chartDefaults, plugins: { ...chartDefaults.plugins, tooltip: { mode: 'index' } } },
+        }
+    );
+
+    // Time-series
+    destroyChart('latency-ts');
+    const datasets = [];
+    const palette = [COLORS.blue, COLORS.green, COLORS.amber];
+    let i = 0;
+    for (const [comp, vals] of Object.entries(d.timeseries)) {
+        datasets.push({
+            label: comp.replace(/_/g, ' '),
+            data: vals,
+            borderColor: palette[i % palette.length],
+            backgroundColor: 'transparent',
+            borderWidth: 1.5,
+            pointRadius: 2,
+            tension: 0.3,
+        });
+        i++;
+    }
+    chartInstances['latency-ts'] = new Chart(
+        document.getElementById('chart-latency-ts'), {
+            type: 'line',
+            data: { labels: datasets[0]?.data.map((_, i) => i + 1) || [], datasets },
+            options: {
+                ...chartDefaults,
+                scales: {
+                    ...chartDefaults.scales,
+                    y: { ...chartDefaults.scales.y, title: { display: true, text: 'ms', color: '#94a3b8' } },
+                    x: { ...chartDefaults.scales.x, title: { display: true, text: 'Observation', color: '#94a3b8' } },
+                }
+            },
+        }
+    );
+}
+
+// ── Token Charts ─────────────────────────────────────────────────
+async function loadTokens() {
+    const d = await fetchJSON(API.tokens);
+
+    // Scatter: prompt vs completion
+    destroyChart('token-scatter');
+    const scatterData = d.prompt.map((p, i) => ({ x: p, y: d.completion[i] }));
+    chartInstances['token-scatter'] = new Chart(
+        document.getElementById('chart-token-scatter'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Prompt vs Completion',
+                    data: scatterData,
+                    backgroundColor: COLORS.blueAlpha,
+                    borderColor: COLORS.blue,
+                    pointRadius: 5,
+                }]
+            },
+            options: {
+                ...chartDefaults,
+                scales: {
+                    x: { ...chartDefaults.scales.x, title: { display: true, text: 'Prompt Tokens', color: '#94a3b8' } },
+                    y: { ...chartDefaults.scales.y, title: { display: true, text: 'Completion Tokens', color: '#94a3b8' } },
+                }
+            },
+        }
+    );
+
+    // Bar: total per query
+    destroyChart('token-bar');
+    chartInstances['token-bar'] = new Chart(
+        document.getElementById('chart-token-bar'), {
+            type: 'bar',
+            data: {
+                labels: d.total.map((_, i) => 'Q' + (i + 1)),
+                datasets: [
+                    { label: 'Prompt', data: d.prompt, backgroundColor: COLORS.blue },
+                    { label: 'Completion', data: d.completion, backgroundColor: COLORS.green },
+                ]
+            },
+            options: {
+                ...chartDefaults,
+                plugins: { ...chartDefaults.plugins, tooltip: { mode: 'index' } },
+                scales: {
+                    ...chartDefaults.scales,
+                    x: { ...chartDefaults.scales.x, stacked: true },
+                    y: { ...chartDefaults.scales.y, stacked: true, title: { display: true, text: 'Tokens', color: '#94a3b8' } },
+                }
+            },
+        }
+    );
+}
+
+// ── Prediction Charts ────────────────────────────────────────────
+async function loadPredictions() {
+    const d = await fetchJSON(API.predictions);
+
+    // Scatter: predicted vs actual
+    destroyChart('pred-scatter');
+    const scatterPts = d.predicted_rul.map((p, i) => ({ x: d.actual_rul[i], y: p }));
+    const maxVal = Math.max(...d.actual_rul.filter(v => v != null), ...d.predicted_rul) + 10;
+    chartInstances['pred-scatter'] = new Chart(
+        document.getElementById('chart-pred-scatter'), {
+            type: 'scatter',
+            data: {
+                datasets: [
+                    {
+                        label: 'Predictions', data: scatterPts,
+                        backgroundColor: COLORS.blueAlpha, borderColor: COLORS.blue,
+                        pointRadius: 6, pointHoverRadius: 9,
+                    },
+                    {
+                        label: 'Perfect', data: [{x:0,y:0},{x:maxVal,y:maxVal}],
+                        type: 'line', borderColor: COLORS.red, borderDash: [6,4],
+                        borderWidth: 2, pointRadius: 0,
+                    },
+                ],
+            },
+            options: {
+                ...chartDefaults,
+                scales: {
+                    x: { ...chartDefaults.scales.x, title: { display: true, text: 'Actual RUL', color: '#94a3b8' } },
+                    y: { ...chartDefaults.scales.y, title: { display: true, text: 'Predicted RUL', color: '#94a3b8' } },
+                },
+            },
+        }
+    );
+
+    // Bar: confidence per engine
+    destroyChart('pred-conf');
+    const confColors = d.confidences.map(c =>
+        c >= 0.8 ? COLORS.green : c >= 0.5 ? COLORS.amber : COLORS.red);
+    chartInstances['pred-conf'] = new Chart(
+        document.getElementById('chart-pred-conf'), {
+            type: 'bar',
+            data: {
+                labels: d.engine_ids.map(e => 'E' + e),
+                datasets: [{
+                    label: 'Confidence',
+                    data: d.confidences,
+                    backgroundColor: confColors,
+                    borderRadius: 3,
+                }],
+            },
+            options: {
+                ...chartDefaults,
+                plugins: { ...chartDefaults.plugins, legend: { display: false } },
+                scales: {
+                    ...chartDefaults.scales,
+                    y: { ...chartDefaults.scales.y, min: 0, max: 1, title: { display: true, text: 'Confidence', color: '#94a3b8' } },
+                },
+            },
+        }
+    );
+}
+
+// ── Drift ────────────────────────────────────────────────────────
+async function loadDrift() {
+    const d = await fetchJSON(API.drift);
+
+    // Bar chart
+    destroyChart('drift-bar');
+    const driftColors = d.batches.map(b =>
+        b.score < 0.3 ? COLORS.green : b.score < 0.6 ? COLORS.amber : COLORS.red);
+    chartInstances['drift-bar'] = new Chart(
+        document.getElementById('chart-drift-bar'), {
+            type: 'bar',
+            data: {
+                labels: d.batches.map(b => b.batch),
+                datasets: [{
+                    label: 'Drift Score',
+                    data: d.batches.map(b => b.score),
+                    backgroundColor: driftColors,
+                    borderRadius: 6,
+                }],
+            },
+            options: {
+                ...chartDefaults,
+                plugins: {
+                    ...chartDefaults.plugins,
+                    annotation: {
+                        annotations: {
+                            warn: { type: 'line', yMin: 0.3, yMax: 0.3, borderColor: COLORS.amber, borderDash: [6,4] },
+                            crit: { type: 'line', yMin: 0.6, yMax: 0.6, borderColor: COLORS.red, borderDash: [6,4] },
+                        }
+                    }
+                },
+                scales: {
+                    ...chartDefaults.scales,
+                    y: { ...chartDefaults.scales.y, min: 0, max: 1 },
+                },
+            },
+        }
+    );
+
+    // Cards
+    const cards = document.getElementById('drift-cards');
+    cards.innerHTML = d.batches.map(b => {
+        const color = b.score < 0.3 ? COLORS.green : b.score < 0.6 ? COLORS.amber : COLORS.red;
+        return `<div class="drift-card">
+            <h4>${b.batch}</h4>
+            <div class="drift-bar"><div class="drift-bar-fill" style="width:${b.score*100}%; background:${color};"></div></div>
+            <div class="drift-meta">
+                Score: <b>${b.score}</b> &bull; Severity: <b>${b.severity}</b> &bull;
+                Affected: <b>${b.affected}/${b.total_features}</b>
+            </div>
+            <div class="drift-meta" style="margin-top:4px;">Features: ${b.affected_names.join(', ') || 'None'}</div>
+        </div>`;
+    }).join('');
+}
+
+// ── Alerts ───────────────────────────────────────────────────────
+async function loadAlerts() {
+    const d = await fetchJSON(API.alerts);
+
+    // Pie chart
+    destroyChart('alert-pie');
+    const types = d.summary.alert_types;
+    const typeLabels = Object.keys(types).map(k => k.replace(/_/g, ' '));
+    const typeVals = Object.values(types);
+    const pieColors = [COLORS.red, COLORS.amber, COLORS.blue, COLORS.green, COLORS.purple, COLORS.cyan];
+    chartInstances['alert-pie'] = new Chart(
+        document.getElementById('chart-alert-pie'), {
+            type: 'doughnut',
+            data: {
+                labels: typeLabels,
+                datasets: [{ data: typeVals, backgroundColor: pieColors.slice(0, typeLabels.length), borderWidth: 0 }],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'right', labels: { color: '#94a3b8', padding: 12 } },
+                },
+            },
+        }
+    );
+
+    // Confidence line
+    destroyChart('conf-line');
+    chartInstances['conf-line'] = new Chart(
+        document.getElementById('chart-conf-line'), {
+            type: 'line',
+            data: {
+                labels: d.confidence_history.map((_, i) => i + 1),
+                datasets: [
+                    {
+                        label: 'Confidence',
+                        data: d.confidence_history,
+                        borderColor: COLORS.blue,
+                        backgroundColor: COLORS.blueAlpha,
+                        fill: true, tension: 0.3, pointRadius: 4,
+                    },
+                    {
+                        label: 'Threshold (' + d.threshold + ')',
+                        data: d.confidence_history.map(() => d.threshold),
+                        borderColor: COLORS.red, borderDash: [6, 4],
+                        borderWidth: 2, pointRadius: 0, fill: false,
+                    },
+                ],
+            },
+            options: {
+                ...chartDefaults,
+                scales: {
+                    ...chartDefaults.scales,
+                    y: { ...chartDefaults.scales.y, min: 0, max: 1 },
+                }
+            }
+        }
+    );
+
+    // Alert table
+    const tbody = document.getElementById('alert-tbody');
+    tbody.innerHTML = d.alerts.map(a => {
+        const badge = `<span class="badge ${a.severity}">${a.severity.toUpperCase()}</span>`;
+        const time = new Date(a.timestamp).toLocaleTimeString();
+        return `<tr><td>${badge}</td><td>${a.type.replace(/_/g, ' ')}</td><td>${a.message}</td><td>${time}</td></tr>`;
+    }).join('');
+}
+
+// ── Experiments ──────────────────────────────────────────────────
+async function loadExperiments() {
+    const d = await fetchJSON(API.experiments);
+
+    // Grouped bar
+    destroyChart('exp-bar');
+    chartInstances['exp-bar'] = new Chart(
+        document.getElementById('chart-exp-bar'), {
+            type: 'bar',
+            data: {
+                labels: d.systems,
+                datasets: [
+                    { label: 'MAE', data: d.mae, backgroundColor: COLORS.red },
+                    { label: 'RMSE', data: d.rmse, backgroundColor: COLORS.amber },
+                    { label: 'Lead Time', data: d.lead_time, backgroundColor: COLORS.green },
+                ],
+            },
+            options: { ...chartDefaults },
+        }
+    );
+
+    // Table
+    const tbody = document.getElementById('exp-tbody');
+    const bestIdx = d.mae.indexOf(Math.min(...d.mae));
+    tbody.innerHTML = d.systems.map((sys, i) => {
+        const cls = i === bestIdx ? 'best' : '';
+        return `<tr class="${cls}">
+            <td>${sys}</td><td>${d.mae[i]}</td><td>${d.rmse[i]}</td>
+            <td>${d.r_squared[i]}</td><td>${d.f1_score[i]}</td><td>${d.lead_time[i]} cycles</td>
+        </tr>`;
+    }).join('');
+}
+
+// ── Master refresh ───────────────────────────────────────────────
+async function refreshAll() {
+    document.getElementById('loading').style.display = 'flex';
+    try {
+        await Promise.all([
+            loadOverview(),
+            loadLatency(),
+            loadTokens(),
+            loadPredictions(),
+            loadDrift(),
+            loadAlerts(),
+            loadExperiments(),
+        ]);
+        document.getElementById('last-refresh').textContent =
+            new Date().toLocaleTimeString();
+    } catch (e) {
+        console.error('Dashboard refresh failed:', e);
+    } finally {
+        document.getElementById('loading').style.display = 'none';
+    }
+}
+
+// ── Init ─────────────────────────────────────────────────────────
+refreshAll();
+// Auto-refresh every 30 seconds
+setInterval(refreshAll, 30000);
+</script>
+</body>
+</html>

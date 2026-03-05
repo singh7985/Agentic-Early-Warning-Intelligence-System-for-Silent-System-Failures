@@ -101,13 +101,15 @@ class AlertingSystem:
     def add_alert_handler(self, handler: Callable):
         """Register a handler for alerts."""
         self.alert_handlers.append(handler)
-        logger.info(f"Registered alert handler: {handler.__name__}")
+        name = getattr(handler, '__name__', handler.__class__.__name__)
+        logger.info(f"Registered alert handler: {name}")
 
     def remove_alert_handler(self, handler: Callable):
         """Remove alert handler."""
         if handler in self.alert_handlers:
             self.alert_handlers.remove(handler)
-            logger.info(f"Removed alert handler: {handler.__name__}")
+            name = getattr(handler, '__name__', handler.__class__.__name__)
+            logger.info(f"Removed alert handler: {name}")
 
     def trigger_alert(self, alert: Alert):
         """Trigger an alert and notify handlers."""
@@ -127,7 +129,7 @@ class AlertingSystem:
             try:
                 handler(alert)
             except Exception as e:
-                logger.error(f"Error in alert handler {handler.__name__}: {e}")
+                logger.error(f"Error in alert handler {getattr(handler, '__name__', handler.__class__.__name__)}: {e}")
 
     def _find_similar_recent_alert(self, alert: Alert) -> Optional[Alert]:
         """Find similar alert within suppression window."""

@@ -149,6 +149,31 @@ class IsolationForestDetector:
         
         return anomalies
     
+    # ------------------------------------------------------------------
+    # sklearn-compatible API (used by MonitoringAgent.detect_anomalies)
+    # ------------------------------------------------------------------
+    def decision_function(self, X: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
+        """Return sklearn-style decision-function scores (positive = normal)."""
+        if not self.is_fitted_:
+            raise ValueError("Detector must be fitted before calling decision_function()")
+        if isinstance(X, pd.DataFrame):
+            X = X.values
+        X = np.asarray(X)
+        if self.normalize:
+            X = self.scaler_.transform(X)
+        return self.model_.decision_function(X)
+
+    def predict(self, X: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
+        """Return sklearn-style predictions (-1 = anomaly, 1 = normal)."""
+        if not self.is_fitted_:
+            raise ValueError("Detector must be fitted before calling predict()")
+        if isinstance(X, pd.DataFrame):
+            X = X.values
+        X = np.asarray(X)
+        if self.normalize:
+            X = self.scaler_.transform(X)
+        return self.model_.predict(X)
+
     def get_anomaly_scores(self, X: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
         """
         Get continuous anomaly scores.

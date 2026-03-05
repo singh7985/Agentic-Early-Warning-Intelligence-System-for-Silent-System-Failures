@@ -1,0 +1,6 @@
+{
+  "embedding_dim": 384,
+  "index_type": "Flat",
+  "metric": "cosine",
+  "normalize": true
+}

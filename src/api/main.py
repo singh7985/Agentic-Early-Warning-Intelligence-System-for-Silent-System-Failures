@@ -163,6 +163,8 @@ class AppState:
         self.models_loaded = False
         self.prediction_count = 0
         self.ml_model = None
+        self.rf_model = None
+        self.feature_cols = None
         self.rag_system = None
         self.agent_orchestrator = None
         self.drift_detector = None
@@ -181,15 +183,27 @@ async def startup_event():
     logger.info("Starting Agentic Early Warning System API...")
     
     try:
-        # Initialize ML model (placeholder)
-        logger.info("Loading ML models...")
+        # Load trained ML models from disk
+        import joblib, json
+        from pathlib import Path
+        
+        models_dir = Path(__file__).resolve().parent.parent.parent / "models"
+        logger.info(f"Loading ML models from {models_dir}...")
+        
+        state.ml_model = joblib.load(models_dir / "xgb_rul_baseline.joblib")
+        state.rf_model = joblib.load(models_dir / "rf_failure_baseline.joblib")
+        with open(models_dir / "baseline_features.json") as f:
+            state.feature_cols = json.load(f)
+        
         state.models_loaded = True
+        logger.info(f"✓ XGBoost loaded ({state.ml_model.n_features_in_} features)")
+        logger.info(f"✓ RF classifier loaded ({state.rf_model.n_features_in_} features)")
         
-        # Initialize RAG system (placeholder)
-        logger.info("Initializing RAG system...")
+        # Initialize RAG system (requires API key for LLM)
+        logger.info("RAG system: available when API key configured")
         
-        # Initialize agent orchestrator (placeholder)
-        logger.info("Initializing agent orchestrator...")
+        # Initialize agent orchestrator (requires running agents)
+        logger.info("Agent orchestrator: available when agents configured")
         
         # Initialize drift detector
         from src.mlops.drift_detection import DriftDetector
@@ -273,9 +287,30 @@ async def predict_rul(
         else:
             system_variant = "ml_only"
         
-        # Simulate prediction (in production, use actual models)
-        predicted_rul = np.random.uniform(50, 150)
-        confidence = np.random.uniform(0.7, 0.95)
+        # Build feature vector from sensor data for real model prediction
+        sensor_dict = {
+            'op_setting_1': sensor_data.operational_setting_1,
+            'op_setting_2': sensor_data.operational_setting_2,
+            'op_setting_3': sensor_data.operational_setting_3,
+        }
+        for i in range(1, 22):
+            attr = f'sensor_{i}'
+            if hasattr(sensor_data, attr):
+                sensor_dict[attr] = getattr(sensor_data, attr)
+        
+        # Build feature array in the exact order the model expects
+        import pandas as pd
+        row_df = pd.DataFrame([sensor_dict])
+        # Add zero-filled rolling features the model expects
+        for col in state.feature_cols:
+            if col not in row_df.columns:
+                row_df[col] = 0.0
+        X_input = row_df[state.feature_cols].values
+        
+        # Real model predictions
+        predicted_rul = float(np.clip(state.ml_model.predict(X_input)[0], 1, 200))
+        fail_proba = float(state.rf_model.predict_proba(X_input)[0, 1])
+        confidence = 0.5 + 0.5 * fail_proba  # Higher failure proba → higher confidence in warning
         
         # Determine risk level
         if predicted_rul < 30:
