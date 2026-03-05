@@ -605,1502 +605,1502 @@
     {
       "component": "ml_prediction",
       "latency_ms": 23.463404498842955,
-      "timestamp": "2026-03-04T22:59:45.203921"
+      "timestamp": "2026-03-05T02:59:07.890742"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 361.2145717101025,
-      "timestamp": "2026-03-04T22:59:45.203925"
+      "timestamp": "2026-03-05T02:59:07.890746"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 105.33965548363595,
-      "timestamp": "2026-03-04T22:59:45.203928"
+      "timestamp": "2026-03-05T02:59:07.890748"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 8.479814595730259,
-      "timestamp": "2026-03-04T22:59:45.204620"
+      "timestamp": "2026-03-05T02:59:07.891536"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 7.180652233041681,
-      "timestamp": "2026-03-04T22:59:45.204621"
+      "timestamp": "2026-03-05T02:59:07.891542"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 160.89846915839516,
-      "timestamp": "2026-03-04T22:59:45.204623"
+      "timestamp": "2026-03-05T02:59:07.891543"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 1.0399653999569312,
-      "timestamp": "2026-03-04T22:59:45.204667"
+      "timestamp": "2026-03-05T02:59:07.891584"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 420.42689701899747,
-      "timestamp": "2026-03-04T22:59:45.204668"
+      "timestamp": "2026-03-05T02:59:07.891586"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 142.914363468374,
-      "timestamp": "2026-03-04T22:59:45.204669"
+      "timestamp": "2026-03-05T02:59:07.891587"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 10.130571141612853,
-      "timestamp": "2026-03-04T22:59:45.204702"
+      "timestamp": "2026-03-05T02:59:07.891620"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 43.53044753525725,
-      "timestamp": "2026-03-04T22:59:45.204703"
+      "timestamp": "2026-03-05T02:59:07.891621"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 59.51422646886836,
-      "timestamp": "2026-03-04T22:59:45.204704"
+      "timestamp": "2026-03-05T02:59:07.891622"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 47.318543694989934,
-      "timestamp": "2026-03-04T22:59:45.204734"
+      "timestamp": "2026-03-05T02:59:07.891657"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 18.02814344728064,
-      "timestamp": "2026-03-04T22:59:45.204735"
+      "timestamp": "2026-03-05T02:59:07.891658"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 27.64124096019218,
-      "timestamp": "2026-03-04T22:59:45.204736"
+      "timestamp": "2026-03-05T02:59:07.891659"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 48.16728384534159,
-      "timestamp": "2026-03-04T22:59:45.204764"
+      "timestamp": "2026-03-05T02:59:07.891690"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 57.84175917246043,
-      "timestamp": "2026-03-04T22:59:45.204765"
+      "timestamp": "2026-03-05T02:59:07.891691"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 327.05732203677564,
-      "timestamp": "2026-03-04T22:59:45.204766"
+      "timestamp": "2026-03-05T02:59:07.891692"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 29.937257192323607,
-      "timestamp": "2026-03-04T22:59:45.204793"
+      "timestamp": "2026-03-05T02:59:07.891721"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 1.6024471933498947,
-      "timestamp": "2026-03-04T22:59:45.204794"
+      "timestamp": "2026-03-05T02:59:07.891722"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 228.06375031484822,
-      "timestamp": "2026-03-04T22:59:45.204795"
+      "timestamp": "2026-03-05T02:59:07.891723"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 13.12631254476889,
-      "timestamp": "2026-03-04T22:59:45.205288"
+      "timestamp": "2026-03-05T02:59:07.892290"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 33.09444650709869,
-      "timestamp": "2026-03-04T22:59:45.205290"
+      "timestamp": "2026-03-05T02:59:07.892291"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 91.97481123903475,
-      "timestamp": "2026-03-04T22:59:45.205291"
+      "timestamp": "2026-03-05T02:59:07.892293"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 24.801826802468195,
-      "timestamp": "2026-03-04T22:59:45.205321"
+      "timestamp": "2026-03-05T02:59:07.892338"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 24.141791989775378,
-      "timestamp": "2026-03-04T22:59:45.205322"
+      "timestamp": "2026-03-05T02:59:07.892339"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 112.63786413499295,
-      "timestamp": "2026-03-04T22:59:45.205323"
+      "timestamp": "2026-03-05T02:59:07.892340"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 10.219429975395288,
-      "timestamp": "2026-03-04T22:59:45.205350"
+      "timestamp": "2026-03-05T02:59:07.892374"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 419.1368559283472,
-      "timestamp": "2026-03-04T22:59:45.205352"
+      "timestamp": "2026-03-05T02:59:07.892376"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 119.37963017105126,
-      "timestamp": "2026-03-04T22:59:45.205353"
+      "timestamp": "2026-03-05T02:59:07.892377"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 64.96401511370334,
-      "timestamp": "2026-03-04T22:59:45.205379"
+      "timestamp": "2026-03-05T02:59:07.892406"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 47.43933812543812,
-      "timestamp": "2026-03-04T22:59:45.205380"
+      "timestamp": "2026-03-05T02:59:07.892407"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 67.60024818444944,
-      "timestamp": "2026-03-04T22:59:45.205381"
+      "timestamp": "2026-03-05T02:59:07.892408"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 24.60651458971093,
-      "timestamp": "2026-03-04T22:59:45.205407"
+      "timestamp": "2026-03-05T02:59:07.892437"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 37.98725318505908,
-      "timestamp": "2026-03-04T22:59:45.205408"
+      "timestamp": "2026-03-05T02:59:07.892438"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 141.16462921927473,
-      "timestamp": "2026-03-04T22:59:45.205409"
+      "timestamp": "2026-03-05T02:59:07.892439"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 7.594907391031443,
-      "timestamp": "2026-03-04T22:59:45.205435"
+      "timestamp": "2026-03-05T02:59:07.892467"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 194.45803149296773,
-      "timestamp": "2026-03-04T22:59:45.205436"
+      "timestamp": "2026-03-05T02:59:07.892468"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 6.198069504904721,
-      "timestamp": "2026-03-04T22:59:45.205437"
+      "timestamp": "2026-03-05T02:59:07.892469"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 11.076972025294298,
-      "timestamp": "2026-03-04T22:59:45.205461"
+      "timestamp": "2026-03-05T02:59:07.892496"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 0.664490445112257,
-      "timestamp": "2026-03-04T22:59:45.205462"
+      "timestamp": "2026-03-05T02:59:07.892497"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 135.19174219889007,
-      "timestamp": "2026-03-04T22:59:45.205463"
+      "timestamp": "2026-03-05T02:59:07.892499"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 73.76072630217567,
-      "timestamp": "2026-03-04T22:59:45.205488"
+      "timestamp": "2026-03-05T02:59:07.892530"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 9.231511861655562,
-      "timestamp": "2026-03-04T22:59:45.205489"
+      "timestamp": "2026-03-05T02:59:07.892531"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 35.5114137932986,
-      "timestamp": "2026-03-04T22:59:45.205490"
+      "timestamp": "2026-03-05T02:59:07.892532"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 48.815059585618705,
-      "timestamp": "2026-03-04T22:59:45.205513"
+      "timestamp": "2026-03-05T02:59:07.892559"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 48.218256150156115,
-      "timestamp": "2026-03-04T22:59:45.205514"
+      "timestamp": "2026-03-05T02:59:07.892560"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 5.2534452643826315,
-      "timestamp": "2026-03-04T22:59:45.205515"
+      "timestamp": "2026-03-05T02:59:07.892561"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 50.744467946301,
-      "timestamp": "2026-03-04T22:59:45.205538"
+      "timestamp": "2026-03-05T02:59:07.892587"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 261.8702294881818,
-      "timestamp": "2026-03-04T22:59:45.205539"
+      "timestamp": "2026-03-05T02:59:07.892588"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 51.12529067010478,
-      "timestamp": "2026-03-04T22:59:45.205540"
+      "timestamp": "2026-03-05T02:59:07.892589"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 71.5196376538432,
-      "timestamp": "2026-03-04T22:59:45.205563"
+      "timestamp": "2026-03-05T02:59:07.892614"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 98.86649938629945,
-      "timestamp": "2026-03-04T22:59:45.205564"
+      "timestamp": "2026-03-05T02:59:07.892615"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 117.91119733770915,
-      "timestamp": "2026-03-04T22:59:45.205565"
+      "timestamp": "2026-03-05T02:59:07.892616"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 27.890709695421368,
-      "timestamp": "2026-03-04T22:59:45.205587"
+      "timestamp": "2026-03-05T02:59:07.892641"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 3.0897328788136473,
-      "timestamp": "2026-03-04T22:59:45.205588"
+      "timestamp": "2026-03-05T02:59:07.892642"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 9.133394815349266,
-      "timestamp": "2026-03-04T22:59:45.205589"
+      "timestamp": "2026-03-05T02:59:07.892643"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 18.869835439754993,
-      "timestamp": "2026-03-04T22:59:45.205615"
+      "timestamp": "2026-03-05T02:59:07.892668"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 85.2524612561028,
-      "timestamp": "2026-03-04T22:59:45.205616"
+      "timestamp": "2026-03-05T02:59:07.892669"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 190.50124238767805,
-      "timestamp": "2026-03-04T22:59:45.205617"
+      "timestamp": "2026-03-05T02:59:07.892670"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 12.990257845869701,
-      "timestamp": "2026-03-04T22:59:45.205641"
+      "timestamp": "2026-03-05T02:59:07.892695"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 9.612513426021163,
-      "timestamp": "2026-03-04T22:59:45.205642"
+      "timestamp": "2026-03-05T02:59:07.892696"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 27.371224310964564,
-      "timestamp": "2026-03-04T22:59:45.205643"
+      "timestamp": "2026-03-05T02:59:07.892697"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 82.54435402422847,
-      "timestamp": "2026-03-04T22:59:45.205665"
+      "timestamp": "2026-03-05T02:59:07.892722"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 120.41930286246372,
-      "timestamp": "2026-03-04T22:59:45.205666"
+      "timestamp": "2026-03-05T02:59:07.892723"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 164.12157844166504,
-      "timestamp": "2026-03-04T22:59:45.205671"
+      "timestamp": "2026-03-05T02:59:07.892725"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 111.54067026177805,
-      "timestamp": "2026-03-04T22:59:45.205699"
+      "timestamp": "2026-03-05T02:59:07.892753"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 93.01198823594063,
-      "timestamp": "2026-03-04T22:59:45.205700"
+      "timestamp": "2026-03-05T02:59:07.892755"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 131.78786330428528,
-      "timestamp": "2026-03-04T22:59:45.205701"
+      "timestamp": "2026-03-05T02:59:07.892756"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 12.934337306969068,
-      "timestamp": "2026-03-04T22:59:45.205723"
+      "timestamp": "2026-03-05T02:59:07.892780"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 66.84692312983373,
-      "timestamp": "2026-03-04T22:59:45.205724"
+      "timestamp": "2026-03-05T02:59:07.892781"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 136.3063781311156,
-      "timestamp": "2026-03-04T22:59:45.205725"
+      "timestamp": "2026-03-05T02:59:07.892783"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 35.74380796692779,
-      "timestamp": "2026-03-04T22:59:45.206037"
+      "timestamp": "2026-03-05T02:59:07.893418"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 64.83279851024055,
-      "timestamp": "2026-03-04T22:59:45.206038"
+      "timestamp": "2026-03-05T02:59:07.893423"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 20.093387062065958,
-      "timestamp": "2026-03-04T22:59:45.206039"
+      "timestamp": "2026-03-05T02:59:07.893424"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 9.213635483141406,
-      "timestamp": "2026-03-04T22:59:45.206069"
+      "timestamp": "2026-03-05T02:59:07.893591"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 29.625393498083625,
-      "timestamp": "2026-03-04T22:59:45.206070"
+      "timestamp": "2026-03-05T02:59:07.893592"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 65.33409578653584,
-      "timestamp": "2026-03-04T22:59:45.206072"
+      "timestamp": "2026-03-05T02:59:07.893594"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 14.645814952955424,
-      "timestamp": "2026-03-04T22:59:45.206098"
+      "timestamp": "2026-03-05T02:59:07.893652"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 34.023056825050766,
-      "timestamp": "2026-03-04T22:59:45.206099"
+      "timestamp": "2026-03-05T02:59:07.893653"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 95.33831810460832,
-      "timestamp": "2026-03-04T22:59:45.206100"
+      "timestamp": "2026-03-05T02:59:07.893654"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 304.6302556079224,
-      "timestamp": "2026-03-04T22:59:45.206126"
+      "timestamp": "2026-03-05T02:59:07.893760"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 37.23730428230012,
-      "timestamp": "2026-03-04T22:59:45.206127"
+      "timestamp": "2026-03-05T02:59:07.893761"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 300.4526879281518,
-      "timestamp": "2026-03-04T22:59:45.206128"
+      "timestamp": "2026-03-05T02:59:07.893762"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 21.161441243831884,
-      "timestamp": "2026-03-04T22:59:45.206487"
+      "timestamp": "2026-03-05T02:59:07.894554"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 120.72988378034131,
-      "timestamp": "2026-03-04T22:59:45.206489"
+      "timestamp": "2026-03-05T02:59:07.894555"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 91.33130022911897,
-      "timestamp": "2026-03-04T22:59:45.206490"
+      "timestamp": "2026-03-05T02:59:07.894556"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 40.247876931455814,
-      "timestamp": "2026-03-04T22:59:45.206531"
+      "timestamp": "2026-03-05T02:59:07.894589"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 107.78366650231378,
-      "timestamp": "2026-03-04T22:59:45.206532"
+      "timestamp": "2026-03-05T02:59:07.894591"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 6.7447654385930225,
-      "timestamp": "2026-03-04T22:59:45.206533"
+      "timestamp": "2026-03-05T02:59:07.894592"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 81.26306126260499,
-      "timestamp": "2026-03-04T22:59:45.206564"
+      "timestamp": "2026-03-05T02:59:07.894619"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 76.25348018140077,
-      "timestamp": "2026-03-04T22:59:45.206565"
+      "timestamp": "2026-03-05T02:59:07.894620"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 327.9798068794377,
-      "timestamp": "2026-03-04T22:59:45.206566"
+      "timestamp": "2026-03-05T02:59:07.894621"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 19.34051468336983,
-      "timestamp": "2026-03-04T22:59:45.206594"
+      "timestamp": "2026-03-05T02:59:07.894648"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 24.771852792906785,
-      "timestamp": "2026-03-04T22:59:45.206595"
+      "timestamp": "2026-03-05T02:59:07.894649"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 3.330380783547616,
-      "timestamp": "2026-03-04T22:59:45.206596"
+      "timestamp": "2026-03-05T02:59:07.894650"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 62.0923069027243,
-      "timestamp": "2026-03-04T22:59:45.206622"
+      "timestamp": "2026-03-05T02:59:07.894682"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 198.9730291173027,
-      "timestamp": "2026-03-04T22:59:45.206623"
+      "timestamp": "2026-03-05T02:59:07.894683"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 34.298615359635725,
-      "timestamp": "2026-03-04T22:59:45.206624"
+      "timestamp": "2026-03-05T02:59:07.894685"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 25.339357891858917,
-      "timestamp": "2026-03-04T22:59:45.206650"
+      "timestamp": "2026-03-05T02:59:07.894710"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 87.51545132063109,
-      "timestamp": "2026-03-04T22:59:45.206651"
+      "timestamp": "2026-03-05T02:59:07.894711"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 145.4696858588238,
-      "timestamp": "2026-03-04T22:59:45.206652"
+      "timestamp": "2026-03-05T02:59:07.894712"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 129.30951985753617,
-      "timestamp": "2026-03-04T22:59:45.206677"
+      "timestamp": "2026-03-05T02:59:07.894737"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 251.80004485931929,
-      "timestamp": "2026-03-04T22:59:45.206678"
+      "timestamp": "2026-03-05T02:59:07.894738"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 23.866189604919114,
-      "timestamp": "2026-03-04T22:59:45.206679"
+      "timestamp": "2026-03-05T02:59:07.894739"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 40.506618034325406,
-      "timestamp": "2026-03-04T22:59:45.206704"
+      "timestamp": "2026-03-05T02:59:07.894763"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 90.51352922327352,
-      "timestamp": "2026-03-04T22:59:45.206705"
+      "timestamp": "2026-03-05T02:59:07.894764"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 22.15016363503225,
-      "timestamp": "2026-03-04T22:59:45.206706"
+      "timestamp": "2026-03-05T02:59:07.894765"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 107.12389933572332,
-      "timestamp": "2026-03-04T22:59:45.206732"
+      "timestamp": "2026-03-05T02:59:07.894790"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 25.095136954519536,
-      "timestamp": "2026-03-04T22:59:45.206733"
+      "timestamp": "2026-03-05T02:59:07.894792"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 26.155018278137288,
-      "timestamp": "2026-03-04T22:59:45.206734"
+      "timestamp": "2026-03-05T02:59:07.894793"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 97.00982729817855,
-      "timestamp": "2026-03-04T22:59:45.206759"
+      "timestamp": "2026-03-05T02:59:07.894817"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 62.20410454083166,
-      "timestamp": "2026-03-04T22:59:45.206760"
+      "timestamp": "2026-03-05T02:59:07.894818"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 174.97646575532218,
-      "timestamp": "2026-03-04T22:59:45.206761"
+      "timestamp": "2026-03-05T02:59:07.894819"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 76.93514655835237,
-      "timestamp": "2026-03-04T22:59:45.206788"
+      "timestamp": "2026-03-05T02:59:07.894843"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 132.6721703985098,
-      "timestamp": "2026-03-04T22:59:45.206789"
+      "timestamp": "2026-03-05T02:59:07.894844"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 69.53093747308314,
-      "timestamp": "2026-03-04T22:59:45.206790"
+      "timestamp": "2026-03-05T02:59:07.894845"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 16.698237381673234,
-      "timestamp": "2026-03-04T22:59:45.206814"
+      "timestamp": "2026-03-05T02:59:07.894871"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 43.724053269140576,
-      "timestamp": "2026-03-04T22:59:45.206815"
+      "timestamp": "2026-03-05T02:59:07.894872"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 53.18246748471307,
-      "timestamp": "2026-03-04T22:59:45.206816"
+      "timestamp": "2026-03-05T02:59:07.894873"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 62.27086444492694,
-      "timestamp": "2026-03-04T22:59:45.206840"
+      "timestamp": "2026-03-05T02:59:07.894898"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 32.498851086336714,
-      "timestamp": "2026-03-04T22:59:45.206841"
+      "timestamp": "2026-03-05T02:59:07.894899"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 31.490792713446755,
-      "timestamp": "2026-03-04T22:59:45.206842"
+      "timestamp": "2026-03-05T02:59:07.894900"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 53.590664408488124,
-      "timestamp": "2026-03-04T22:59:45.206866"
+      "timestamp": "2026-03-05T02:59:07.894923"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 100.80531667047089,
-      "timestamp": "2026-03-04T22:59:45.206867"
+      "timestamp": "2026-03-05T02:59:07.894924"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 7.868564915872839,
-      "timestamp": "2026-03-04T22:59:45.206868"
+      "timestamp": "2026-03-05T02:59:07.894925"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 44.5641581468924,
-      "timestamp": "2026-03-04T22:59:45.206896"
+      "timestamp": "2026-03-05T02:59:07.894949"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 462.97725904674894,
-      "timestamp": "2026-03-04T22:59:45.206897"
+      "timestamp": "2026-03-05T02:59:07.894951"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 53.35815474203042,
-      "timestamp": "2026-03-04T22:59:45.206899"
+      "timestamp": "2026-03-05T02:59:07.894952"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 21.54517752955404,
-      "timestamp": "2026-03-04T22:59:45.206926"
+      "timestamp": "2026-03-05T02:59:07.894976"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 124.31144310620293,
-      "timestamp": "2026-03-04T22:59:45.206926"
+      "timestamp": "2026-03-05T02:59:07.894977"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 88.43260023357797,
-      "timestamp": "2026-03-04T22:59:45.206927"
+      "timestamp": "2026-03-05T02:59:07.894978"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 1.2308240540344306,
-      "timestamp": "2026-03-04T22:59:45.206950"
+      "timestamp": "2026-03-05T02:59:07.895002"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 124.43625435543287,
-      "timestamp": "2026-03-04T22:59:45.206951"
+      "timestamp": "2026-03-05T02:59:07.895003"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 15.594685617985816,
-      "timestamp": "2026-03-04T22:59:45.206952"
+      "timestamp": "2026-03-05T02:59:07.895004"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 123.17549423169207,
-      "timestamp": "2026-03-04T22:59:45.206975"
+      "timestamp": "2026-03-05T02:59:07.895029"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 55.47448757968401,
-      "timestamp": "2026-03-04T22:59:45.206976"
+      "timestamp": "2026-03-05T02:59:07.895030"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 1.2461852297555507,
-      "timestamp": "2026-03-04T22:59:45.206977"
+      "timestamp": "2026-03-05T02:59:07.895031"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 170.0421008061028,
-      "timestamp": "2026-03-04T22:59:45.207000"
+      "timestamp": "2026-03-05T02:59:07.895054"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 397.64825713562465,
-      "timestamp": "2026-03-04T22:59:45.207001"
+      "timestamp": "2026-03-05T02:59:07.895055"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 153.3909613743535,
-      "timestamp": "2026-03-04T22:59:45.207004"
+      "timestamp": "2026-03-05T02:59:07.895056"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 19.057311571535855,
-      "timestamp": "2026-03-04T22:59:45.207027"
+      "timestamp": "2026-03-05T02:59:07.895081"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 22.286233955490573,
-      "timestamp": "2026-03-04T22:59:45.207028"
+      "timestamp": "2026-03-05T02:59:07.895082"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 65.09895936481823,
-      "timestamp": "2026-03-04T22:59:45.207029"
+      "timestamp": "2026-03-05T02:59:07.895083"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 42.205616821782776,
-      "timestamp": "2026-03-04T22:59:45.207053"
+      "timestamp": "2026-03-05T02:59:07.895107"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 12.267383681918746,
-      "timestamp": "2026-03-04T22:59:45.207054"
+      "timestamp": "2026-03-05T02:59:07.895108"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 76.36245724141742,
-      "timestamp": "2026-03-04T22:59:45.207055"
+      "timestamp": "2026-03-05T02:59:07.895109"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 36.524766249075185,
-      "timestamp": "2026-03-04T22:59:45.207078"
+      "timestamp": "2026-03-05T02:59:07.895133"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 251.83303654809532,
-      "timestamp": "2026-03-04T22:59:45.207079"
+      "timestamp": "2026-03-05T02:59:07.895134"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 108.0027398682936,
-      "timestamp": "2026-03-04T22:59:45.207080"
+      "timestamp": "2026-03-05T02:59:07.895135"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 40.23970146105568,
-      "timestamp": "2026-03-04T22:59:45.207103"
+      "timestamp": "2026-03-05T02:59:07.895159"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 42.20421856354989,
-      "timestamp": "2026-03-04T22:59:45.207104"
+      "timestamp": "2026-03-05T02:59:07.895160"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 43.547953047163084,
-      "timestamp": "2026-03-04T22:59:45.207105"
+      "timestamp": "2026-03-05T02:59:07.895161"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 4.255795838234977,
-      "timestamp": "2026-03-04T22:59:45.207127"
+      "timestamp": "2026-03-05T02:59:07.895184"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 0.6238020981139585,
-      "timestamp": "2026-03-04T22:59:45.207128"
+      "timestamp": "2026-03-05T02:59:07.895185"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 79.08621073584726,
-      "timestamp": "2026-03-04T22:59:45.207129"
+      "timestamp": "2026-03-05T02:59:07.895186"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 25.27398254998768,
-      "timestamp": "2026-03-04T22:59:45.207151"
+      "timestamp": "2026-03-05T02:59:07.895209"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 6.2523122195952645,
-      "timestamp": "2026-03-04T22:59:45.207152"
+      "timestamp": "2026-03-05T02:59:07.895210"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 174.1588099550918,
-      "timestamp": "2026-03-04T22:59:45.207153"
+      "timestamp": "2026-03-05T02:59:07.895211"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 28.854871020622287,
-      "timestamp": "2026-03-04T22:59:45.207180"
+      "timestamp": "2026-03-05T02:59:07.895240"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 133.77856254608668,
-      "timestamp": "2026-03-04T22:59:45.207181"
+      "timestamp": "2026-03-05T02:59:07.895241"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 31.81793184090269,
-      "timestamp": "2026-03-04T22:59:45.207182"
+      "timestamp": "2026-03-05T02:59:07.895242"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 91.29689843231354,
-      "timestamp": "2026-03-04T22:59:45.207203"
+      "timestamp": "2026-03-05T02:59:07.895265"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 236.28086059955504,
-      "timestamp": "2026-03-04T22:59:45.207204"
+      "timestamp": "2026-03-05T02:59:07.895266"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 23.041382078455396,
-      "timestamp": "2026-03-04T22:59:45.207205"
+      "timestamp": "2026-03-05T02:59:07.895267"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 38.51031346236768,
-      "timestamp": "2026-03-04T22:59:45.207226"
+      "timestamp": "2026-03-05T02:59:07.895289"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 47.459024315242075,
-      "timestamp": "2026-03-04T22:59:45.207227"
+      "timestamp": "2026-03-05T02:59:07.895290"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 140.75995889257308,
-      "timestamp": "2026-03-04T22:59:45.207228"
+      "timestamp": "2026-03-05T02:59:07.895291"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 4.460551449494864,
-      "timestamp": "2026-03-04T22:59:45.207249"
+      "timestamp": "2026-03-05T02:59:07.895314"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 6.367811509237129,
-      "timestamp": "2026-03-04T22:59:45.207249"
+      "timestamp": "2026-03-05T02:59:07.895315"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 60.63271525004168,
-      "timestamp": "2026-03-04T22:59:45.207250"
+      "timestamp": "2026-03-05T02:59:07.895316"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 64.74802814583421,
-      "timestamp": "2026-03-04T22:59:45.207272"
+      "timestamp": "2026-03-05T02:59:07.895339"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 446.82684104399914,
-      "timestamp": "2026-03-04T22:59:45.207273"
+      "timestamp": "2026-03-05T02:59:07.895340"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 58.1032895384285,
-      "timestamp": "2026-03-04T22:59:45.207275"
+      "timestamp": "2026-03-05T02:59:07.895341"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 15.792573271806864,
-      "timestamp": "2026-03-04T22:59:45.207297"
+      "timestamp": "2026-03-05T02:59:07.895364"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 69.35801175279616,
-      "timestamp": "2026-03-04T22:59:45.207298"
+      "timestamp": "2026-03-05T02:59:07.895365"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 6.536413486693592,
-      "timestamp": "2026-03-04T22:59:45.207299"
+      "timestamp": "2026-03-05T02:59:07.895366"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 27.958311007567648,
-      "timestamp": "2026-03-04T22:59:45.207320"
+      "timestamp": "2026-03-05T02:59:07.895388"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 139.96267466213132,
-      "timestamp": "2026-03-04T22:59:45.207321"
+      "timestamp": "2026-03-05T02:59:07.895389"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 4.7964432742962275,
-      "timestamp": "2026-03-04T22:59:45.207322"
+      "timestamp": "2026-03-05T02:59:07.895390"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 13.707854712674086,
-      "timestamp": "2026-03-04T22:59:45.207344"
+      "timestamp": "2026-03-05T02:59:07.895413"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 11.829135155488816,
-      "timestamp": "2026-03-04T22:59:45.207345"
+      "timestamp": "2026-03-05T02:59:07.895414"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 16.156174347451454,
-      "timestamp": "2026-03-04T22:59:45.207346"
+      "timestamp": "2026-03-05T02:59:07.895415"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 36.35549781858239,
-      "timestamp": "2026-03-04T22:59:45.207367"
+      "timestamp": "2026-03-05T02:59:07.895440"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 128.4419348865793,
-      "timestamp": "2026-03-04T22:59:45.207368"
+      "timestamp": "2026-03-05T02:59:07.895441"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 45.76969829733609,
-      "timestamp": "2026-03-04T22:59:45.207369"
+      "timestamp": "2026-03-05T02:59:07.895442"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 22.00070646615562,
-      "timestamp": "2026-03-04T22:59:45.207390"
+      "timestamp": "2026-03-05T02:59:07.895465"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 170.18182173080558,
-      "timestamp": "2026-03-04T22:59:45.207391"
+      "timestamp": "2026-03-05T02:59:07.895466"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 1.1598463776643422,
-      "timestamp": "2026-03-04T22:59:45.207392"
+      "timestamp": "2026-03-05T02:59:07.895467"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 18.6557028227006,
-      "timestamp": "2026-03-04T22:59:45.207413"
+      "timestamp": "2026-03-05T02:59:07.895490"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 466.541293927687,
-      "timestamp": "2026-03-04T22:59:45.207414"
+      "timestamp": "2026-03-05T02:59:07.895491"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 15.421783995067946,
-      "timestamp": "2026-03-04T22:59:45.207415"
+      "timestamp": "2026-03-05T02:59:07.895492"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 21.255667929392065,
-      "timestamp": "2026-03-04T22:59:45.207436"
+      "timestamp": "2026-03-05T02:59:07.895515"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 74.98548269218848,
-      "timestamp": "2026-03-04T22:59:45.207437"
+      "timestamp": "2026-03-05T02:59:07.895516"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 83.93405699578368,
-      "timestamp": "2026-03-04T22:59:45.207438"
+      "timestamp": "2026-03-05T02:59:07.895517"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 108.87715108817311,
-      "timestamp": "2026-03-04T22:59:45.207459"
+      "timestamp": "2026-03-05T02:59:07.895543"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 36.27761059556351,
-      "timestamp": "2026-03-04T22:59:45.207460"
+      "timestamp": "2026-03-05T02:59:07.895544"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 1.2338290860151104,
-      "timestamp": "2026-03-04T22:59:45.207461"
+      "timestamp": "2026-03-05T02:59:07.895545"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 38.75881657197506,
-      "timestamp": "2026-03-04T22:59:45.207482"
+      "timestamp": "2026-03-05T02:59:07.895567"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 138.22781017969427,
-      "timestamp": "2026-03-04T22:59:45.207483"
+      "timestamp": "2026-03-05T02:59:07.895568"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 76.5380167003577,
-      "timestamp": "2026-03-04T22:59:45.207484"
+      "timestamp": "2026-03-05T02:59:07.895569"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 44.067368890364534,
-      "timestamp": "2026-03-04T22:59:45.207977"
+      "timestamp": "2026-03-05T02:59:07.896112"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 338.0706546464582,
-      "timestamp": "2026-03-04T22:59:45.207979"
+      "timestamp": "2026-03-05T02:59:07.896114"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 68.54259564620355,
-      "timestamp": "2026-03-04T22:59:45.207980"
+      "timestamp": "2026-03-05T02:59:07.896115"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 30.647798702554564,
-      "timestamp": "2026-03-04T22:59:45.208008"
+      "timestamp": "2026-03-05T02:59:07.896154"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 94.65772326915842,
-      "timestamp": "2026-03-04T22:59:45.208010"
+      "timestamp": "2026-03-05T02:59:07.896155"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 227.05017169863993,
-      "timestamp": "2026-03-04T22:59:45.208011"
+      "timestamp": "2026-03-05T02:59:07.896156"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 117.87880918849596,
-      "timestamp": "2026-03-04T22:59:45.208040"
+      "timestamp": "2026-03-05T02:59:07.896187"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 26.147551312854,
-      "timestamp": "2026-03-04T22:59:45.208041"
+      "timestamp": "2026-03-05T02:59:07.896188"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 5.750732424252561,
-      "timestamp": "2026-03-04T22:59:45.208042"
+      "timestamp": "2026-03-05T02:59:07.896189"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 4.960250582787707,
-      "timestamp": "2026-03-04T22:59:45.208337"
+      "timestamp": "2026-03-05T02:59:07.896453"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 137.86498470926006,
-      "timestamp": "2026-03-04T22:59:45.208338"
+      "timestamp": "2026-03-05T02:59:07.896454"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 5.907970155714162,
-      "timestamp": "2026-03-04T22:59:45.208339"
+      "timestamp": "2026-03-05T02:59:07.896455"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 1.1773501590355755,
-      "timestamp": "2026-03-04T22:59:45.208376"
+      "timestamp": "2026-03-05T02:59:07.896487"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 202.14366074231503,
-      "timestamp": "2026-03-04T22:59:45.208377"
+      "timestamp": "2026-03-05T02:59:07.896488"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 26.486677347170357,
-      "timestamp": "2026-03-04T22:59:45.208378"
+      "timestamp": "2026-03-05T02:59:07.896490"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 49.56995882166101,
-      "timestamp": "2026-03-04T22:59:45.208411"
+      "timestamp": "2026-03-05T02:59:07.896519"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 251.92989769043362,
-      "timestamp": "2026-03-04T22:59:45.208412"
+      "timestamp": "2026-03-05T02:59:07.896520"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 106.26348630115203,
-      "timestamp": "2026-03-04T22:59:45.208413"
+      "timestamp": "2026-03-05T02:59:07.896521"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 69.43781980027124,
-      "timestamp": "2026-03-04T22:59:45.208438"
+      "timestamp": "2026-03-05T02:59:07.896546"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 197.30510198921036,
-      "timestamp": "2026-03-04T22:59:45.208439"
+      "timestamp": "2026-03-05T02:59:07.896547"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 372.5603912112184,
-      "timestamp": "2026-03-04T22:59:45.208441"
+      "timestamp": "2026-03-05T02:59:07.896548"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 133.5068962199663,
-      "timestamp": "2026-03-04T22:59:45.208466"
+      "timestamp": "2026-03-05T02:59:07.896572"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 234.5806988599499,
-      "timestamp": "2026-03-04T22:59:45.208467"
+      "timestamp": "2026-03-05T02:59:07.896573"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 44.828448755372776,
-      "timestamp": "2026-03-04T22:59:45.208468"
+      "timestamp": "2026-03-05T02:59:07.896574"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 5.441875940335901,
-      "timestamp": "2026-03-04T22:59:45.208491"
+      "timestamp": "2026-03-05T02:59:07.896598"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 279.41348170411584,
-      "timestamp": "2026-03-04T22:59:45.208492"
+      "timestamp": "2026-03-05T02:59:07.896599"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 56.29659918054035,
-      "timestamp": "2026-03-04T22:59:45.208493"
+      "timestamp": "2026-03-05T02:59:07.896600"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 5.267186187821852,
-      "timestamp": "2026-03-04T22:59:45.208516"
+      "timestamp": "2026-03-05T02:59:07.896624"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 6.596252893632617,
-      "timestamp": "2026-03-04T22:59:45.208517"
+      "timestamp": "2026-03-05T02:59:07.896625"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 254.644982152019,
-      "timestamp": "2026-03-04T22:59:45.208518"
+      "timestamp": "2026-03-05T02:59:07.896626"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 149.84861915941428,
-      "timestamp": "2026-03-04T22:59:45.208540"
+      "timestamp": "2026-03-05T02:59:07.896656"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 360.95394481247877,
-      "timestamp": "2026-03-04T22:59:45.208541"
+      "timestamp": "2026-03-05T02:59:07.896657"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 68.15978328442111,
-      "timestamp": "2026-03-04T22:59:45.208543"
+      "timestamp": "2026-03-05T02:59:07.896658"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 17.35113893730985,
-      "timestamp": "2026-03-04T22:59:45.208565"
+      "timestamp": "2026-03-05T02:59:07.896685"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 47.81836014604677,
-      "timestamp": "2026-03-04T22:59:45.208566"
+      "timestamp": "2026-03-05T02:59:07.896686"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 89.3058863942805,
-      "timestamp": "2026-03-04T22:59:45.208567"
+      "timestamp": "2026-03-05T02:59:07.896687"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 6.021711211134878,
-      "timestamp": "2026-03-04T22:59:45.208588"
+      "timestamp": "2026-03-05T02:59:07.896712"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 320.7146217656301,
-      "timestamp": "2026-03-04T22:59:45.208589"
+      "timestamp": "2026-03-05T02:59:07.896713"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 292.7400866250527,
-      "timestamp": "2026-03-04T22:59:45.208590"
+      "timestamp": "2026-03-05T02:59:07.896714"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 109.33093321104006,
-      "timestamp": "2026-03-04T22:59:45.208612"
+      "timestamp": "2026-03-05T02:59:07.896738"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 51.86299433614621,
-      "timestamp": "2026-03-04T22:59:45.208613"
+      "timestamp": "2026-03-05T02:59:07.896739"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 9.96047820419607,
-      "timestamp": "2026-03-04T22:59:45.208614"
+      "timestamp": "2026-03-05T02:59:07.896740"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 48.14528398740175,
-      "timestamp": "2026-03-04T22:59:45.208635"
+      "timestamp": "2026-03-05T02:59:07.896763"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 12.793045469446254,
-      "timestamp": "2026-03-04T22:59:45.208636"
+      "timestamp": "2026-03-05T02:59:07.896764"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 7.028441733488407,
-      "timestamp": "2026-03-04T22:59:45.208637"
+      "timestamp": "2026-03-05T02:59:07.896765"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 86.25929269042906,
-      "timestamp": "2026-03-04T22:59:45.208658"
+      "timestamp": "2026-03-05T02:59:07.896788"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 146.99997037560058,
-      "timestamp": "2026-03-04T22:59:45.208659"
+      "timestamp": "2026-03-05T02:59:07.896789"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 6.787900046424965,
-      "timestamp": "2026-03-04T22:59:45.208660"
+      "timestamp": "2026-03-05T02:59:07.896790"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 23.441879127614477,
-      "timestamp": "2026-03-04T22:59:45.208681"
+      "timestamp": "2026-03-05T02:59:07.896813"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 55.5666312570375,
-      "timestamp": "2026-03-04T22:59:45.208682"
+      "timestamp": "2026-03-05T02:59:07.896814"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 134.04603226261418,
-      "timestamp": "2026-03-04T22:59:45.208683"
+      "timestamp": "2026-03-05T02:59:07.896815"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 23.601049980956283,
-      "timestamp": "2026-03-04T22:59:45.208704"
+      "timestamp": "2026-03-05T02:59:07.896838"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 10.46327924375487,
-      "timestamp": "2026-03-04T22:59:45.208705"
+      "timestamp": "2026-03-05T02:59:07.896839"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 120.09940323637005,
-      "timestamp": "2026-03-04T22:59:45.208706"
+      "timestamp": "2026-03-05T02:59:07.896840"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 118.41188377390452,
-      "timestamp": "2026-03-04T22:59:45.208727"
+      "timestamp": "2026-03-05T02:59:07.896863"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 14.14562495662563,
-      "timestamp": "2026-03-04T22:59:45.208728"
+      "timestamp": "2026-03-05T02:59:07.896864"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 54.28040874983634,
-      "timestamp": "2026-03-04T22:59:45.208729"
+      "timestamp": "2026-03-05T02:59:07.896865"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 6.324549796558561,
-      "timestamp": "2026-03-04T22:59:45.208750"
+      "timestamp": "2026-03-05T02:59:07.896888"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 15.003147840894753,
-      "timestamp": "2026-03-04T22:59:45.208751"
+      "timestamp": "2026-03-05T02:59:07.896889"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 83.80547091255772,
-      "timestamp": "2026-03-04T22:59:45.208752"
+      "timestamp": "2026-03-05T02:59:07.896890"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 163.73601045511884,
-      "timestamp": "2026-03-04T22:59:45.208773"
+      "timestamp": "2026-03-05T02:59:07.896912"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 56.375589350432065,
-      "timestamp": "2026-03-04T22:59:45.208774"
+      "timestamp": "2026-03-05T02:59:07.896913"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 26.917532593644697,
-      "timestamp": "2026-03-04T22:59:45.208775"
+      "timestamp": "2026-03-05T02:59:07.896914"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 165.14350531259555,
-      "timestamp": "2026-03-04T22:59:45.208798"
+      "timestamp": "2026-03-05T02:59:07.896937"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 1.4674733230763168,
-      "timestamp": "2026-03-04T22:59:45.208799"
+      "timestamp": "2026-03-05T02:59:07.896938"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 280.20215383035855,
-      "timestamp": "2026-03-04T22:59:45.208800"
+      "timestamp": "2026-03-05T02:59:07.896939"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 37.50716251746952,
-      "timestamp": "2026-03-04T22:59:45.208822"
+      "timestamp": "2026-03-05T02:59:07.896961"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 594.819432951124,
-      "timestamp": "2026-03-04T22:59:45.208822"
+      "timestamp": "2026-03-05T02:59:07.896962"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 6.132910076356395,
-      "timestamp": "2026-03-04T22:59:45.208824"
+      "timestamp": "2026-03-05T02:59:07.896963"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 37.0221966590522,
-      "timestamp": "2026-03-04T22:59:45.208845"
+      "timestamp": "2026-03-05T02:59:07.896986"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 119.11539484574249,
-      "timestamp": "2026-03-04T22:59:45.208846"
+      "timestamp": "2026-03-05T02:59:07.896987"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 95.19209904934193,
-      "timestamp": "2026-03-04T22:59:45.208847"
+      "timestamp": "2026-03-05T02:59:07.896988"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 24.241800873997637,
-      "timestamp": "2026-03-04T22:59:45.208867"
+      "timestamp": "2026-03-05T02:59:07.897010"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 160.318107850142,
-      "timestamp": "2026-03-04T22:59:45.208868"
+      "timestamp": "2026-03-05T02:59:07.897011"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 197.4480610534266,
-      "timestamp": "2026-03-04T22:59:45.208869"
+      "timestamp": "2026-03-05T02:59:07.897012"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 30.408763097981,
-      "timestamp": "2026-03-04T22:59:45.208891"
+      "timestamp": "2026-03-05T02:59:07.897036"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 116.15196344867726,
-      "timestamp": "2026-03-04T22:59:45.208892"
+      "timestamp": "2026-03-05T02:59:07.897037"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 25.98987359161041,
-      "timestamp": "2026-03-04T22:59:45.208893"
+      "timestamp": "2026-03-05T02:59:07.897038"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 21.797676730836667,
-      "timestamp": "2026-03-04T22:59:45.208914"
+      "timestamp": "2026-03-05T02:59:07.897061"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 105.14924472079716,
-      "timestamp": "2026-03-04T22:59:45.208915"
+      "timestamp": "2026-03-05T02:59:07.897062"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 6.473782754654783,
-      "timestamp": "2026-03-04T22:59:45.208916"
+      "timestamp": "2026-03-05T02:59:07.897063"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 1.6424820379343361,
-      "timestamp": "2026-03-04T22:59:45.208937"
+      "timestamp": "2026-03-05T02:59:07.897085"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 39.38107903663241,
-      "timestamp": "2026-03-04T22:59:45.208938"
+      "timestamp": "2026-03-05T02:59:07.897087"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 42.37441009259116,
-      "timestamp": "2026-03-04T22:59:45.208939"
+      "timestamp": "2026-03-05T02:59:07.897088"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 3.963004594813164,
-      "timestamp": "2026-03-04T22:59:45.208962"
+      "timestamp": "2026-03-05T02:59:07.897110"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 338.67768232610825,
-      "timestamp": "2026-03-04T22:59:45.208963"
+      "timestamp": "2026-03-05T02:59:07.897111"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 43.115933780921466,
-      "timestamp": "2026-03-04T22:59:45.208964"
+      "timestamp": "2026-03-05T02:59:07.897112"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 4.318674662325937,
-      "timestamp": "2026-03-04T22:59:45.208985"
+      "timestamp": "2026-03-05T02:59:07.897135"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 251.13870682645418,
-      "timestamp": "2026-03-04T22:59:45.208986"
+      "timestamp": "2026-03-05T02:59:07.897136"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 64.16340336672113,
-      "timestamp": "2026-03-04T22:59:45.208987"
+      "timestamp": "2026-03-05T02:59:07.897137"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 75.16439926260361,
-      "timestamp": "2026-03-04T22:59:45.209008"
+      "timestamp": "2026-03-05T02:59:07.897159"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 78.55661000150994,
-      "timestamp": "2026-03-04T22:59:45.209009"
+      "timestamp": "2026-03-05T02:59:07.897160"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 337.51674406652455,
-      "timestamp": "2026-03-04T22:59:45.209010"
+      "timestamp": "2026-03-05T02:59:07.897161"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 24.960455291565076,
-      "timestamp": "2026-03-04T22:59:45.209030"
+      "timestamp": "2026-03-05T02:59:07.897184"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 212.04630467095885,
-      "timestamp": "2026-03-04T22:59:45.209031"
+      "timestamp": "2026-03-05T02:59:07.897185"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 67.34689842656164,
-      "timestamp": "2026-03-04T22:59:45.209032"
+      "timestamp": "2026-03-05T02:59:07.897186"
     },
     {
       "component": "ml_prediction",
       "latency_ms": 15.96944460750306,
-      "timestamp": "2026-03-04T22:59:45.209053"
+      "timestamp": "2026-03-05T02:59:07.897208"
     },
     {
       "component": "rag_retrieval",
       "latency_ms": 6.963235661380346,
-      "timestamp": "2026-03-04T22:59:45.209054"
+      "timestamp": "2026-03-05T02:59:07.897209"
     },
     {
       "component": "agent_reasoning",
       "latency_ms": 160.0340912002648,
-      "timestamp": "2026-03-04T22:59:45.209055"
+      "timestamp": "2026-03-05T02:59:07.897211"
     }
   ],
   "predictions": [
@@ -2114,7 +2114,7 @@
       "rag_latency_ms": 361.2145717101025,
       "agent_latency_ms": 105.33965548363595,
       "total_latency_ms": 490.01763169258146,
-      "timestamp": "2026-03-04T22:59:45.203874"
+      "timestamp": "2026-03-05T02:59:07.890671"
     },
     {
       "engine_id": 2,
@@ -2126,7 +2126,7 @@
       "rag_latency_ms": 7.180652233041681,
       "agent_latency_ms": 160.89846915839516,
       "total_latency_ms": 176.5589359871671,
-      "timestamp": "2026-03-04T22:59:45.204613"
+      "timestamp": "2026-03-05T02:59:07.891530"
     },
     {
       "engine_id": 3,
@@ -2138,7 +2138,7 @@
       "rag_latency_ms": 420.42689701899747,
       "agent_latency_ms": 142.914363468374,
       "total_latency_ms": 564.3812258873284,
-      "timestamp": "2026-03-04T22:59:45.204663"
+      "timestamp": "2026-03-05T02:59:07.891581"
     },
     {
       "engine_id": 4,
@@ -2150,7 +2150,7 @@
       "rag_latency_ms": 43.53044753525725,
       "agent_latency_ms": 59.51422646886836,
       "total_latency_ms": 113.17524514573847,
-      "timestamp": "2026-03-04T22:59:45.204699"
+      "timestamp": "2026-03-05T02:59:07.891617"
     },
     {
       "engine_id": 5,
@@ -2162,7 +2162,7 @@
       "rag_latency_ms": 18.02814344728064,
       "agent_latency_ms": 27.64124096019218,
       "total_latency_ms": 92.98792810246276,
-      "timestamp": "2026-03-04T22:59:45.204731"
+      "timestamp": "2026-03-05T02:59:07.891654"
     },
     {
       "engine_id": 6,
@@ -2174,7 +2174,7 @@
       "rag_latency_ms": 57.84175917246043,
       "agent_latency_ms": 327.05732203677564,
       "total_latency_ms": 433.06636505457766,
-      "timestamp": "2026-03-04T22:59:45.204761"
+      "timestamp": "2026-03-05T02:59:07.891687"
     },
     {
       "engine_id": 7,
@@ -2186,7 +2186,7 @@
       "rag_latency_ms": 1.6024471933498947,
       "agent_latency_ms": 228.06375031484822,
       "total_latency_ms": 259.60345470052175,
-      "timestamp": "2026-03-04T22:59:45.204791"
+      "timestamp": "2026-03-05T02:59:07.891718"
     },
     {
       "engine_id": 8,
@@ -2198,7 +2198,7 @@
       "rag_latency_ms": 33.09444650709869,
       "agent_latency_ms": 91.97481123903475,
       "total_latency_ms": 138.1955702909023,
-      "timestamp": "2026-03-04T22:59:45.205285"
+      "timestamp": "2026-03-05T02:59:07.892284"
     },
     {
       "engine_id": 9,
@@ -2210,7 +2210,7 @@
       "rag_latency_ms": 24.141791989775378,
       "agent_latency_ms": 112.63786413499295,
       "total_latency_ms": 161.58148292723652,
-      "timestamp": "2026-03-04T22:59:45.205318"
+      "timestamp": "2026-03-05T02:59:07.892334"
     },
     {
       "engine_id": 10,
@@ -2222,7 +2222,7 @@
       "rag_latency_ms": 419.1368559283472,
       "agent_latency_ms": 119.37963017105126,
       "total_latency_ms": 548.7359160747937,
-      "timestamp": "2026-03-04T22:59:45.205348"
+      "timestamp": "2026-03-05T02:59:07.892371"
     },
     {
       "engine_id": 11,
@@ -2234,7 +2234,7 @@
       "rag_latency_ms": 47.43933812543812,
       "agent_latency_ms": 67.60024818444944,
       "total_latency_ms": 180.0036014235909,
-      "timestamp": "2026-03-04T22:59:45.205376"
+      "timestamp": "2026-03-05T02:59:07.892404"
     },
     {
       "engine_id": 12,
@@ -2246,7 +2246,7 @@
       "rag_latency_ms": 37.98725318505908,
       "agent_latency_ms": 141.16462921927473,
       "total_latency_ms": 203.75839699404474,
-      "timestamp": "2026-03-04T22:59:45.205405"
+      "timestamp": "2026-03-05T02:59:07.892434"
     },
     {
       "engine_id": 13,
@@ -2258,7 +2258,7 @@
       "rag_latency_ms": 194.45803149296773,
       "agent_latency_ms": 6.198069504904721,
       "total_latency_ms": 208.2510083889039,
-      "timestamp": "2026-03-04T22:59:45.205432"
+      "timestamp": "2026-03-05T02:59:07.892464"
     },
     {
       "engine_id": 14,
@@ -2270,7 +2270,7 @@
       "rag_latency_ms": 0.664490445112257,
       "agent_latency_ms": 135.19174219889007,
       "total_latency_ms": 146.93320466929663,
-      "timestamp": "2026-03-04T22:59:45.205458"
+      "timestamp": "2026-03-05T02:59:07.892494"
     },
     {
       "engine_id": 15,
@@ -2282,7 +2282,7 @@
       "rag_latency_ms": 9.231511861655562,
       "agent_latency_ms": 35.5114137932986,
       "total_latency_ms": 118.50365195712983,
-      "timestamp": "2026-03-04T22:59:45.205486"
+      "timestamp": "2026-03-05T02:59:07.892527"
     },
     {
       "engine_id": 16,
@@ -2294,7 +2294,7 @@
       "rag_latency_ms": 48.218256150156115,
       "agent_latency_ms": 5.2534452643826315,
       "total_latency_ms": 102.28676100015745,
-      "timestamp": "2026-03-04T22:59:45.205511"
+      "timestamp": "2026-03-05T02:59:07.892556"
     },
     {
       "engine_id": 17,
@@ -2306,7 +2306,7 @@
       "rag_latency_ms": 261.8702294881818,
       "agent_latency_ms": 51.12529067010478,
       "total_latency_ms": 363.73998810458755,
-      "timestamp": "2026-03-04T22:59:45.205536"
+      "timestamp": "2026-03-05T02:59:07.892584"
     },
     {
       "engine_id": 18,
@@ -2318,7 +2318,7 @@
       "rag_latency_ms": 98.86649938629945,
       "agent_latency_ms": 117.91119733770915,
       "total_latency_ms": 288.2973343778518,
-      "timestamp": "2026-03-04T22:59:45.205561"
+      "timestamp": "2026-03-05T02:59:07.892611"
     },
     {
       "engine_id": 19,
@@ -2330,7 +2330,7 @@
       "rag_latency_ms": 3.0897328788136473,
       "agent_latency_ms": 9.133394815349266,
       "total_latency_ms": 40.113837389584276,
-      "timestamp": "2026-03-04T22:59:45.205585"
+      "timestamp": "2026-03-05T02:59:07.892638"
     },
     {
       "engine_id": 20,
@@ -2342,7 +2342,7 @@
       "rag_latency_ms": 85.2524612561028,
       "agent_latency_ms": 190.50124238767805,
       "total_latency_ms": 294.62353908353583,
-      "timestamp": "2026-03-04T22:59:45.205609"
+      "timestamp": "2026-03-05T02:59:07.892665"
     },
     {
       "engine_id": 21,
@@ -2354,7 +2354,7 @@
       "rag_latency_ms": 9.612513426021163,
       "agent_latency_ms": 27.371224310964564,
       "total_latency_ms": 49.97399558285543,
-      "timestamp": "2026-03-04T22:59:45.205638"
+      "timestamp": "2026-03-05T02:59:07.892693"
     },
     {
       "engine_id": 22,
@@ -2366,7 +2366,7 @@
       "rag_latency_ms": 120.41930286246372,
       "agent_latency_ms": 164.12157844166504,
       "total_latency_ms": 367.08523532835727,
-      "timestamp": "2026-03-04T22:59:45.205663"
+      "timestamp": "2026-03-05T02:59:07.892720"
     },
     {
       "engine_id": 23,
@@ -2378,7 +2378,7 @@
       "rag_latency_ms": 93.01198823594063,
       "agent_latency_ms": 131.78786330428528,
       "total_latency_ms": 336.340521802004,
-      "timestamp": "2026-03-04T22:59:45.205696"
+      "timestamp": "2026-03-05T02:59:07.892751"
     },
     {
       "engine_id": 24,
@@ -2390,7 +2390,7 @@
       "rag_latency_ms": 66.84692312983373,
       "agent_latency_ms": 136.3063781311156,
       "total_latency_ms": 216.0876385679184,
-      "timestamp": "2026-03-04T22:59:45.205721"
+      "timestamp": "2026-03-05T02:59:07.892778"
     },
     {
       "engine_id": 25,
@@ -2402,7 +2402,7 @@
       "rag_latency_ms": 64.83279851024055,
       "agent_latency_ms": 20.093387062065958,
       "total_latency_ms": 120.6699935392343,
-      "timestamp": "2026-03-04T22:59:45.206034"
+      "timestamp": "2026-03-05T02:59:07.893411"
     },
     {
       "engine_id": 26,
@@ -2414,7 +2414,7 @@
       "rag_latency_ms": 29.625393498083625,
       "agent_latency_ms": 65.33409578653584,
       "total_latency_ms": 104.17312476776087,
-      "timestamp": "2026-03-04T22:59:45.206066"
+      "timestamp": "2026-03-05T02:59:07.893588"
     },
     {
       "engine_id": 27,
@@ -2426,7 +2426,7 @@
       "rag_latency_ms": 34.023056825050766,
       "agent_latency_ms": 95.33831810460832,
       "total_latency_ms": 144.0071898826145,
-      "timestamp": "2026-03-04T22:59:45.206096"
+      "timestamp": "2026-03-05T02:59:07.893649"
     },
     {
       "engine_id": 28,
@@ -2438,7 +2438,7 @@
       "rag_latency_ms": 37.23730428230012,
       "agent_latency_ms": 300.4526879281518,
       "total_latency_ms": 642.3202478183744,
-      "timestamp": "2026-03-04T22:59:45.206124"
+      "timestamp": "2026-03-05T02:59:07.893756"
     },
     {
       "engine_id": 29,
@@ -2450,7 +2450,7 @@
       "rag_latency_ms": 120.72988378034131,
       "agent_latency_ms": 91.33130022911897,
       "total_latency_ms": 233.22262525329216,
-      "timestamp": "2026-03-04T22:59:45.206482"
+      "timestamp": "2026-03-05T02:59:07.894549"
     },
     {
       "engine_id": 30,
@@ -2462,7 +2462,7 @@
       "rag_latency_ms": 107.78366650231378,
       "agent_latency_ms": 6.7447654385930225,
       "total_latency_ms": 154.77630887236262,
-      "timestamp": "2026-03-04T22:59:45.206527"
+      "timestamp": "2026-03-05T02:59:07.894587"
     },
     {
       "engine_id": 31,
@@ -2474,7 +2474,7 @@
       "rag_latency_ms": 76.25348018140077,
       "agent_latency_ms": 327.9798068794377,
       "total_latency_ms": 485.4963483234435,
-      "timestamp": "2026-03-04T22:59:45.206561"
+      "timestamp": "2026-03-05T02:59:07.894617"
     },
     {
       "engine_id": 32,
@@ -2486,7 +2486,7 @@
       "rag_latency_ms": 24.771852792906785,
       "agent_latency_ms": 3.330380783547616,
       "total_latency_ms": 47.442748259824235,
-      "timestamp": "2026-03-04T22:59:45.206592"
+      "timestamp": "2026-03-05T02:59:07.894645"
     },
     {
       "engine_id": 33,
@@ -2498,7 +2498,7 @@
       "rag_latency_ms": 198.9730291173027,
       "agent_latency_ms": 34.298615359635725,
       "total_latency_ms": 295.36395137966275,
-      "timestamp": "2026-03-04T22:59:45.206620"
+      "timestamp": "2026-03-05T02:59:07.894673"
     },
     {
       "engine_id": 34,
@@ -2510,7 +2510,7 @@
       "rag_latency_ms": 87.51545132063109,
       "agent_latency_ms": 145.4696858588238,
       "total_latency_ms": 258.3244950713138,
-      "timestamp": "2026-03-04T22:59:45.206647"
+      "timestamp": "2026-03-05T02:59:07.894708"
     },
     {
       "engine_id": 35,
@@ -2522,7 +2522,7 @@
       "rag_latency_ms": 251.80004485931929,
       "agent_latency_ms": 23.866189604919114,
       "total_latency_ms": 404.97575432177456,
-      "timestamp": "2026-03-04T22:59:45.206674"
+      "timestamp": "2026-03-05T02:59:07.894734"
     },
     {
       "engine_id": 36,
@@ -2534,7 +2534,7 @@
       "rag_latency_ms": 90.51352922327352,
       "agent_latency_ms": 22.15016363503225,
       "total_latency_ms": 153.17031089263116,
-      "timestamp": "2026-03-04T22:59:45.206702"
+      "timestamp": "2026-03-05T02:59:07.894760"
     },
     {
       "engine_id": 37,
@@ -2546,7 +2546,7 @@
       "rag_latency_ms": 25.095136954519536,
       "agent_latency_ms": 26.155018278137288,
       "total_latency_ms": 158.37405456838013,
-      "timestamp": "2026-03-04T22:59:45.206729"
+      "timestamp": "2026-03-05T02:59:07.894788"
     },
     {
       "engine_id": 38,
@@ -2558,7 +2558,7 @@
       "rag_latency_ms": 62.20410454083166,
       "agent_latency_ms": 174.97646575532218,
       "total_latency_ms": 334.19039759433235,
-      "timestamp": "2026-03-04T22:59:45.206757"
+      "timestamp": "2026-03-05T02:59:07.894815"
     },
     {
       "engine_id": 39,
@@ -2570,7 +2570,7 @@
       "rag_latency_ms": 132.6721703985098,
       "agent_latency_ms": 69.53093747308314,
       "total_latency_ms": 279.13825442994533,
-      "timestamp": "2026-03-04T22:59:45.206782"
+      "timestamp": "2026-03-05T02:59:07.894841"
     },
     {
       "engine_id": 40,
@@ -2582,7 +2582,7 @@
       "rag_latency_ms": 43.724053269140576,
       "agent_latency_ms": 53.18246748471307,
       "total_latency_ms": 113.60475813552688,
-      "timestamp": "2026-03-04T22:59:45.206812"
+      "timestamp": "2026-03-05T02:59:07.894867"
     },
     {
       "engine_id": 41,
@@ -2594,7 +2594,7 @@
       "rag_latency_ms": 32.498851086336714,
       "agent_latency_ms": 31.490792713446755,
       "total_latency_ms": 126.26050824471041,
-      "timestamp": "2026-03-04T22:59:45.206837"
+      "timestamp": "2026-03-05T02:59:07.894895"
     },
     {
       "engine_id": 42,
@@ -2606,7 +2606,7 @@
       "rag_latency_ms": 100.80531667047089,
       "agent_latency_ms": 7.868564915872839,
       "total_latency_ms": 162.26454599483185,
-      "timestamp": "2026-03-04T22:59:45.206863"
+      "timestamp": "2026-03-05T02:59:07.894921"
     },
     {
       "engine_id": 43,
@@ -2618,7 +2618,7 @@
       "rag_latency_ms": 462.97725904674894,
       "agent_latency_ms": 53.35815474203042,
       "total_latency_ms": 560.8995719356717,
-      "timestamp": "2026-03-04T22:59:45.206893"
+      "timestamp": "2026-03-05T02:59:07.894947"
     },
     {
       "engine_id": 44,
@@ -2630,7 +2630,7 @@
       "rag_latency_ms": 124.31144310620293,
       "agent_latency_ms": 88.43260023357797,
       "total_latency_ms": 234.28922086933494,
-      "timestamp": "2026-03-04T22:59:45.206923"
+      "timestamp": "2026-03-05T02:59:07.894974"
     },
     {
       "engine_id": 45,
@@ -2642,7 +2642,7 @@
       "rag_latency_ms": 124.43625435543287,
       "agent_latency_ms": 15.594685617985816,
       "total_latency_ms": 141.2617640274531,
-      "timestamp": "2026-03-04T22:59:45.206948"
+      "timestamp": "2026-03-05T02:59:07.895000"
     },
     {
       "engine_id": 46,
@@ -2654,7 +2654,7 @@
       "rag_latency_ms": 55.47448757968401,
       "agent_latency_ms": 1.2461852297555507,
       "total_latency_ms": 179.89616704113163,
-      "timestamp": "2026-03-04T22:59:45.206973"
+      "timestamp": "2026-03-05T02:59:07.895026"
     },
     {
       "engine_id": 47,
@@ -2666,7 +2666,7 @@
       "rag_latency_ms": 397.64825713562465,
       "agent_latency_ms": 153.3909613743535,
       "total_latency_ms": 721.081319316081,
-      "timestamp": "2026-03-04T22:59:45.206998"
+      "timestamp": "2026-03-05T02:59:07.895052"
     },
     {
       "engine_id": 48,
@@ -2678,7 +2678,7 @@
       "rag_latency_ms": 22.286233955490573,
       "agent_latency_ms": 65.09895936481823,
       "total_latency_ms": 106.44250489184466,
-      "timestamp": "2026-03-04T22:59:45.207025"
+      "timestamp": "2026-03-05T02:59:07.895079"
     },
     {
       "engine_id": 49,
@@ -2690,7 +2690,7 @@
       "rag_latency_ms": 12.267383681918746,
       "agent_latency_ms": 76.36245724141742,
       "total_latency_ms": 130.83545774511893,
-      "timestamp": "2026-03-04T22:59:45.207051"
+      "timestamp": "2026-03-05T02:59:07.895105"
     },
     {
       "engine_id": 50,
@@ -2702,7 +2702,7 @@
       "rag_latency_ms": 251.83303654809532,
       "agent_latency_ms": 108.0027398682936,
       "total_latency_ms": 396.3605426654641,
-      "timestamp": "2026-03-04T22:59:45.207076"
+      "timestamp": "2026-03-05T02:59:07.895131"
     },
     {
       "engine_id": 51,
@@ -2714,7 +2714,7 @@
       "rag_latency_ms": 42.20421856354989,
       "agent_latency_ms": 43.547953047163084,
       "total_latency_ms": 125.99187307176865,
-      "timestamp": "2026-03-04T22:59:45.207101"
+      "timestamp": "2026-03-05T02:59:07.895156"
     },
     {
       "engine_id": 52,
@@ -2726,7 +2726,7 @@
       "rag_latency_ms": 0.6238020981139585,
       "agent_latency_ms": 79.08621073584726,
       "total_latency_ms": 83.96580867219619,
-      "timestamp": "2026-03-04T22:59:45.207125"
+      "timestamp": "2026-03-05T02:59:07.895181"
     },
     {
       "engine_id": 53,
@@ -2738,7 +2738,7 @@
       "rag_latency_ms": 6.2523122195952645,
       "agent_latency_ms": 174.1588099550918,
       "total_latency_ms": 205.68510472467474,
-      "timestamp": "2026-03-04T22:59:45.207148"
+      "timestamp": "2026-03-05T02:59:07.895206"
     },
     {
       "engine_id": 54,
@@ -2750,7 +2750,7 @@
       "rag_latency_ms": 133.77856254608668,
       "agent_latency_ms": 31.81793184090269,
       "total_latency_ms": 194.45136540761166,
-      "timestamp": "2026-03-04T22:59:45.207178"
+      "timestamp": "2026-03-05T02:59:07.895237"
     },
     {
       "engine_id": 55,
@@ -2762,7 +2762,7 @@
       "rag_latency_ms": 236.28086059955504,
       "agent_latency_ms": 23.041382078455396,
       "total_latency_ms": 350.619141110324,
-      "timestamp": "2026-03-04T22:59:45.207201"
+      "timestamp": "2026-03-05T02:59:07.895262"
     },
     {
       "engine_id": 56,
@@ -2774,7 +2774,7 @@
       "rag_latency_ms": 47.459024315242075,
       "agent_latency_ms": 140.75995889257308,
       "total_latency_ms": 226.72929667018283,
-      "timestamp": "2026-03-04T22:59:45.207224"
+      "timestamp": "2026-03-05T02:59:07.895287"
     },
     {
       "engine_id": 57,
@@ -2786,7 +2786,7 @@
       "rag_latency_ms": 6.367811509237129,
       "agent_latency_ms": 60.63271525004168,
       "total_latency_ms": 71.46107820877367,
-      "timestamp": "2026-03-04T22:59:45.207246"
+      "timestamp": "2026-03-05T02:59:07.895312"
     },
     {
       "engine_id": 58,
@@ -2798,7 +2798,7 @@
       "rag_latency_ms": 446.82684104399914,
       "agent_latency_ms": 58.1032895384285,
       "total_latency_ms": 569.6781587282619,
-      "timestamp": "2026-03-04T22:59:45.207270"
+      "timestamp": "2026-03-05T02:59:07.895336"
     },
     {
       "engine_id": 59,
@@ -2810,7 +2810,7 @@
       "rag_latency_ms": 69.35801175279616,
       "agent_latency_ms": 6.536413486693592,
       "total_latency_ms": 91.68699851129661,
-      "timestamp": "2026-03-04T22:59:45.207295"
+      "timestamp": "2026-03-05T02:59:07.895362"
     },
     {
       "engine_id": 60,
@@ -2822,7 +2822,7 @@
       "rag_latency_ms": 139.96267466213132,
       "agent_latency_ms": 4.7964432742962275,
       "total_latency_ms": 172.7174289439952,
-      "timestamp": "2026-03-04T22:59:45.207318"
+      "timestamp": "2026-03-05T02:59:07.895386"
     },
     {
       "engine_id": 61,
@@ -2834,7 +2834,7 @@
       "rag_latency_ms": 11.829135155488816,
       "agent_latency_ms": 16.156174347451454,
       "total_latency_ms": 41.69316421561436,
-      "timestamp": "2026-03-04T22:59:45.207342"
+      "timestamp": "2026-03-05T02:59:07.895411"
     },
     {
       "engine_id": 62,
@@ -2846,7 +2846,7 @@
       "rag_latency_ms": 128.4419348865793,
       "agent_latency_ms": 45.76969829733609,
       "total_latency_ms": 210.56713100249777,
-      "timestamp": "2026-03-04T22:59:45.207365"
+      "timestamp": "2026-03-05T02:59:07.895438"
     },
     {
       "engine_id": 63,
@@ -2858,7 +2858,7 @@
       "rag_latency_ms": 170.18182173080558,
       "agent_latency_ms": 1.1598463776643422,
       "total_latency_ms": 193.34237457462552,
-      "timestamp": "2026-03-04T22:59:45.207388"
+      "timestamp": "2026-03-05T02:59:07.895463"
     },
     {
       "engine_id": 64,
@@ -2870,7 +2870,7 @@
       "rag_latency_ms": 466.541293927687,
       "agent_latency_ms": 15.421783995067946,
       "total_latency_ms": 500.6187807454555,
-      "timestamp": "2026-03-04T22:59:45.207411"
+      "timestamp": "2026-03-05T02:59:07.895487"
     },
     {
       "engine_id": 65,
@@ -2882,7 +2882,7 @@
       "rag_latency_ms": 74.98548269218848,
       "agent_latency_ms": 83.93405699578368,
       "total_latency_ms": 180.1752076173642,
-      "timestamp": "2026-03-04T22:59:45.207434"
+      "timestamp": "2026-03-05T02:59:07.895512"
     },
     {
       "engine_id": 66,
@@ -2894,7 +2894,7 @@
       "rag_latency_ms": 36.27761059556351,
       "agent_latency_ms": 1.2338290860151104,
       "total_latency_ms": 146.38859076975172,
-      "timestamp": "2026-03-04T22:59:45.207457"
+      "timestamp": "2026-03-05T02:59:07.895541"
     },
     {
       "engine_id": 67,
@@ -2906,7 +2906,7 @@
       "rag_latency_ms": 138.22781017969427,
       "agent_latency_ms": 76.5380167003577,
       "total_latency_ms": 253.52464345202705,
-      "timestamp": "2026-03-04T22:59:45.207480"
+      "timestamp": "2026-03-05T02:59:07.895565"
     },
     {
       "engine_id": 68,
@@ -2918,7 +2918,7 @@
       "rag_latency_ms": 338.0706546464582,
       "agent_latency_ms": 68.54259564620355,
       "total_latency_ms": 450.6806191830263,
-      "timestamp": "2026-03-04T22:59:45.207974"
+      "timestamp": "2026-03-05T02:59:07.896105"
     },
     {
       "engine_id": 69,
@@ -2930,7 +2930,7 @@
       "rag_latency_ms": 94.65772326915842,
       "agent_latency_ms": 227.05017169863993,
       "total_latency_ms": 352.35569367035293,
-      "timestamp": "2026-03-04T22:59:45.208006"
+      "timestamp": "2026-03-05T02:59:07.896150"
     },
     {
       "engine_id": 70,
@@ -2942,7 +2942,7 @@
       "rag_latency_ms": 26.147551312854,
       "agent_latency_ms": 5.750732424252561,
       "total_latency_ms": 149.77709292560252,
-      "timestamp": "2026-03-04T22:59:45.208038"
+      "timestamp": "2026-03-05T02:59:07.896184"
     },
     {
       "engine_id": 71,
@@ -2954,7 +2954,7 @@
       "rag_latency_ms": 137.86498470926006,
       "agent_latency_ms": 5.907970155714162,
       "total_latency_ms": 148.73320544776192,
-      "timestamp": "2026-03-04T22:59:45.208333"
+      "timestamp": "2026-03-05T02:59:07.896449"
     },
     {
       "engine_id": 72,
@@ -2966,7 +2966,7 @@
       "rag_latency_ms": 202.14366074231503,
       "agent_latency_ms": 26.486677347170357,
       "total_latency_ms": 229.80768824852095,
-      "timestamp": "2026-03-04T22:59:45.208374"
+      "timestamp": "2026-03-05T02:59:07.896485"
     },
     {
       "engine_id": 73,
@@ -2978,7 +2978,7 @@
       "rag_latency_ms": 251.92989769043362,
       "agent_latency_ms": 106.26348630115203,
       "total_latency_ms": 407.7633428132467,
-      "timestamp": "2026-03-04T22:59:45.208409"
+      "timestamp": "2026-03-05T02:59:07.896516"
     },
     {
       "engine_id": 74,
@@ -2990,7 +2990,7 @@
       "rag_latency_ms": 197.30510198921036,
       "agent_latency_ms": 372.5603912112184,
       "total_latency_ms": 639.3033130007,
-      "timestamp": "2026-03-04T22:59:45.208436"
+      "timestamp": "2026-03-05T02:59:07.896544"
     },
     {
       "engine_id": 75,
@@ -3002,7 +3002,7 @@
       "rag_latency_ms": 234.5806988599499,
       "agent_latency_ms": 44.828448755372776,
       "total_latency_ms": 412.91604383528903,
-      "timestamp": "2026-03-04T22:59:45.208464"
+      "timestamp": "2026-03-05T02:59:07.896570"
     },
     {
       "engine_id": 76,
@@ -3014,7 +3014,7 @@
       "rag_latency_ms": 279.41348170411584,
       "agent_latency_ms": 56.29659918054035,
       "total_latency_ms": 341.15195682499206,
-      "timestamp": "2026-03-04T22:59:45.208489"
+      "timestamp": "2026-03-05T02:59:07.896595"
     },
     {
       "engine_id": 77,
@@ -3026,7 +3026,7 @@
       "rag_latency_ms": 6.596252893632617,
       "agent_latency_ms": 254.644982152019,
       "total_latency_ms": 266.5084212334735,
-      "timestamp": "2026-03-04T22:59:45.208513"
+      "timestamp": "2026-03-05T02:59:07.896620"
     },
     {
       "engine_id": 78,
@@ -3038,7 +3038,7 @@
       "rag_latency_ms": 360.95394481247877,
       "agent_latency_ms": 68.15978328442111,
       "total_latency_ms": 578.9623472563142,
-      "timestamp": "2026-03-04T22:59:45.208538"
+      "timestamp": "2026-03-05T02:59:07.896653"
     },
     {
       "engine_id": 79,
@@ -3050,7 +3050,7 @@
       "rag_latency_ms": 47.81836014604677,
       "agent_latency_ms": 89.3058863942805,
       "total_latency_ms": 154.47538547763713,
-      "timestamp": "2026-03-04T22:59:45.208563"
+      "timestamp": "2026-03-05T02:59:07.896682"
     },
     {
       "engine_id": 80,
@@ -3062,7 +3062,7 @@
       "rag_latency_ms": 320.7146217656301,
       "agent_latency_ms": 292.7400866250527,
       "total_latency_ms": 619.4764196018177,
-      "timestamp": "2026-03-04T22:59:45.208586"
+      "timestamp": "2026-03-05T02:59:07.896710"
     },
     {
       "engine_id": 81,
@@ -3074,7 +3074,7 @@
       "rag_latency_ms": 51.86299433614621,
       "agent_latency_ms": 9.96047820419607,
       "total_latency_ms": 171.15440575138234,
-      "timestamp": "2026-03-04T22:59:45.208610"
+      "timestamp": "2026-03-05T02:59:07.896735"
     },
     {
       "engine_id": 82,
@@ -3086,7 +3086,7 @@
       "rag_latency_ms": 12.793045469446254,
       "agent_latency_ms": 7.028441733488407,
       "total_latency_ms": 67.9667711903364,
-      "timestamp": "2026-03-04T22:59:45.208633"
+      "timestamp": "2026-03-05T02:59:07.896761"
     },
     {
       "engine_id": 83,
@@ -3098,7 +3098,7 @@
       "rag_latency_ms": 146.99997037560058,
       "agent_latency_ms": 6.787900046424965,
       "total_latency_ms": 240.0471631124546,
-      "timestamp": "2026-03-04T22:59:45.208656"
+      "timestamp": "2026-03-05T02:59:07.896786"
     },
     {
       "engine_id": 84,
@@ -3110,7 +3110,7 @@
       "rag_latency_ms": 55.5666312570375,
       "agent_latency_ms": 134.04603226261418,
       "total_latency_ms": 213.05454264726615,
-      "timestamp": "2026-03-04T22:59:45.208679"
+      "timestamp": "2026-03-05T02:59:07.896811"
     },
     {
       "engine_id": 85,
@@ -3122,7 +3122,7 @@
       "rag_latency_ms": 10.46327924375487,
       "agent_latency_ms": 120.09940323637005,
       "total_latency_ms": 154.1637324610812,
-      "timestamp": "2026-03-04T22:59:45.208702"
+      "timestamp": "2026-03-05T02:59:07.896836"
     },
     {
       "engine_id": 86,
@@ -3134,7 +3134,7 @@
       "rag_latency_ms": 14.14562495662563,
       "agent_latency_ms": 54.28040874983634,
       "total_latency_ms": 186.83791748036649,
-      "timestamp": "2026-03-04T22:59:45.208725"
+      "timestamp": "2026-03-05T02:59:07.896861"
     },
     {
       "engine_id": 87,
@@ -3146,7 +3146,7 @@
       "rag_latency_ms": 15.003147840894753,
       "agent_latency_ms": 83.80547091255772,
       "total_latency_ms": 105.13316855001104,
-      "timestamp": "2026-03-04T22:59:45.208748"
+      "timestamp": "2026-03-05T02:59:07.896885"
     },
     {
       "engine_id": 88,
@@ -3158,7 +3158,7 @@
       "rag_latency_ms": 56.375589350432065,
       "agent_latency_ms": 26.917532593644697,
       "total_latency_ms": 247.0291323991956,
-      "timestamp": "2026-03-04T22:59:45.208771"
+      "timestamp": "2026-03-05T02:59:07.896910"
     },
     {
       "engine_id": 89,
@@ -3170,7 +3170,7 @@
       "rag_latency_ms": 1.4674733230763168,
       "agent_latency_ms": 280.20215383035855,
       "total_latency_ms": 446.8131324660304,
-      "timestamp": "2026-03-04T22:59:45.208796"
+      "timestamp": "2026-03-05T02:59:07.896935"
     },
     {
       "engine_id": 90,
@@ -3182,7 +3182,7 @@
       "rag_latency_ms": 594.819432951124,
       "agent_latency_ms": 6.132910076356395,
       "total_latency_ms": 638.4595055449499,
-      "timestamp": "2026-03-04T22:59:45.208819"
+      "timestamp": "2026-03-05T02:59:07.896959"
     },
     {
       "engine_id": 91,
@@ -3194,7 +3194,7 @@
       "rag_latency_ms": 119.11539484574249,
       "agent_latency_ms": 95.19209904934193,
       "total_latency_ms": 251.32969055413662,
-      "timestamp": "2026-03-04T22:59:45.208843"
+      "timestamp": "2026-03-05T02:59:07.896984"
     },
     {
       "engine_id": 92,
@@ -3206,7 +3206,7 @@
       "rag_latency_ms": 160.318107850142,
       "agent_latency_ms": 197.4480610534266,
       "total_latency_ms": 382.00796977756625,
-      "timestamp": "2026-03-04T22:59:45.208865"
+      "timestamp": "2026-03-05T02:59:07.897008"
     },
     {
       "engine_id": 93,
@@ -3218,7 +3218,7 @@
       "rag_latency_ms": 116.15196344867726,
       "agent_latency_ms": 25.98987359161041,
       "total_latency_ms": 172.55060013826866,
-      "timestamp": "2026-03-04T22:59:45.208888"
+      "timestamp": "2026-03-05T02:59:07.897032"
     },
     {
       "engine_id": 94,
@@ -3230,7 +3230,7 @@
       "rag_latency_ms": 105.14924472079716,
       "agent_latency_ms": 6.473782754654783,
       "total_latency_ms": 133.4207042062886,
-      "timestamp": "2026-03-04T22:59:45.208912"
+      "timestamp": "2026-03-05T02:59:07.897059"
     },
     {
       "engine_id": 95,
@@ -3242,7 +3242,7 @@
       "rag_latency_ms": 39.38107903663241,
       "agent_latency_ms": 42.37441009259116,
       "total_latency_ms": 83.3979711671579,
-      "timestamp": "2026-03-04T22:59:45.208935"
+      "timestamp": "2026-03-05T02:59:07.897083"
     },
     {
       "engine_id": 96,
@@ -3254,7 +3254,7 @@
       "rag_latency_ms": 338.67768232610825,
       "agent_latency_ms": 43.115933780921466,
       "total_latency_ms": 385.7566207018429,
-      "timestamp": "2026-03-04T22:59:45.208960"
+      "timestamp": "2026-03-05T02:59:07.897108"
     },
     {
       "engine_id": 97,
@@ -3266,7 +3266,7 @@
       "rag_latency_ms": 251.13870682645418,
       "agent_latency_ms": 64.16340336672113,
       "total_latency_ms": 319.62078485550126,
-      "timestamp": "2026-03-04T22:59:45.208983"
+      "timestamp": "2026-03-05T02:59:07.897132"
     },
     {
       "engine_id": 98,
@@ -3278,7 +3278,7 @@
       "rag_latency_ms": 78.55661000150994,
       "agent_latency_ms": 337.51674406652455,
       "total_latency_ms": 491.2377533306381,
-      "timestamp": "2026-03-04T22:59:45.209006"
+      "timestamp": "2026-03-05T02:59:07.897157"
     },
     {
       "engine_id": 99,
@@ -3290,7 +3290,7 @@
       "rag_latency_ms": 212.04630467095885,
       "agent_latency_ms": 67.34689842656164,
       "total_latency_ms": 304.3536583890856,
-      "timestamp": "2026-03-04T22:59:45.209028"
+      "timestamp": "2026-03-05T02:59:07.897181"
     },
     {
       "engine_id": 100,
@@ -3302,7 +3302,7 @@
       "rag_latency_ms": 6.963235661380346,
       "agent_latency_ms": 160.0340912002648,
       "total_latency_ms": 182.96677146914823,
-      "timestamp": "2026-03-04T22:59:45.209051"
+      "timestamp": "2026-03-05T02:59:07.897206"
     }
   ],
   "errors": [
@@ -3312,7 +3312,7 @@
       "error_message": "Vector search timeout for engine 7",
       "engine_id": 7,
       "cycle": 160,
-      "timestamp": "2026-03-04T22:59:45.204811"
+      "timestamp": "2026-03-05T02:59:07.891740"
     },
     {
       "component": "rag_retrieval",
@@ -3320,7 +3320,7 @@
       "error_message": "Vector search timeout for engine 24",
       "engine_id": 24,
       "cycle": 186,
-      "timestamp": "2026-03-04T22:59:45.205731"
+      "timestamp": "2026-03-05T02:59:07.892789"
     },
     {
       "component": "rag_retrieval",
@@ -3328,7 +3328,7 @@
       "error_message": "Vector search timeout for engine 28",
       "engine_id": 28,
       "cycle": 158,
-      "timestamp": "2026-03-04T22:59:45.206134"
+      "timestamp": "2026-03-05T02:59:07.893774"
     },
     {
       "component": "rag_retrieval",
@@ -3336,7 +3336,7 @@
       "error_message": "Vector search timeout for engine 67",
       "engine_id": 67,
       "cycle": 71,
-      "timestamp": "2026-03-04T22:59:45.207489"
+      "timestamp": "2026-03-05T02:59:07.895576"
     },
     {
       "component": "rag_retrieval",
@@ -3344,7 +3344,7 @@
       "error_message": "Vector search timeout for engine 70",
       "engine_id": 70,
       "cycle": 152,
-      "timestamp": "2026-03-04T22:59:45.208051"
+      "timestamp": "2026-03-05T02:59:07.896195"
     }
   ],
   "summary": {
