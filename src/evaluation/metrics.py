@@ -266,9 +266,10 @@ class MetricsCalculator:
         total_warnings = len(warnings_df)
         false_alarm_rate = (total_warnings - correct_warnings) / max(1, total_warnings)
 
-        # Missed failures
-        missed = len(failures_df) - len(warned_engines)
-        missed_failure_rate = missed / len(failures_df) if len(failures_df) > 0 else 0
+        # Missed failures (use unique engines, not row count)
+        unique_failed = failures_df['engine_id'].unique()
+        missed = len(unique_failed) - len(warned_engines)
+        missed_failure_rate = missed / len(unique_failed) if len(unique_failed) > 0 else 0
 
         return WarningMetrics(
             avg_lead_time=avg_lead_time,
@@ -312,8 +313,8 @@ class MetricsCalculator:
         avg_groundedness = float(np.mean(groundedness_scores)) \
             if groundedness_scores else 0
 
-        # Coverage: % of decisions with explanation
-        explanation_coverage = len(expl_df) / max(1, len(expl_df))
+        # Coverage: % of predictions that have an explanation
+        explanation_coverage = len(expl_df) / max(1, len(self.predictions))
 
         # Historical relevance: estimate from pattern matches
         historical_relevance = min(avg_pattern_match / 3.0, 1.0)
@@ -346,7 +347,9 @@ class MetricsCalculator:
         tp = len(correct_warned & failed_engines)
         fp = len(warned_engines - failed_engines)
         fn = len(failed_engines - warned_engines)
-        tn = max(0, 1000 - (tp + fp + fn))  # Assume 1000 total cases
+        # TN = engines that were neither warned nor failed
+        all_engines = set(pd.DataFrame(self.predictions)['engine_id'].unique()) if self.predictions else warned_engines | failed_engines
+        tn = len(all_engines - warned_engines - failed_engines)
 
         # Metrics
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0
@@ -356,10 +359,10 @@ class MetricsCalculator:
         accuracy = (tp + tn) / (tp + fp + fn + tn) if (tp + fp + fn + tn) > 0 else 0
         specificity = tn / (tn + fp) if (tn + fp) > 0 else 0
 
-        # ROC AUC (approximate from confidence scores)
+        # Mean warning confidence (proxy — true ROC AUC needs continuous scores)
         if len(warnings_df) > 0:
             confidences = warnings_df['confidence'].values
-            roc_auc = float(np.mean(confidences))
+            roc_auc = float(np.mean(confidences))  # Note: proxy, not true AUC
         else:
             roc_auc = 0.5
 

@@ -134,21 +134,25 @@ class FailureAnalyzer:
         rul_error: float,
     ) -> str:
         """Determine type of failure."""
-        # False negative: No warning but failure occurred
-        if warning_cycle is None:
+        # Over-prediction: model says engine is healthy but it's actually degrading
+        # (predicted_rul >> actual_rul → missed failure / false negative)
+        if predicted_rul > actual_rul and warning_cycle is None and actual_rul < 50:
             return FailureType.FALSE_NEGATIVE.value
 
-        # High RUL error
+        # Under-prediction: model says engine is failing but it's actually healthy
+        # (predicted_rul << actual_rul → false alarm / false positive)
+        if predicted_rul < actual_rul and actual_rul > 50:
+            return FailureType.FALSE_POSITIVE.value
+
+        # High RUL error (either direction)
         if rul_error > 50:
             return FailureType.HIGH_RUL_ERROR.value
 
-        # Late warning: Warned but too late (< 5 cycles notice)
-        if warning_cycle is not None:
-            lead_time = actual_rul - (actual_rul - warning_cycle)
-            if lead_time < 5:
-                return FailureType.LATE_WARNING.value
+        # Late warning: warned but too late (actual RUL was very low at warning)
+        if warning_cycle is not None and actual_rul < 5:
+            return FailureType.LATE_WARNING.value
 
-        # Low confidence: Correct warning but low confidence
+        # Low confidence: warning issued but confidence is low
         if warning_cycle is not None and confidence < 0.5:
             return FailureType.LOW_CONFIDENCE.value
 
@@ -201,10 +205,8 @@ class FailureAnalyzer:
         late_warning_rate = len([c for c in self.cases if c.failure_type == FailureType.LATE_WARNING.value]) / len(self.cases)
         false_negative_rate = len([c for c in self.cases if c.failure_type == FailureType.FALSE_NEGATIVE.value]) / len(self.cases)
 
-        # Count false positives (warnings that didn't lead to failure)
-        # This requires tracking warnings vs actual failures
-        # For now, approximate as low-severity cases with no failure
-        false_positive_rate = 0
+        # Count false positives from categorized cases
+        false_positive_rate = len([c for c in self.cases if c.failure_type == FailureType.FALSE_POSITIVE.value]) / len(self.cases)
 
         analysis = FailureAnalysis(
             total_cases=len(self.cases),

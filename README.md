@@ -5,7 +5,7 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-ee4c2c.svg)](https://pytorch.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688.svg)](https://fastapi.tiangolo.com/)
 
-A sophisticated agentic AI system that continuously analyzes time-series signals and unstructured logs to detect silent failure patterns before critical breakdowns occur. The system integrates deep-learning RUL forecasting (LSTM, TCN), multi-method anomaly detection (residual analysis + Isolation Forest + fusion), RAG-based reasoning, and multi-agent orchestration to deliver explainable early warnings with actionable recommendations.
+A sophisticated agentic AI system that continuously analyzes time-series signals and unstructured logs to detect silent failure patterns before critical breakdowns occur. The system integrates ML-based RUL forecasting (XGBoost, Random Forest; with LSTM and TCN sequence models explored), Isolation Forest anomaly detection, RAG-based reasoning, and multi-agent orchestration to deliver explainable early warnings with actionable recommendations.
 
 ## 📋 Quick Links
 
@@ -22,9 +22,9 @@ A sophisticated agentic AI system that continuously analyzes time-series signals
 
 | # | Research Question | Success Criteria | Result |
 |---|-------------------|-----------------|--------|
-| **RQ1** | Does agentic reasoning improve early-warning lead time? | ≥15% lead time improvement vs. baseline ML | **+53.4%** ✅ |
-| **RQ2** | Does RAG improve interpretability and decision-maker trust? | Trust scores ≥4.0/5.0 on human evaluation | **4.1/5.0** ✅ |
-| **RQ3** | When should the system abstain or escalate? | ≥80% precision on escalation recommendations | **84%** ✅ |
+| **RQ1** | Does agentic reasoning improve early-warning lead time? | ≥15% lead time improvement vs. baseline ML | **See NB07** — Warning rate +28%, lead time improved |
+| **RQ2** | Does RAG improve interpretability and decision-maker trust? | Grounded, cited explanations | **Demonstrated** — Groundedness scores > 0 with real citations |
+| **RQ3** | When should the system abstain or escalate? | ≥80% precision on escalation recommendations | **See NB07** — Computed from real agent escalation decisions |
 
 ---
 
@@ -35,7 +35,7 @@ We compare three system variants to isolate the contribution of each component:
 ### **Baseline 1: ML-Only (Pure Predictive)**
 - Time-series feature engineering (rolling stats, EWMA, health indicators)
 - Random Forest, XGBoost, GradientBoosting for RUL prediction
-- LSTM and TCN deep-learning models for sequence-based RUL
+- LSTM and TCN deep-learning models explored for sequence-based RUL
 - Isolation Forest for multivariate anomaly detection
 - NASA asymmetric scoring function for evaluation
 - **No RAG, No agents**
@@ -75,9 +75,9 @@ We compare three system variants to isolate the contribution of each component:
 
 ### RAG & Interpretability
 - **Retrieval Relevance (ROUGE-L)** (target: >0.6)
-- **Explanation Coherence** (human eval 1–5 Likert, target: ≥4.0)
-- **Trust Score** (operator confidence, target: ≥4.0/5.0)
-- **Hallucination Rate** (target: <5%)
+- **Explanation Coherence** (structural groundedness scoring)
+- **Citation Coverage** (% of explanations with KB references)
+- **Groundedness Score** (composite of citations + pattern matches)
 
 ### Agentic Reasoning
 - **Abstention Rate** (target: 5–15%, calibrated)
@@ -92,7 +92,7 @@ We compare three system variants to isolate the contribution of each component:
 - Python 3.10+
 - Poetry (for dependency management)
 - Kaggle account (to download NASA C-MAPSS dataset)
-- GPU recommended (CUDA or Apple MPS) for LSTM/TCN training
+- GPU optional (CUDA or Apple MPS) for LSTM/TCN training
 
 ### Installation
 
@@ -295,11 +295,13 @@ agentic-ewis/
 │       └── text_corpus/               #     Cleaned logs & incident narratives
 │
 ├── models/                            # Trained model artifacts
-│   ├── lstm_best.pth                  #   Best LSTM checkpoint
-│   ├── tcn_best.pth                   #   Best TCN checkpoint
+│   ├── lstm_best.pth                  #   LSTM checkpoint (explored)
+│   ├── tcn_best.pth                   #   TCN checkpoint (explored)
 │   ├── xgb_model.joblib               #   XGBoost regressor
-│   ├── xgboost_best.joblib            #   Tuned XGBoost
+│   ├── xgboost_best.joblib            #   Tuned XGBoost (primary RUL model)
+│   ├── xgb_rul_baseline.joblib        #   XGBoost RUL baseline
 │   ├── rf_failure_baseline.joblib     #   Random Forest classifier
+│   ├── if_anomaly_detector.joblib     #   Isolation Forest detector
 │   ├── scaler.joblib                  #   StandardScaler
 │   ├── metrics.json                   #   Model performance metrics
 │   ├── features.json                  #   Selected feature list
@@ -339,27 +341,30 @@ agentic-ewis/
 
 ## 📊 Comprehensive Results
 
-| Metric Category | Baseline 1 (ML-Only) | Baseline 2 (ML+RAG) | Baseline 3 (AEWIS) | Improvement |
-|----------------|---------------------|--------------------|--------------------|-------------|
+> **Note:** All values below are computed from real C-MAPSS FD001 test data in [NB07](notebooks/07_system_evaluation.ipynb).  
+> Run the notebook to see exact figures with all decimal places.
+
+| Metric Category | Baseline 1 (ML-Only) | Baseline 2 (ML+RAG) | Baseline 3 (AEWIS) | Notes |
+|----------------|---------------------|--------------------|--------------------|-------|
 | **Predictive Performance** |
-| RUL MAE (days) | 13.7 ± 1.2 | 13.5 ± 1.1 | **12.9 ± 1.0** | 5.8% ↓ |
-| RUL RMSE (days) | 18.4 ± 1.5 | 18.2 ± 1.4 | **17.6 ± 1.3** | 4.3% ↓ |
+| RUL MAE (cycles) | 11.23 | 11.23 | 11.23 | XGBoost dominates; layers target detection, not MAE |
+| RUL R² | 0.67 | 0.67 | 0.67 | Strong baseline leaves little room for MAE improvement |
 | **Early Warning (RQ1)** |
-| Lead Time (days) | 10.3 ± 2.1 | 11.8 ± 2.3 | **15.8 ± 2.5** | **53.4% ↑** |
-| Anomaly F1-Score | 0.86 | 0.89 | **0.91** | 5.8% ↑ |
-| False Positive Rate | 18% | 13% | **9%** | 50% ↓ |
-| **Interpretability (RQ2)** |
-| Trust Score (1-5) | 2.8 | 3.9 | **4.1** | 46% ↑ |
-| Hallucination Rate | N/A | 7.2% | **2.8%** | 61% ↓ |
+| Warning Rate | 18% | 22% | 23% | +28% more engines warned vs ML-only |
+| Lead Time | See NB07 | See NB07 | See NB07 | Computed from earliest warning per engine |
+| **Explainability (RQ2)** |
+| Groundedness | 0.00 | > 0 | > 0 | Real citations from KB retrieval |
+| Explanation Coverage | N/A | Per-observation | Per-observation | ReasoningAgent produces text for every row |
 | **Operational (RQ3)** |
-| Escalation Precision | N/A | N/A | **84%** | — |
-| Abstention Rate | 0% | 0% | **12%** | Calibrated |
-| Cost per 1K Preds | $0 | $1.55 | **$2.13** | ROI + |
+| Escalation Decisions | N/A | N/A | Real agent logic | ActionAgent + ReasoningAgent escalation |
+| Abstention Rate | 0% | 0% | Calibrated | ReasoningAgent confidence thresholding |
 
 **Key Findings:**
-- ✅ **RQ1 (Lead Time):** Full system achieves **+53.4%** improvement (Target: >15%)
-- ✅ **RQ2 (Trust):** Trust scores reach **4.1/5.0** with agentic explanations (Target: >4.0)
-- ✅ **RQ3 (Escalation):** Precision hits **84%** with calibrated abstention (Target: >80%)
+- **RQ1:** Warning rate improved 18% → 23% (+28%). Lead time improvement computed in NB07.  
+  The value of agents is in **detection coverage**, not MAE — XGBoost with 112 features already saturates C-MAPSS FD001 prediction accuracy.
+- **RQ2:** Groundedness scores are non-zero with real KB citations and pattern matches.  
+  No human evaluation was conducted; scores are structural (citation + pattern based).
+- **RQ3:** Escalation precision computed from real ActionAgent decisions in NB07.
 
 ---
 

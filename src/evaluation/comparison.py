@@ -214,8 +214,8 @@ class SystemComparison:
                 'F1 Score',
             ],
             'ML Only': [
-                f"{comparison.ml_only.rul_metrics.mae:.1f}",
-                f"{comparison.ml_only.rul_metrics.rmse:.1f}",
+                f"{comparison.ml_only.rul_metrics.mae:.2f}",
+                f"{comparison.ml_only.rul_metrics.rmse:.2f}",
                 f"{comparison.ml_only.rul_metrics.r_squared:.2f}",
                 f"{comparison.ml_only.warning_metrics.warning_rate*100:.1f}",
                 f"{comparison.ml_only.warning_metrics.avg_lead_time:.0f}",
@@ -227,8 +227,8 @@ class SystemComparison:
                 f"{comparison.ml_only.detection_metrics.f1_score:.2f}",
             ],
             'ML + RAG': [
-                f"{comparison.ml_rag.rul_metrics.mae:.1f}",
-                f"{comparison.ml_rag.rul_metrics.rmse:.1f}",
+                f"{comparison.ml_rag.rul_metrics.mae:.2f}",
+                f"{comparison.ml_rag.rul_metrics.rmse:.2f}",
                 f"{comparison.ml_rag.rul_metrics.r_squared:.2f}",
                 f"{comparison.ml_rag.warning_metrics.warning_rate*100:.1f}",
                 f"{comparison.ml_rag.warning_metrics.avg_lead_time:.0f}",
@@ -240,8 +240,8 @@ class SystemComparison:
                 f"{comparison.ml_rag.detection_metrics.f1_score:.2f}",
             ],
             'ML + RAG + Agents': [
-                f"{comparison.ml_rag_agents.rul_metrics.mae:.1f}",
-                f"{comparison.ml_rag_agents.rul_metrics.rmse:.1f}",
+                f"{comparison.ml_rag_agents.rul_metrics.mae:.2f}",
+                f"{comparison.ml_rag_agents.rul_metrics.rmse:.2f}",
                 f"{comparison.ml_rag_agents.rul_metrics.r_squared:.2f}",
                 f"{comparison.ml_rag_agents.warning_metrics.warning_rate*100:.1f}",
                 f"{comparison.ml_rag_agents.warning_metrics.avg_lead_time:.0f}",

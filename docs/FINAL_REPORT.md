@@ -2,7 +2,7 @@
 ## Final Project Report
 
 **Project Duration:** 60 days (February 2026)  
-**Status:** Complete — Production Ready  
+**Status:** Complete — Capstone Submission Ready  
 **Authors:** AEWIS Research Team  
 **Institution:** Capstone Project
 
@@ -13,12 +13,11 @@
 This report documents the complete development, evaluation, and deployment of the **Agentic Early-Warning Intelligence System (AEWIS)**—a novel integration of machine learning, retrieval-augmented generation (RAG), and multi-agent orchestration for detecting silent system failures in mission-critical infrastructure.
 
 **Key Achievements:**
-- 🎯 **53.4% improvement** in early-warning lead time (15.8 vs 10.3 days)
-- 🤝 **4.1/5.0 trust score** from domain experts (46% improvement over ML-only)
-- 🎪 **84% escalation precision** with calibrated 12% abstention rate
-- ⚡ **320ms latency** at **$2.13 per 1,000 predictions** (production-ready)
-- 📦 **Complete deployment** with Docker, Cloud Run, and ECS configurations
-- 📄 **8,500-word research paper** ready for KDD/AAAI/ICML submission
+- 🎯 **RUL MAE ≈ 11.2 cycles** across all three system tiers (RMSE ≈ 16.9, R² ≈ 0.87)
+- 📈 **Warning-rate improvement** from 18% (ML-only) to 23% (full agent system)
+- 🔍 **Structural groundedness** increases from 0 (ML-only) to nonzero through KB citations and agent reasoning traces
+- ⚡ **Production-ready deployment** with Docker, Cloud Run, and ECS configurations
+- 📄 **8,500-word research paper** and comprehensive evaluation in NB07
 
 ---
 
@@ -76,18 +75,18 @@ AEWIS integrates three complementary technologies:
 
 | Innovation | Technical Contribution | Impact |
 |------------|----------------------|---------|
-| **Three-Baseline Evaluation** | Isolates RAG and agent contributions | +14.6% (RAG), +34% (agents) lead time gain |
-| **Confidence-Calibrated Abstention** | Platt scaling for escalation decisions | 84% precision, 12% abstention rate |
-| **Dynamic Query Refinement** | Agent iteratively improves retrieval | 18% of queries refined, +12% precision |
-| **Production Deployment** | FastAPI + Docker + Cloud | 320ms latency, 6-service orchestration |
+| **Three-Baseline Evaluation** | Isolates RAG and agent contributions | Warning rate: 18% → 22% (RAG) → 23% (agents) |
+| **Multi-Agent Orchestration** | 4-agent sequential pipeline with confidence gating | Structured reasoning traces and KB-grounded explanations |
+| **Dynamic Query Refinement** | Agent iteratively improves retrieval | Sensor-pattern-based KB search with similarity filtering |
+| **Production Deployment** | FastAPI + Docker + Cloud | 6-service orchestration with monitoring |
 
 ### 1.4 Research Questions Answered
 
 | RQ | Question | Target | Result | Status |
 |----|----------|--------|--------|--------|
-| **RQ1** | Does agentic reasoning improve early-warning lead time? | ≥15% gain | **+53.4%** | ✅ **EXCEEDED** |
-| **RQ2** | Does RAG improve trust and interpretability? | ≥4.0/5.0 | **4.1/5.0** | ✅ **ACHIEVED** |
-| **RQ3** | Can system reliably abstain/escalate? | ≥80% precision | **84%** | ✅ **EXCEEDED** |
+| **RQ1** | Does agentic reasoning improve early-warning coverage? | Improvement over ML-only | Warning rate 18% → 23% (+28% relative) | ✅ Improvement shown |
+| **RQ2** | Does RAG improve interpretability? | Groundedness > 0 | KB citations produce nonzero structural groundedness | ✅ Achieved |
+| **RQ3** | Can system produce escalation decisions? | Agent-driven escalation | 4-agent pipeline with confidence gating | ✅ Implemented |
 
 ---
 
@@ -395,160 +394,112 @@ flowchart TD
 | Metric | Baseline 1<br/>(ML-Only) | Baseline 2<br/>(ML + RAG) | Baseline 3<br/>(AEWIS Full) | Improvement<br/>(B1 → B3) |
 |--------|----------------------|----------------------|-----------------------|-------------------|
 | **Predictive Performance** |
-| RUL MAE (days) | 13.7 ± 1.2 | 13.5 ± 1.1 | **12.9 ± 1.0** | **5.8% ↓** |
-| RUL RMSE (days) | 18.4 ± 1.5 | 18.2 ± 1.4 | **17.6 ± 1.3** | **4.3% ↓** |
-| R² Score | 0.892 ± 0.008 | 0.895 ± 0.007 | **0.903 ± 0.006** | **1.2% ↑** |
+| RUL MAE (cycles) | ~11.2 | ~11.2 | **~11.2** | **< 1% (XGBoost saturates FD001)** |
+| RUL RMSE (cycles) | ~16.9 | ~16.9 | **~16.9** | **Negligible** |
+| R² Score | ~0.87 | ~0.87 | **~0.87** | **Negligible** |
 | **Early Warning** |
-| Lead Time (days) | 10.3 ± 2.1 | 11.8 ± 2.3 | **15.8 ± 2.5** | **53.4% ↑** |
-| Anomaly F1-Score | 0.86 ± 0.02 | 0.89 ± 0.02 | **0.91 ± 0.02** | **5.8% ↑** |
-| False Positive Rate | 18% | 13% | **9%** | **50% ↓** |
-| **Interpretability** |
-| Trust Score (1-5) | 2.8 ± 0.6 | 3.9 ± 0.5 | **4.1 ± 0.4** | **46% ↑** |
-| Coherence (1-5) | N/A | 3.9 ± 0.4 | **4.2 ± 0.3** | — |
-| Hallucination Rate | N/A | 7.2% | **2.8%** | **61% ↓** |
+| Warning Rate | 18% | 22% | **23%** | **+28% relative** |
+| Groundedness Score | 0 | > 0 (KB citations) | **> 0 (KB + reasoning)** | **Qualitative gain** |
 | **Operational** |
-| Escalation Precision | N/A | N/A | **84%** | — |
-| Abstention Rate | 0% | 0% | **12%** | Calibrated |
-| Latency (ms) | 45 | 180 | **320** | Acceptable |
-| Cost per 1K | $0 | $1.55 | **$2.13** | ROI positive |
+| Agent Reasoning Traces | None | None | **Full 4-agent traces** | — |
+| Latency (ms) | ~45 | ~180 | **~320** | Acceptable |
+
+> **Note:** RUL prediction accuracy is dominated by the XGBoost model, which already saturates the C-MAPSS FD001 benchmark. The value of RAG and agents lies in early-warning coverage (warning rate) and explainability (groundedness), not MAE improvement. No human evaluation was conducted; no statistical significance tests were run. All values are from NB07 single-run outputs.
 
 ### 4.2 Research Question Results
 
-#### RQ1: Early-Warning Lead Time
+#### RQ1: Early-Warning Coverage
 
-**Hypothesis:** Multi-agent coordination improves lead time by ≥15%  
-**Result:** **+53.4% improvement (15.8 vs 10.3 days)** ✅
+**Hypothesis:** Multi-agent coordination improves early-warning coverage over ML-only baseline.
+**Result:** **Warning rate increases from 18% (ML-only) to 23% (full system), a +28% relative improvement.** ✅
 
-**Statistical Significance:**
-- Paired t-test: p < 0.001
-- 95% Confidence Interval: [13.3, 18.3] days
-- Effect size (Cohen's d): 0.92 (large)
+**Breakdown (from NB07):**
+- Baseline 1 (ML-only): 18/100 engines warned = 18% warning rate
+- Baseline 2 (ML + RAG): 22/100 engines warned = 22% warning rate
+- Baseline 3 (ML + RAG + Agents): 23/100 engines warned = 23% warning rate
 
-**Breakdown:**
-- Baseline 1 → 2 (RAG): +1.5 days (+14.6%)
-- Baseline 2 → 3 (Agents): +4.0 days (+33.9%)
-- Total: +5.5 days (+53.4%)
+**Interpretation:**
+The improvement comes from broader detection coverage, not prediction accuracy. The XGBoost model already saturates C-MAPSS FD001 prediction (MAE ≈ 11.2 cycles across all tiers), so RAG and agents add value through:
+- KB-grounded explanations that flag additional risk patterns
+- Agent reasoning traces that identify cases missed by raw anomaly scores alone
 
-**Clinical Significance:**
-- 5.5 additional days enables:
-  - Scheduled maintenance vs. emergency repair
-  - Spare parts ordering
-  - Reduced downtime cost (est. $50K-500K/day for industrial assets)
+> **Note:** No statistical significance tests (t-tests, ANOVA) were conducted. Results are from a single NB07 evaluation run on 100 test engines.
 
-#### RQ2: Interpretability & Trust
+#### RQ2: Interpretability & Groundedness
 
-**Hypothesis:** RAG achieves ≥4.0/5.0 trust scores  
-**Result:** **4.1/5.0 trust, 4.2/5.0 coherence** ✅
+**Hypothesis:** RAG produces grounded, citation-backed explanations.
+**Result:** **Structural groundedness increases from 0 (ML-only) to nonzero (RAG and Agents).** ✅
 
-**Human Evaluation (N=100 cases, 10 domain experts):**
+**Evaluation (structural, not human):**
 
-| Dimension | Baseline 1 | Baseline 2 | **AEWIS** | p-value |
-|-----------|-----------|-----------|----------|---------|
-| Coherence | N/A | 3.9 ± 0.4 | **4.2 ± 0.3** | <0.001 |
-| Completeness | N/A | 3.7 ± 0.5 | **4.1 ± 0.4** | <0.001 |
-| Actionability | N/A | 3.6 ± 0.5 | **4.0 ± 0.4** | <0.001 |
-| **Trust** | 2.8 ± 0.6 | 3.9 ± 0.5 | **4.1 ± 0.4** | <0.001 |
+| Dimension | Baseline 1 (ML) | Baseline 2 (RAG) | **AEWIS (Agents)** |
+|-----------|-----------|-----------|----------|
+| KB Citations | 0 | > 0 | **> 0** |
+| Reasoning Traces | None | None | **Full 4-step traces** |
+| Warning Coverage | 18% | 22% | **23%** |
 
-**Inter-Rater Reliability:**
-- Cohen's κ = 0.72 (substantial agreement)
-- Krippendorff's α = 0.68 (acceptable)
+**Important limitations:**
+- No human evaluation was conducted (no domain experts recruited)
+- No trust scores, coherence ratings, or inter-rater reliability computed
+- "Groundedness" is a structural proxy measuring whether explanations include KB citations and reasoning chains, not a validated human judgment
+- Hallucination rate was not formally measured
 
-**Hallucination Analysis:**
-- Baseline 2: 7.2% (36/500 explanations contained factual errors)
-- AEWIS: 2.8% (14/500 explanations) — 61% reduction
-- Common errors: Misinterpreting sensor names, citing non-existent thresholds
+#### RQ3: Agent-Driven Escalation
 
-#### RQ3: Abstention & Escalation
+**Hypothesis:** Multi-agent system can produce structured escalation decisions.
+**Result:** **The ActionAgent produces escalation decisions based on confidence gating (threshold = 0.8).** ✅
 
-**Hypothesis:** Precision ≥80%, abstention 5-15%  
-**Result:** **84% precision, 78% recall, 12% abstention** ✅
+**How escalation works:**
+- The ReasoningAgent computes a weighted risk score from prediction (30%), anomaly (30%), and retrieval (40%) evidence
+- If confidence is below the threshold, the system flags for escalation; the ActionAgent generates priority-ranked recommendations and an `ESCALATE_HUMAN` action type
+- The AgentOrchestrator returns status = `ESCALATED` when confidence is insufficient
 
-**Confusion Matrix (Escalation Decisions):**
-
-|  | Predicted: Escalate | Predicted: No Escalate |
-|--|---------------------|----------------------|
-| **Actual: Critical (RUL < 10d)** | 40 (TP) | 11 (FN) |
-| **Actual: Non-Critical** | 8 (FP) | 341 (TN) |
-
-**Metrics:**
-- Precision: 40/(40+8) = **83.3%**
-- Recall: 40/(40+11) = **78.4%**
-- F1-Score: **80.8%**
-
-**Calibration Curve:**
-```
-Confidence  | Actual Accuracy | Calibration Error
-0.5-0.6     | 54%            | +4%
-0.6-0.7     | 68%            | +2%
-0.7-0.8     | 76%            | -2%
-0.8-0.9     | 87%            | -1%
-0.9-1.0     | 94%            | -1%
-
-Expected Calibration Error (ECE): 2.1% (excellent)
-```
+**Limitations:**
+- No ground-truth escalation labels exist in C-MAPSS, so precision/recall for escalation decisions cannot be computed against a gold standard
+- The confusion matrix, calibration curve, and ECE values previously reported were fabricated and have been removed
+- Real escalation behavior is visible in NB07 agent output traces
 
 ### 4.3 Ablation Study Results
 
 #### A1: RAG Retrieval Strategies
 
-| Strategy | Lead Time | ROUGE-L | Top-5 Precision | Latency | Recommended |
-|----------|-----------|---------|----------------|---------|-------------|
-| No Retrieval | 10.3 days | N/A | N/A | 45ms | ❌ No explanations |
-| Semantic Only (FAISS) | 11.5 days | 0.59 | 0.74 | 165ms | ⚠️ Misses keywords |
-| Keyword Only (BM25) | 10.9 days | 0.52 | 0.68 | 120ms | ⚠️ Misses context |
-| **Hybrid (70/30)** | **11.8 days** | **0.64** | **0.81** | 180ms | ✅ **Best** |
-| Hybrid (50/50) | 11.6 days | 0.61 | 0.78 | 175ms | ⚠️ Less optimal |
+| Configuration | Warning Rate | Groundedness | Notes |
+|--------------|-------------|-------------|-------|
+| No Retrieval (ML-only) | 18% | 0 | Baseline: no explanations |
+| **FAISS Semantic (current)** | **22%** | **> 0** | **KB citations improve coverage** |
 
-**Insight:** 70/30 split balances semantic understanding (primary) with keyword recall (backup).
+**Note:** Only FAISS semantic retrieval was implemented and evaluated. BM25, hybrid strategies, and ROUGE-L scores were not computed. The retriever uses `top_k=5, min_similarity=0.3` with cosine similarity on all-MiniLM-L6-v2 embeddings.
 
 #### A2: Agent Orchestration Patterns
 
-| Configuration | Lead Time | Trust | Escalation Precision | Latency | Recommended |
-|--------------|-----------|-------|---------------------|---------|-------------|
-| No Agents (ML+RAG only) | 11.8 days | 3.9 | N/A | 180ms | ❌ No adaptation |
-| Single Monolithic Agent | 13.2 days | 4.0 | 76% | 250ms | ⚠️ Less modular |
-| Two Agents (Mon+Act) | 14.5 days | 4.0 | 81% | 290ms | ⚠️ Good but limited |
-| **Four Agents (Full)** | **15.8 days** | **4.1** | **84%** | 320ms | ✅ **Best** |
+| Configuration | Warning Rate | Groundedness | Agent Traces |
+|--------------|-------------|-------------|-------------|
+| ML-only (no agents) | 18% | 0 | None |
+| ML + RAG (no agents) | 22% | > 0 | None |
+| **ML + RAG + 4 Agents (Full)** | **23%** | **> 0** | **Full 4-step traces** |
 
-**Insight:** Specialized agents (Monitoring, Reasoning, Retrieval, Action) outperform monolithic design through focused responsibilities.
+**Note:** Only the full 4-agent pipeline was evaluated in NB07. Single-agent, two-agent, and monolithic agent configurations were not tested. The values for alternative orchestration patterns previously shown were fabricated.
 
-#### A3: Confidence Calibration Methods
+#### A3: Confidence Calibration
 
-| Method | Abstention Rate | Escalation Precision | ECE | Recommended |
-|--------|---------------|---------------------|-----|-------------|
-| No Calibration | 0% (always predict) | N/A | 12.3% | ❌ Overconfident |
-| Fixed Threshold (>0.6) | 12% | 79% | 5.8% | ⚠️ Static |
-| **Platt Scaling** | **12%** | **84%** | **2.1%** | ✅ **Best** |
-| Isotonic Regression | 11% | 82% | 2.9% | ⚠️ Similar to Platt |
+**Note:** The system uses a fixed confidence threshold (0.8) in the ActionAgent for escalation decisions. Platt scaling, isotonic regression, and ECE calibration were described in the methodology but were **not empirically evaluated** on this dataset. The calibration table previously shown was fabricated and has been removed.
 
-**Insight:** Platt scaling (logistic regression on validation set) provides best calibration.
+The current implementation:
+- ReasoningAgent computes a weighted risk score from prediction, anomaly, and retrieval evidence
+- If the aggregated confidence falls below 0.6, the system sets `abstain = True`
+- ActionAgent uses `escalation_threshold = 0.8` to decide `ESCALATE_HUMAN` actions
 
 #### A4: LLM Model Selection
 
-| Model | Lead Time | Trust | Coherence | Latency | Cost/1K | Recommended |
-|-------|-----------|-------|-----------|---------|---------|-------------|
-| **GPT-3.5-turbo** | 15.8 days | 4.1 | 4.2 | 320ms | **$2.13** | ✅ **Production** |
-| GPT-4 | 16.2 days | 4.3 | 4.4 | 580ms | $21.50 | ⚠️ High-value only |
-| Llama-2-70B (self-hosted) | 14.9 days | 3.8 | 3.9 | 420ms | $0* | ⚠️ Lower quality |
-| GPT-3.5-turbo-16k | 15.7 days | 4.1 | 4.2 | 340ms | $3.20 | ⚠️ Unnecessary context |
+**Note:** The current agent system uses **rule-based Python logic** (custom sequential pipeline), not LLM API calls. No GPT-3.5-turbo, GPT-4, or Llama models were used. The LLM model comparison table previously shown was fabricated and has been removed.
 
-*Excluding infrastructure costs
-
-**Insight:** GPT-3.5-turbo offers best cost-performance tradeoff. GPT-4 improves results by 2.5% but costs 10× more.
+The agents (MonitoringAgent, RetrievalAgent, ReasoningAgent, ActionAgent) are deterministic Python classes with weighted scoring, threshold-based decisions, and template-based explanation generation. Future work could integrate LLM-based reasoning.
 
 ### 4.4 Generalization to FD002 (Multi-Operational Conditions)
 
-| Metric | FD001 (Single Condition) | FD002 (6 Conditions) | Degradation |
-|--------|------------------------|---------------------|-------------|
-| RUL MAE | 12.9 days | 15.3 days | +18.6% |
-| Lead Time | 15.8 days | 13.2 days | -16.5% |
-| Trust Score | 4.1/5.0 | 3.9/5.0 | -4.9% |
-| Hallucination Rate | 2.8% | 4.1% | +46% |
-
-**Analysis:** Performance degrades on multi-condition dataset due to increased variability. Suggests need for:
-- Transfer learning across operational conditions
-- Operational-condition-specific retrieval
-- Expanded training data
+> **Not conducted.** Only FD001 (single operating condition, 100 test engines) was evaluated. Cross-dataset generalization to FD002–FD004 was not performed. The table previously shown with FD002 results was fabricated and has been removed.
+>
+> **Future work:** Evaluate on multi-condition datasets (FD002: 6 conditions, FD003/FD004: multiple fault modes) to assess robustness.
 
 ---
 
@@ -697,13 +648,13 @@ curl -X POST http://localhost:8000/predict \
 - Version control via Git LFS
 
 ✅ **Evaluation:**
-- 5 independent runs with different seeds
-- Results reported as mean ± std
-- Statistical tests at α=0.05
+- Single evaluation run with fixed seed (42) in NB07
+- No multiple-seed runs or cross-validation were performed
+- No statistical significance tests were conducted
 
 ✅ **Compute Resources:**
-- Training: 1x NVIDIA V100 (16GB) or equivalent
-- Inference: CPU-only (320ms latency)
+- Training and evaluation: Google Colab (CPU runtime)
+- Inference: CPU-only
 
 ---
 
@@ -1172,10 +1123,10 @@ High-priority alert detected at cycle 95. The system has identified a declining 
 
 **Scene 4: Results (1:30-2:00)**
 - Results table animation:
-  - Lead time: 10.3 → 15.8 days (+53%)
-  - Trust: 2.8 → 4.1 / 5.0
-  - False positives: 18% → 9% (50% reduction)
-- Text: "All 3 research questions exceeded targets ✅"
+  - MAE: ~11.2 cycles (consistent across all 3 tiers)
+  - Warning rate: 18% → 23% (+28% relative)
+  - Groundedness: 0 → nonzero (KB citations)
+- Text: "Progressive improvement in coverage and explainability ✅"
 
 **Scene 5: Impact (2:00-2:30)**
 - Real-world scenarios:
@@ -1188,7 +1139,7 @@ High-priority alert detected at cycle 95. The system has identified a declining 
 - GitHub repository screenshot
 - Text: "Open source: 10,000+ lines of code"
 - Text: "Research paper: 8,500 words, 46 references"
-- QR code: "Try it yourself: demo.aewis.ai"
+- QR code: "Source code and documentation on GitHub"
 
 ---
 
@@ -1196,7 +1147,7 @@ High-priority alert detected at cycle 95. The system has identified a declining 
 
 **Title:** Agentic Early-Warning Intelligence System for Silent System Failures: Integrating Machine Learning, Retrieval-Augmented Generation, and Multi-Agent Reasoning
 
-**Target Venue:** KDD 2026, AAAI 2026, ICML 2026
+**Target Venue:** Capstone project report (not yet submitted to a venue)
 
 **Word Count:** 8,500 words
 
@@ -1214,18 +1165,17 @@ High-priority alert detected at cycle 95. The system has identified a declining 
 **Key Contributions:**
 1. Novel three-tier architecture (ML + RAG + Agents)
 2. Rigorous three-baseline evaluation isolating contributions
-3. Empirical validation (15% lead time, 4.1 trust, 84% escalation)
+3. Empirical evaluation on C-MAPSS FD001 (MAE ≈ 11.2, warning rate 18% → 23%)
 4. Production deployment (FastAPI, Docker, cloud)
 5. Open-source release for reproducibility
 
 **Citation (BibTeX):**
 ```bibtex
-@inproceedings{aewis2026,
+@misc{aewis2026,
   title={Agentic Early-Warning Intelligence System for Silent System Failures},
   author={AEWIS Research Team},
-  booktitle={Proceedings of KDD 2026},
   year={2026},
-  url={https://github.com/aewis-capstone/agentic-ewis}
+  note={Capstone project}
 }
 ```
 
@@ -1518,9 +1468,9 @@ class AgentOrchestrator:
 | Compute (inference) | $0.58 | $17.40 | $211.70 |
 | Infrastructure (Cloud Run) | — | $120 | $1,440 |
 | MLflow Storage (S3) | — | $15 | $180 |
-| **Total** | **$2.13** | **$152.40** | **$1,831.70** |
+| **Total** | **$0.58** | **$152.40** | **$1,831.70** |
 
-*Note: Current system uses rule-based agents (no LLM API costs). LLM integration (e.g., GPT-3.5-turbo) would add ~$26/month for prompt+completion tokens.*
+*Note: Current system uses rule-based agents (no LLM API costs). These cost estimates are for cloud compute only. LLM integration (e.g., GPT-3.5-turbo) would add additional costs.*
 
 **ROI Calculation:**
 - Cost: ~$1,832/year
@@ -1611,14 +1561,14 @@ agentic-ewis/
 The **Agentic Early-Warning Intelligence System (AEWIS)** successfully demonstrates that integrating machine learning, retrieval-augmented generation, and multi-agent orchestration can significantly improve both predictive performance and operator trust in early-warning systems for silent failures.
 
 **Key Achievements:**
-- ✅ **53.4% lead time improvement** (15.8 vs 10.3 days)
-- ✅ **4.1/5.0 trust score** from domain experts
-- ✅ **84% escalation precision** with 12% calibrated abstention
-- ✅ **Production-ready deployment** (320ms latency, $2.13/1K predictions)
-- ✅ **Complete research paper** (8,500 words, ready for KDD/AAAI/ICML)
+- ✅ **MAE ≈ 11.2 cycles** across all three tiers (XGBoost saturates FD001)
+- ✅ **Warning rate improvement** from 18% to 23% (+28% relative)
+- ✅ **Structural groundedness** increases with KB citations and agent reasoning
+- ✅ **Production-ready deployment** (Docker, Cloud Run, ECS configurations)
+- ✅ **Complete research paper** (8,500 words)
 
 **Impact:**
-AEWIS provides a blueprint for deploying LLM-based systems in safety-critical domains, demonstrating that trustworthy AI can be achieved through the synergy of quantitative ML rigor, RAG interpretability, and agent adaptability.
+AEWIS provides a blueprint for integrating ML prediction, RAG-based retrieval, and multi-agent orchestration in safety-critical predictive maintenance systems. The project demonstrates that while XGBoost saturates C-MAPSS prediction accuracy, RAG and agents add meaningful value through improved detection coverage and structured explanations.
 
 **Open Science:**
 All code (10,000+ lines), evaluation frameworks, deployment configurations, and documentation are open-sourced to accelerate reproducibility and follow-on research.
@@ -1629,4 +1579,4 @@ All code (10,000+ lines), evaluation frameworks, deployment configurations, and 
 
 **Date:** February 27, 2026  
 **Duration:** 60 days  
-**Next Steps:** Conference submission (KDD/AAAI 2026), pilot deployment
+**Next Steps:** Future evaluation with additional datasets (FD002–FD004), human evaluation studies, and LLM-based agent reasoning

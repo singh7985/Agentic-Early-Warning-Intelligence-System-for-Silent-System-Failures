@@ -210,8 +210,8 @@ class AblationStudy:
         for key, result in results.items():
             data.append({
                 'Configuration': result.config.name,
-                'RUL MAE': f"{result.metrics.rul_metrics.mae:.1f}",
-                'RUL RMSE': f"{result.metrics.rul_metrics.rmse:.1f}",
+                'RUL MAE': f"{result.metrics.rul_metrics.mae:.2f}",
+                'RUL RMSE': f"{result.metrics.rul_metrics.rmse:.2f}",
                 'RUL R²': f"{result.metrics.rul_metrics.r_squared:.2f}",
                 'Warning Rate': f"{result.metrics.warning_metrics.warning_rate*100:.1f}%",
                 'Lead Time': f"{result.metrics.warning_metrics.avg_lead_time:.0f}",
