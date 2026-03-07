@@ -139,11 +139,12 @@ class KnowledgeBase:
         
         logger.info(f"Created {len(self.documents)} documents")
         
-        # Chunk documents
+        # Chunk documents (preserve key metadata for retrieval-based calibration)
         self.chunks = self.chunker.chunk_documents(
             self.documents,
             text_field='text',
-            metadata_fields=['engine_id', 'failure_type', 'duration', 'severity']
+            metadata_fields=['engine_id', 'failure_type', 'duration', 'severity',
+                             'start_cycle', 'end_cycle']
         )
         
         logger.info(f"Created {len(self.chunks)} chunks")
@@ -434,13 +435,14 @@ class KnowledgeBase:
         chunker_path = Path(directory) / 'chunker.pkl'
         self.chunker.save(str(chunker_path))
         
-        # Save documents and chunks
+        # Save documents, chunks, and embeddings
         import pickle
         docs_path = Path(directory) / 'documents.pkl'
         with open(docs_path, 'wb') as f:
             pickle.dump({
                 'documents': self.documents,
-                'chunks': self.chunks
+                'chunks': self.chunks,
+                'embeddings': self.embeddings,
             }, f)
         
         logger.info(f"Saved knowledge base to {directory}")
@@ -481,6 +483,7 @@ class KnowledgeBase:
             data = pickle.load(f)
             kb.documents = data['documents']
             kb.chunks = data['chunks']
+            kb.embeddings = data.get('embeddings')  # numpy array or None (old format)
         
         # Recreate retriever
         if kb.vector_store:
