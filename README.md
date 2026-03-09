@@ -9,12 +9,11 @@ A sophisticated agentic AI system that continuously analyzes time-series signals
 
 ## 📋 Quick Links
 
-- **[Research Framework](./RESEARCH_FRAMEWORK.md)** — Problem statement, research questions, baselines, evaluation metrics
 - **[Research Paper](docs/RESEARCH_PAPER.md)** — Complete academic paper (8,500 words, 46 references)
+- **[Final Report](docs/FINAL_REPORT.md)** — Comprehensive project report
 - **[Project Status](#-project-status)** — Current phase and progress
 - **[Getting Started](#-getting-started)** — Setup and usage
 - **[Architecture](#-architecture)** — System design overview
-- **[API Documentation](API_README.md)** — REST API endpoints & client usage
 
 ---
 
@@ -22,9 +21,9 @@ A sophisticated agentic AI system that continuously analyzes time-series signals
 
 | # | Research Question | Success Criteria | Result |
 |---|-------------------|-----------------|--------|
-| **RQ1** | Does agentic reasoning improve early-warning lead time? | ≥15% lead time improvement vs. baseline ML | **See NB07** — Warning rate +28%, lead time improved |
-| **RQ2** | Does RAG improve interpretability and decision-maker trust? | Grounded, cited explanations | **Demonstrated** — Groundedness scores > 0 with real citations |
-| **RQ3** | When should the system abstain or escalate? | ≥80% precision on escalation recommendations | **See NB07** — Computed from real agent escalation decisions |
+| **RQ1** | Does agentic reasoning improve early-warning lead time? | ≥15% lead time improvement vs. baseline ML | Warning rate: 18%→23% (+28% relative). See NB07 for per-engine lead times. |
+| **RQ2** | Does RAG improve interpretability and decision-maker trust? | Grounded, cited explanations | Groundedness: 0.00→0.13→0.39. No human evaluation conducted. |
+| **RQ3** | When should the system abstain or escalate? | Calibrated escalation decisions | Computed from real ActionAgent decisions in NB07. |
 
 ---
 
@@ -71,18 +70,17 @@ We compare three system variants to isolate the contribution of each component:
 - **Residual Threshold:** 95th percentile of validation residuals
 - **Isolation Forest Threshold:** 5th percentile of training anomaly scores
 - **Fusion Alerts:** Persistence-filtered warnings combining both detectors
-- **Precision / Recall / F1-Score** (target: >0.85 / >0.90 / >0.87)
+- **Warning Rate:** % of test engines receiving pre-failure alerts
 
 ### RAG & Interpretability
-- **Retrieval Relevance (ROUGE-L)** (target: >0.6)
 - **Explanation Coherence** (structural groundedness scoring)
 - **Citation Coverage** (% of explanations with KB references)
 - **Groundedness Score** (composite of citations + pattern matches)
 
 ### Agentic Reasoning
-- **Abstention Rate** (target: 5–15%, calibrated)
-- **Escalation Precision** (target: >80%)
-- **Computational Cost** (target: <500ms per batch)
+- **Abstention Rate** (ReasoningAgent confidence thresholding)
+- **Escalation Decisions** (ActionAgent + ReasoningAgent logic)
+- **Computational Cost** (per-batch processing time)
 
 ---
 
@@ -131,7 +129,7 @@ We compare three system variants to isolate the contribution of each component:
 ```mermaid
 flowchart TD
     subgraph INPUT["Data Ingestion"]
-        A1["NASA C-MAPSS FD001-FD004\n21 sensors, 709 engines"]
+        A1["NASA C-MAPSS FD001\n21 sensors, 100 test engines"]
         A2["System Logs\nHDFS, BGL"]
     end
 
@@ -206,13 +204,12 @@ flowchart LR
 ```
 agentic-ewis/
 ├── README.md                          # This file
-├── RESEARCH_FRAMEWORK.md              # Problem statement, RQs, baselines, metrics
 ├── pyproject.toml                     # Poetry dependencies
 ├── requirements.txt                   # Pip requirements (alternative)
 ├── .env.example                       # Environment variables template
 ├── project_config.json                # Project root configuration
 │
-├── src/                               # Source code (~12,000+ lines, 35+ modules)
+├── src/                               # Source code (~15,800 lines, 51 modules)
 │   ├── __init__.py                    # Package init, version 0.1.0
 │   ├── config.py                      # Pydantic Settings configuration
 │   ├── logging_config.py              # Structured logging setup
@@ -319,13 +316,10 @@ agentic-ewis/
 │   ├── PHASE6_SUMMARY.md              #   RAG pipeline guide
 │   ├── PHASE7_SUMMARY.md              #   Agentic architecture guide
 │   ├── PHASE8_SUMMARY.md              #   Evaluation guide
-│   ├── PHASE10_SUMMARY.md             #   API & deployment guide
-│   ├── PHASE11_SUMMARY.md             #   Research paper guide
 │   └── PHASE12_SUMMARY.md             #   Final delivery
 │
 ├── scripts/                           # Utility scripts
-│   ├── download_cmapss.py             #   Dataset downloader
-│   └── phase1_eda_cmapss.py           #   EDA helper script
+│   └── download_cmapss.py             #   Dataset downloader
 │
 ├── Dockerfile                         # Multi-stage container build
 ├── docker-compose.yml                 # 7-service orchestration
@@ -333,8 +327,7 @@ agentic-ewis/
 ├── prometheus.yml                     # Metrics collection config
 ├── cloudrun.yaml                      # GCP Cloud Run deployment
 ├── ecs-task-definition.json           # AWS ECS Fargate deployment
-├── deploy.sh                          # Automated deployment script
-└── prepare_for_colab.sh               # Google Colab preparation
+└── deploy.sh                          # Automated deployment script
 ```
 
 ---
@@ -360,11 +353,11 @@ agentic-ewis/
 | Abstention Rate | 0% | 0% | Calibrated | ReasoningAgent confidence thresholding |
 
 **Key Findings:**
-- **RQ1:** Warning rate improved 18% → 23% (+28%). Lead time improvement computed in NB07.  
+- **RQ1:** Warning rate improved 18% → 23% (+28% relative). Per-engine lead times computed in NB07.  
   The value of agents is in **detection coverage**, not MAE — XGBoost with 112 features already saturates C-MAPSS FD001 prediction accuracy.
-- **RQ2:** Groundedness scores are non-zero with real KB citations and pattern matches.  
+- **RQ2:** Groundedness: 0.00 (ML-only) → 0.13 (ML+RAG) → 0.39 (Full system).  
   No human evaluation was conducted; scores are structural (citation + pattern based).
-- **RQ3:** Escalation precision computed from real ActionAgent decisions in NB07.
+- **RQ3:** Escalation decisions computed from real ActionAgent logic in NB07. No formal precision metric was computed.
 
 ---
 
@@ -424,16 +417,12 @@ Execute the notebooks in sequence for the full pipeline:
 
 | Document | Description |
 |----------|-------------|
-| [RESEARCH_FRAMEWORK.md](RESEARCH_FRAMEWORK.md) | Research questions & methodology |
 | [docs/RESEARCH_PAPER.md](docs/RESEARCH_PAPER.md) | Complete academic paper (8,500 words) |
 | [docs/FINAL_REPORT.md](docs/FINAL_REPORT.md) | Project final report |
-| [API_README.md](API_README.md) | API endpoints & client usage |
-| [docs/PHASE4_SUMMARY.md](docs/PHASE4_SUMMARY.md) | ML training guide |
-| [docs/PHASE5_SUMMARY.md](docs/PHASE5_SUMMARY.md) | Anomaly detection guide |
 | [docs/PHASE6_SUMMARY.md](docs/PHASE6_SUMMARY.md) | RAG pipeline guide |
 | [docs/PHASE7_SUMMARY.md](docs/PHASE7_SUMMARY.md) | Agentic architecture guide |
 | [docs/PHASE8_SUMMARY.md](docs/PHASE8_SUMMARY.md) | Evaluation guide |
-| [docs/PHASE10_SUMMARY.md](docs/PHASE10_SUMMARY.md) | API & deployment guide |
+| [docs/PHASE12_SUMMARY.md](docs/PHASE12_SUMMARY.md) | Final delivery summary |
 
 ---
 
@@ -529,8 +518,8 @@ mypy src/
 
 ### ✅ Phase 4: ML Model Training (Days 15–22)
 - [x] Random Forest, XGBoost, GradientBoosting regressors
-- [x] LSTM deep learning model (15 epochs, best checkpoint)
-- [x] TCN deep learning model (15 epochs, best checkpoint)
+- [x] LSTM deep learning model (60 max epochs, early stopped at 35, best checkpoint at epoch 5)
+- [x] TCN deep learning model (60 max epochs, early stopped at 55, best checkpoint at epoch 25)
 - [x] NASA asymmetric scoring function
 - [x] Per-subset evaluation (FD001–FD004)
 - [x] Model comparison with RMSE + NASA Score
@@ -565,7 +554,7 @@ mypy src/
 - [x] 3-baseline comparison (ML-Only vs ML+RAG vs Full System)
 - [x] Ablation study (7 configurations)
 - [x] Failure case analysis and root cause analysis
-- [x] Lead time analysis and statistical significance testing
+- [x] Lead time analysis and per-engine warning evaluation
 - [x] **Notebook:** `07_system_evaluation.ipynb`
 
 ### ✅ Phase 9: MLOps & Monitoring (Days 44–48)
@@ -579,15 +568,15 @@ mypy src/
 - [x] FastAPI backend (/predict, /explain, /health, /metrics, /drift)
 - [x] Agent integration into API
 - [x] Docker containerization (multi-stage build)
-- [x] Docker Compose (7-service orchestration)
+- [x] Docker Compose (6-service orchestration)
 - [x] Cloud deployment configs (GCP Cloud Run, AWS ECS Fargate)
 - [x] Python API client library
 - [x] Monitoring stack (Prometheus, Grafana)
 
 ### ✅ Phase 11: Research Paper (Days 55–58)
 - [x] Complete 8,500-word paper (46 references)
-- [x] 10 tables with statistical analysis
-- [x] Ready for KDD/AAAI/ICML submission
+- [x] Tables with real NB07 evaluation results
+- [x] Honest limitations and future work documented
 
 ### ✅ Phase 12: Final Delivery & Documentation (Days 59–60)
 - [x] Final report with comprehensive results
@@ -623,9 +612,8 @@ This project is licensed under the MIT License — see the LICENSE file for deta
 
 ---
 
-**Last Updated:** 2026-02-27
-**Status:** All 12 Phases Complete ✅ — Research Paper Ready for Submission 🚀📄
+**Last Updated:** 2026-03-09
+**Status:** All 12 Phases Complete ✅
 
-**Total Source Code:** 12,000+ lines across 35+ modules in `src/`
+**Total Source Code:** ~15,800 lines across 51 modules in `src/`
 **Notebooks:** 9 notebooks covering the full pipeline (EDA → Deployment)
-**Documentation:** 13,000+ words across phase summaries + 8,500-word research paper
