@@ -205,17 +205,17 @@ model.load_model(path)
 
 ## Performance Metrics
 
-### Typical Performance on C-MAPSS FD001
+### Actual Performance on C-MAPSS FD001–FD004 (Combined Test RMSE from NB03)
 
-| Model | Test RMSE | Test MAE | Test R² | Training Time | Inference Time |
-|-------|-----------|----------|---------|---------------|----------------|
-| **XGBoost** | 25-30 | 18-22 | 0.83-0.87 | ~45s | ~0.015 ms |
-| **Random Forest** | 28-33 | 20-25 | 0.80-0.85 | ~60s | ~0.05 ms |
-| **Gradient Boosting** | 26-31 | 19-23 | 0.82-0.86 | ~50s | ~0.02 ms |
-| **LSTM** | 27-32 | 19-24 | 0.81-0.86 | ~180s | ~0.023 ms |
-| **TCN** | 26-31 | 18-23 | 0.82-0.87 | ~165s | ~0.021 ms |
+| Model | Test RMSE | Per-Subset RMSE (FD001/FD002/FD003/FD004) |
+|-------|-----------|-------------------------------------------|
+| **Random Forest** | 19.27 | 17.37 / 18.82 / 18.55 / 20.74 |
+| **XGBoost** | 19.13 | 17.68 / 18.48 / 19.74 / 20.12 |
+| **Gradient Boosting** | 19.48 | 17.63 / 18.69 / 19.50 / 20.99 |
+| **LSTM** | 18.55 | 16.59 / 18.56 / 17.51 / 19.71 |
+| **TCN** | 19.60 | 17.62 / 18.32 / 20.32 / 21.32 |
 
-*Note: Performance varies based on feature engineering and hyperparameters*
+*Values from NB03 notebook output. LSTM training: 60 max epochs, early stopped at 35, best at epoch 5. TCN: 60 max epochs, early stopped at 55, best at epoch 25.*
 
 ### Key Observations
 

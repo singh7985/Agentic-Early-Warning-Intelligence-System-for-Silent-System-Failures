@@ -1,8 +1,12 @@
 {
     "selected_model": "xgboost",
-    "rmse": 19.443728120718564,
+    "rmse": 19.13,
+    "note": "Combined test RMSE from NB03 (FD001-FD004). NB07 system evaluation RMSE = 15.86 on FD001 only.",
     "candidates": {
-        "xgboost": 19.443728120718564,
-        "lstm": 47.19034035325715
+        "random_forest": 19.27,
+        "xgboost": 19.13,
+        "gradient_boosting": 19.48,
+        "lstm": 18.55,
+        "tcn": 19.60
     }
 }

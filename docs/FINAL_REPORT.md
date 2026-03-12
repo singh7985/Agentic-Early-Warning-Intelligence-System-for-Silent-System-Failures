@@ -13,7 +13,7 @@
 This report documents the complete development, evaluation, and deployment of the **Agentic Early-Warning Intelligence System (AEWIS)**—a novel integration of machine learning, retrieval-augmented generation (RAG), and multi-agent orchestration for detecting silent system failures in mission-critical infrastructure.
 
 **Key Achievements:**
-- 🎯 **RUL MAE ≈ 11.2 cycles** across all three system tiers (RMSE ≈ 16.9, R² ≈ 0.87)
+- 🎯 **RUL MAE ≈ 11.2 cycles** across all three system tiers (RMSE ≈ 15.9, R² ≈ 0.67)
 - 📈 **Warning-rate improvement** from 18% (ML-only) to 23% (full agent system)
 - 🔍 **Structural groundedness** increases from 0 (ML-only) to nonzero through KB citations and agent reasoning traces
 - ⚡ **Production-ready deployment** with Docker, Cloud Run, and ECS configurations
@@ -395,8 +395,8 @@ flowchart TD
 |--------|----------------------|----------------------|-----------------------|-------------------|
 | **Predictive Performance** |
 | RUL MAE (cycles) | ~11.2 | ~11.2 | **~11.2** | **< 1% (XGBoost saturates FD001)** |
-| RUL RMSE (cycles) | ~16.9 | ~16.9 | **~16.9** | **Negligible** |
-| R² Score | ~0.87 | ~0.87 | **~0.87** | **Negligible** |
+| RUL RMSE (cycles) | ~15.9 | ~15.9 | **~15.9** | **Negligible** |
+| R² Score | ~0.67 | ~0.67 | **~0.67** | **Negligible** |
 | **Early Warning** |
 | Warning Rate | 18% | 22% | **23%** | **+28% relative** |
 | Groundedness Score | 0 | > 0 (KB citations) | **> 0 (KB + reasoning)** | **Qualitative gain** |

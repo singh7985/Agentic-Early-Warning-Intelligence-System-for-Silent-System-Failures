@@ -14,7 +14,7 @@
 
 **Method:** We present an **Agentic Early-Warning Intelligence System (AEWIS)** that integrates three complementary components: (i) time-series machine learning models (XGBoost for Remaining Useful Life prediction, Isolation Forest for anomaly detection) for quantitative signal analysis, (ii) RAG pipelines with FAISS vector databases to ground predictions in historical maintenance logs and domain documentation, and (iii) LangGraph-based multi-agent orchestration with four specialized agents (Monitoring, Reasoning, Retrieval, Action) that dynamically coordinate to produce explainable alerts with confidence-calibrated recommendations.
 
-**Results:** Evaluated on the NASA C-MAPSS turbofan engine degradation dataset (FD001, 100 test engines, 13,096 observations), our three-tier system maintains strong RUL prediction accuracy (all-cycle MAE ≈ 11.2 cycles, last-cycle MAE ≈ 12.8 cycles, R² ≈ 0.87) while progressively improving early-warning coverage: warning rate increases from 18% (ML-only) to 22% (ML+RAG) to 23% (full system), with corresponding improvements in lead time and agent-driven escalation. The XGBoost baseline already saturates point-prediction accuracy on C-MAPSS FD001; the real value of RAG and agents lies in detection breadth (more engines warned earlier) and explainability (groundedness via KB citations and agent reasoning traces), not MAE improvement. No formal human evaluation was conducted; trust is assessed via structural groundedness metrics.
+**Results:** Evaluated on the NASA C-MAPSS turbofan engine degradation dataset (FD001, 100 test engines, 13,096 observations), our three-tier system maintains strong RUL prediction accuracy (all-cycle MAE ≈ 11.2 cycles, last-cycle MAE ≈ 12.8 cycles, R² ≈ 0.67) while progressively improving early-warning coverage: warning rate increases from 18% (ML-only) to 22% (ML+RAG) to 23% (full system), with corresponding improvements in lead time and agent-driven escalation. The XGBoost baseline already saturates point-prediction accuracy on C-MAPSS FD001; the real value of RAG and agents lies in detection breadth (more engines warned earlier) and explainability (groundedness via KB citations and agent reasoning traces), not MAE improvement. No formal human evaluation was conducted; trust is assessed via structural groundedness metrics.
 
 **Impact:** AEWIS demonstrates that agentic reasoning enhances both predictive performance and operational trust in early-warning systems. Our ablation study isolates the contributions of RAG (interpretability) and agents (adaptive reasoning), providing a blueprint for deploying LLM-based systems in safety-critical domains. We release the complete codebase, evaluation framework, and deployment configurations to facilitate reproducibility.
 
@@ -486,9 +486,9 @@ To isolate component contributions, we conduct:
 
 | System | All-Cycle MAE | Last-Cycle MAE | R² Score | Warning Rate | Warned Engines |
 |--------|--------------|----------------|----------|-------------|----------------|
-| **Baseline 1: ML-Only** | ~11.2 | ~12.8 | ~0.87 | 18% | 18/100 |
-| **Baseline 2: ML+RAG** | ~11.2 | ~12.8 | ~0.87 | 22% | 22/100 |
-| **Baseline 3: AEWIS (Full)** | ~11.2 | ~12.9 | ~0.87 | 23% | 23/100 |
+| **Baseline 1: ML-Only** | ~11.2 | ~12.8 | ~0.67 | 18% | 18/100 |
+| **Baseline 2: ML+RAG** | ~11.2 | ~12.8 | ~0.67 | 22% | 22/100 |
+| **Baseline 3: AEWIS (Full)** | ~11.2 | ~12.9 | ~0.67 | 23% | 23/100 |
 
 *Values from NB07 evaluation on 13,096 test observations (100 engines). MAE in cycles. All-cycle MAE includes easy mid-life predictions (75.6% of rows have RUL > 30). Last-cycle MAE is the standard C-MAPSS benchmark.*
 

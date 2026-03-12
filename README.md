@@ -130,12 +130,12 @@ We compare three system variants to isolate the contribution of each component:
 flowchart TD
     subgraph INPUT["Data Ingestion"]
         A1["NASA C-MAPSS FD001\n21 sensors, 100 test engines"]
-        A2["System Logs\nHDFS, BGL"]
+        A2["System Logs\nSample Logs"]
     end
 
     subgraph FE["Feature Engineering"]
         B1["Rolling Statistics\nHealth Indicators\nSliding Windows"]
-        B2["Feature Selection\nVariance, Correlation, Tree\nk = 20"]
+        B2["Feature Selection\nVariance, Correlation, Tree\n112 features"]
         B3["Text Embeddings\nSentence-BERT, 384-dim"]
     end
 
@@ -311,8 +311,9 @@ agentic-ewis/
 ├── docs/                              # Phase documentation
 │   ├── RESEARCH_PAPER.md              #   Complete academic paper (8,500 words)
 │   ├── FINAL_REPORT.md                #   Project final report
-│   ├── PHASE4_SUMMARY.md              #   ML training guide
-│   ├── PHASE5_SUMMARY.md              #   Anomaly detection guide
+│   ├── PHASE4_ML_TRAINING_GUIDE.md    #   ML training technical guide
+│   ├── PHASE4_QUICK_REFERENCE.md      #   Phase 4 command cheatsheet
+│   ├── PHASE4_SUMMARY.md              #   ML training summary
 │   ├── PHASE6_SUMMARY.md              #   RAG pipeline guide
 │   ├── PHASE7_SUMMARY.md              #   Agentic architecture guide
 │   ├── PHASE8_SUMMARY.md              #   Evaluation guide
@@ -322,7 +323,7 @@ agentic-ewis/
 │   └── download_cmapss.py             #   Dataset downloader
 │
 ├── Dockerfile                         # Multi-stage container build
-├── docker-compose.yml                 # 7-service orchestration
+├── docker-compose.yml                 # 6-service orchestration
 ├── nginx.conf                         # Reverse proxy configuration
 ├── prometheus.yml                     # Metrics collection config
 ├── cloudrun.yaml                      # GCP Cloud Run deployment
