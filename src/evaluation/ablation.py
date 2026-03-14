@@ -185,7 +185,10 @@ class AblationStudy:
         )
 
     def compute_ablation(self) -> Dict[str, AblationResult]:
-        """Compute results for all configurations."""
+        """Compute results for all configurations (cached after first call)."""
+        if hasattr(self, '_cached_results') and self._cached_results:
+            return self._cached_results
+
         logger.info("Computing ablation study results...")
 
         ablation_results = {}
@@ -200,6 +203,7 @@ class AblationStudy:
             )
 
         logger.info("Ablation study complete")
+        self._cached_results = ablation_results
         return ablation_results
 
     def get_ablation_table(self) -> pd.DataFrame:
@@ -275,44 +279,60 @@ class AblationStudy:
         with_: CompleteMetrics,
     ) -> float:
         """
-        Calculate overall impact of a component.
-        Positive = component helps performance
-        """
-        # Average normalized improvement across metrics
-        improvements = []
+        Calculate overall impact of a component using weighted metrics.
+        Positive = component helps performance.
 
-        # RUL error (lower is better)
+        Weights reflect C-MAPSS evaluation priorities:
+        - Detection metrics (warning rate, lead time) weighted highest
+          because the system's primary value is early failure detection.
+        - False alarm rate excluded because in C-MAPSS all engines fail,
+          so "false alarms" are premature warnings, not wrong-engine alerts.
+        """
+        weighted_improvements = []
+        weights = []
+
+        # RUL error (lower is better) — weight: 1.0
         if without.rul_metrics.mae > 0:
             rul_improvement = (without.rul_metrics.mae - with_.rul_metrics.mae) \
                 / without.rul_metrics.mae
-            improvements.append(rul_improvement)
+            weighted_improvements.append(rul_improvement)
+            weights.append(1.0)
 
-        # Warning rate (higher is better)
+        # Warning rate (higher is better) — weight: 2.0 (primary detection metric)
         if without.warning_metrics.warning_rate > 0:
             warning_improvement = (with_.warning_metrics.warning_rate - without.warning_metrics.warning_rate) \
                 / without.warning_metrics.warning_rate
-            improvements.append(warning_improvement)
+            weighted_improvements.append(warning_improvement)
+            weights.append(2.0)
 
-        # False alarm rate (lower is better)
-        if without.warning_metrics.false_alarm_rate > 0:
-            fa_improvement = (without.warning_metrics.false_alarm_rate - with_.warning_metrics.false_alarm_rate) \
-                / without.warning_metrics.false_alarm_rate
-            improvements.append(fa_improvement)
+        # Lead time (higher is better) — weight: 2.0 (primary detection metric)
+        if without.warning_metrics.avg_lead_time > 0:
+            lead_improvement = (with_.warning_metrics.avg_lead_time - without.warning_metrics.avg_lead_time) \
+                / without.warning_metrics.avg_lead_time
+            weighted_improvements.append(lead_improvement)
+            weights.append(2.0)
 
-        # Groundedness (higher is better)
+        # Groundedness (higher is better) — weight: 1.0
         if without.groundedness_metrics.avg_groundedness > 0:
             groundedness_improvement = (with_.groundedness_metrics.avg_groundedness - without.groundedness_metrics.avg_groundedness) \
                 / without.groundedness_metrics.avg_groundedness
-            improvements.append(groundedness_improvement)
+            weighted_improvements.append(groundedness_improvement)
+            weights.append(1.0)
 
-        # F1 score (higher is better)
+        # F1 score (higher is better) — weight: 1.0
         if without.detection_metrics.f1_score > 0:
             f1_improvement = (with_.detection_metrics.f1_score - without.detection_metrics.f1_score) \
                 / without.detection_metrics.f1_score
-            improvements.append(f1_improvement)
+            weighted_improvements.append(f1_improvement)
+            weights.append(1.0)
 
-        # Average improvement
-        overall_impact = float(np.mean(improvements)) if improvements else 0.0
+        # Weighted average improvement
+        if weighted_improvements:
+            w = np.array(weights)
+            imp = np.array(weighted_improvements)
+            overall_impact = float(np.sum(w * imp) / np.sum(w))
+        else:
+            overall_impact = 0.0
         return overall_impact
 
     def get_contribution_summary(self) -> pd.DataFrame:
