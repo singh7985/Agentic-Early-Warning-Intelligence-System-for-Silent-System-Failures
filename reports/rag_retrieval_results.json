@@ -1,23 +1,23 @@
 [
   {
     "rank": 1,
-    "score": 0.5185197591781616,
+    "score": 0.5185196399688721,
     "text": "Sensor deviations: sensor_13 increasing (mean2298.22, std155.76, trend359.860); sensor_9 increasing (mean8436.08, std326.35, trend310.660); sensor_18 increasing (mean2183.50, std164.01, trend297.000); sensor_8 increasing (mean2183.63, std163.79, trend296.630); sensor_14 increasing (mean8049.40, std98.38, trend210.260); sensor_3 increasing (mean1387.07, std102.34, trend97.810). Episode 8: cycles 197-226, duration 30 cycles, severity 0.757, RUL drop 117 to 88, anomaly rate 0, change points 0. Sensor deviations: sensor_9 decreasing (mean8582.44, std391.46, trend-281.320); sensor_7 decreasing (mean321.78, std165.57, trend-160.070); sensor_12 decreasing (mean303.01, std156.19, trend-150.590); sensor_4 decreasing (mean1227.03, std139.44, trend-87.300); sensor_3 decreasing (mean1433.55, std121.98, trend-78.440); sensor_8 decreasing (mean2226.34, std168.37, trend-69.100). Operating conditions: op_setting_123.83, op_setting_20.56, op_setting_393.36. Failure pattern: progressive degradation with clear trend.",
     "engine_id": "FD002_137",
     "failure_type": "silent_degradation",
     "duration": 112,
     "citation": "Engine FD002_137 | Type: silent_degradation | Similarity: 0.519",
-    "retrieved_at": "2026-03-03T15:03:09.734676"
+    "retrieved_at": "2026-03-12T23:38:58.897794"
   },
   {
     "rank": 2,
-    "score": 0.5137830376625061,
+    "score": 0.5137830972671509,
     "text": "Sensor deviations: sensor_4 increasing (mean1083.32, std72.18, trend10.310); sensor_9 increasing (mean8160.69, std255.64, trend6.580); sensor_14 increasing (mean7936.22, std92.28, trend5.960); sensor_3 decreasing (mean1305.07, std80.38, trend-1.870); sensor_7 increasing (mean193.80, std59.53, trend1.020); sensor_17 increasing (mean318.14, std20.79, trend1.000). Episode 8: cycles 164-174, duration 11 cycles, severity 0.573, RUL drop 152 to 142, anomaly rate 0, change points 0. Sensor deviations: sensor_4 increasing (mean1184.92, std105.62, trend6.510); sensor_3 increasing (mean1406.06, std93.33, trend2.850); sensor_9 decreasing (mean8491.80, std292.27, trend-2.770); sensor_14 increasing (mean8082.38, std68.14, trend1.880); sensor_17 increasing (mean343.82, std24.04, trend1.000); sensor_11 increasing (mean42.71, std2.66, trend0.220). Operating conditions: op_setting_123.98, op_setting_20.57, op_setting_394.04. Failure pattern: progressive degradation with clear trend.",
     "engine_id": "FD004_24",
     "failure_type": "silent_degradation",
     "duration": 93,
     "citation": "Engine FD004_24 | Type: silent_degradation | Similarity: 0.514",
-    "retrieved_at": "2026-03-03T15:03:09.734774"
+    "retrieved_at": "2026-03-12T23:38:58.898270"
   },
   {
     "rank": 3,
@@ -27,17 +27,17 @@
     "failure_type": "silent_degradation",
     "duration": 104,
     "citation": "Engine FD004_243 | Type: silent_degradation | Similarity: 0.506",
-    "retrieved_at": "2026-03-03T15:03:09.734787"
+    "retrieved_at": "2026-03-12T23:38:58.898288"
   },
   {
     "rank": 4,
-    "score": 0.5022546052932739,
+    "score": 0.5022544860839844,
     "text": "Sensor deviations: sensor_9 decreasing (mean8587.13, std423.12, trend-735.460); sensor_7 decreasing (mean336.82, std189.86, trend-413.580); sensor_12 decreasing (mean317.13, std179.15, trend-390.520); sensor_4 decreasing (mean1229.97, std149.25, trend-277.670); sensor_3 decreasing (mean1436.96, std135.20, trend-233.960); sensor_8 decreasing (mean2233.69, std175.11, trend-176.030). Episode 8: cycles 93-107, duration 15 cycles, severity 0.713, RUL drop 217 to 203, anomaly rate 0, change points 0. Sensor deviations: sensor_9 increasing (mean8452.77, std358.38, trend1049.860); sensor_18 increasing (mean2204.20, std159.58, trend473.000); sensor_8 increasing (mean2204.14, std159.45, trend472.730); sensor_7 increasing (mean262.12, std157.78, trend379.600); sensor_13 increasing (mean2315.99, std143.92, trend359.860); sensor_12 increasing (mean246.57, std148.67, trend357.520). Episode 9: cycles 109-125, duration 17 cycles, severity 0.740, RUL drop 201 to 185, anomaly rate 0, change points 0. Sensor deviations: sensor_3 increasing (mean1372.52, std70.13, trend7.940); sensor_14 increasing (mean8043.89, std65.51, trend3.770); sensor_9 increasing (mean8383.76, std218.33, trend3.270); sensor_4 increasing (mean1138.95, std70.41, trend1.010); sensor_7 decreasing (mean214.83, std78.39, trend-0.490); sensor_2 increasing (mean563.37, std24.30, trend0.280). Episode 10: cycles 130-137, duration 8 cycles, severity 0.748, RUL drop 180 to 173, anomaly rate 0, change points 0. Sensor deviations: sensor_9 increasing (mean8409.37, std241.47, trend741.641); sensor_7 increasing (mean203.92, std134.32, trend415.580); sensor_12 increasing (mean192.04, std126.38, trend391.400); sensor_4 increasing (mean1150.91, std93.96, trend286.840); sensor_3 increasing (mean1379.80, std79.24, trend247.840); sensor_18 increasing (mean2236.75, std57.36, trend176.000). Operating conditions: op_setting_125.45, op_setting_20.60, op_setting_394.33. Failure pattern: progressive degradation with clear trend.",
     "engine_id": "FD004_157",
     "failure_type": "silent_degradation",
     "duration": 120,
     "citation": "Engine FD004_157 | Type: silent_degradation | Similarity: 0.502",
-    "retrieved_at": "2026-03-03T15:03:09.734804"
+    "retrieved_at": "2026-03-12T23:38:58.898298"
   },
   {
     "rank": 5,
@@ -47,6 +47,6 @@
     "failure_type": "silent_degradation",
     "duration": 65,
     "citation": "Engine FD004_60 | Type: silent_degradation | Similarity: 0.502",
-    "retrieved_at": "2026-03-03T15:03:09.734814"
+    "retrieved_at": "2026-03-12T23:38:58.898309"
   }
 ]

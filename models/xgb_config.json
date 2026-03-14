@@ -1,0 +1,23 @@
+{
+  "subsets_used": [
+    "FD001",
+    "FD002",
+    "FD003",
+    "FD004"
+  ],
+  "total_train_engines": 709,
+  "total_test_engines": 707,
+  "best_iteration": 1497,
+  "max_depth": 4,
+  "learning_rate": 0.02,
+  "min_child_weight": 20,
+  "gamma": 0.5,
+  "subsample": 0.6,
+  "colsample_bytree": 0.6,
+  "reg_alpha": 1.0,
+  "reg_lambda": 5.0,
+  "overfit_ratio": 1.1379,
+  "train_rmse": 16.6922,
+  "val_rmse": 18.9948,
+  "test_rmse": 17.7924
+}

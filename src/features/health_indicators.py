@@ -292,57 +292,54 @@ class HealthIndicatorCalculator:
         self, df: pd.DataFrame, health_index: pd.Series, percentiles: List[float] = [33, 67]
     ) -> pd.DataFrame:
         """
-        Classify degradation phases based on health index percentiles.
+        Classify degradation phases based on engine lifecycle.
 
-        Phases: Healthy (0-33%), Degrading (33-67%), Failed (67-100%)
+        When the RUL column is available (C-MAPSS), phases are assigned using
+        domain-standard lifecycle thresholds:
+            - Healthy:   RUL > 75 cycles (engine operating normally)
+            - Degrading: 30 < RUL ≤ 75   (detectable degradation, early warning zone)
+            - Failed:    RUL ≤ 30         (critical, near failure)
+
+        When RUL is not available, falls back to global health-index percentiles.
 
         Parameters
         ----------
         df : pd.DataFrame
-            Original dataframe
+            Original dataframe (must contain 'RUL' for lifecycle-based phases)
         health_index : pd.Series
             Health index values
         percentiles : List[float], default=[33, 67]
-            Percentile thresholds for phase boundaries
+            Fallback percentile thresholds when RUL is unavailable
 
         Returns
         -------
         df_phases : pd.DataFrame
-            Dataframe with phase labels
+            Dataframe with 'degradation_phase' column
         """
         df_phases = df.copy()
         df_phases["health_index"] = health_index
 
-        # Calculate percentile thresholds per engine
-        quantiles = [p / 100.0 for p in percentiles]
-        thresholds = df_phases.groupby("engine_id")["health_index"].quantile(quantiles).unstack()
-        
-        # Rename columns to 0, 1, 2... for easy integer access
-        thresholds.columns = range(len(quantiles))
+        if "RUL" in df_phases.columns:
+            # Lifecycle-based phases using RUL (domain-standard for C-MAPSS)
+            conditions = [
+                df_phases["RUL"] > 75,
+                (df_phases["RUL"] > 30) & (df_phases["RUL"] <= 75),
+                df_phases["RUL"] <= 30,
+            ]
+            choices = ["Healthy", "Degrading", "Failed"]
+            df_phases["degradation_phase"] = np.select(conditions, choices, default="Healthy")
+        else:
+            # Fallback: global health-index percentiles
+            quantiles = [p / 100.0 for p in percentiles]
+            thresholds = health_index.quantile(quantiles).values
+            conditions = [
+                health_index <= thresholds[0],
+                (health_index > thresholds[0]) & (health_index <= thresholds[1]),
+                health_index > thresholds[1],
+            ]
+            choices = ["Healthy", "Degrading", "Failed"]
+            df_phases["degradation_phase"] = np.select(conditions, choices, default="Healthy")
 
-        # Assign phases
-        phases = []
-        # Pre-fetch thresholds to dictionary for faster lookup than loc inside loop
-        threshold_dict = thresholds.to_dict('index')
-        
-        for idx, row in df_phases.iterrows():
-            engine_id = row["engine_id"]
-            hi = row["health_index"]
-
-            if engine_id in threshold_dict:
-                engine_thresholds = threshold_dict[engine_id]
-                # Use integer keys 0, 1 etc matching the renamed columns
-                if hi <= engine_thresholds[0]:
-                    phase = "Healthy"
-                elif hi <= engine_thresholds[1]:
-                    phase = "Degrading"
-                else:
-                    phase = "Failed"
-            else:
-                phase = "Unknown"
-
-            phases.append(phase)
-
-        df_phases["degradation_phase"] = phases
-        logger.info(f"Identified degradation phases: {df_phases['degradation_phase'].value_counts().to_dict()}")
+        phase_counts = df_phases["degradation_phase"].value_counts().to_dict()
+        logger.info(f"Identified degradation phases: {phase_counts}")
         return df_phases
